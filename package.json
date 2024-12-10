@@ -1,0 +1,42 @@
+{
+  "name": "base_bot",
+  "version": "1.0.0",
+  "description": "Base para Bots de whatsApp (Alyabot especialmente)",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Elpapiema/Base_Bot.git"
+  },
+  "author": "Emma (Violets Version)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Elpapiema/Base_Bot/issues"
+  },
+  "homepage": "https://github.com/Elpapiema/Base_Bot#readme",
+  "dependencies": {
+    "@bochilteam/scraper": "^5.0.1",
+    "@whiskeysockets/baileys": "^6.7.9",
+    "awesome-phonenumber": "^7.2.0",
+    "axios": "^1.7.9",
+    "cfonts": "^3.3.0",
+    "chalk": "^5.3.0",
+    "cheerio": "1.0.0-rc.12",
+    "file-type": "^19.6.0",
+    "google-libphonenumber": "^3.2.40",
+    "lodash": "^4.17.21",
+    "lowdb": "^3.0.0",
+    "moment-timezone": "^0.5.46",
+    "mongoose": "^8.8.4",
+    "node-fetch": "^3.3.2",
+    "qrcode-terminal": "^0.12.0",
+    "syntax-error": "^1.4.0",
+    "url-regex-safe": "^4.0.0",
+    "yargs": "^17.7.2",
+    "yt-search": "^2.12.1",
+    "ytdl-core": "^4.11.5"
+  }
+}
