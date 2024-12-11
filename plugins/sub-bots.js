@@ -29,7 +29,7 @@ let handler = async (message, { conn, args, usedPrefix, command, isOwner }) => {
   if (args[0] && isCodeMode) {
     args[0] = args[0].replace(/^--code$|^code$/, '').trim();
     const creds = JSON.parse(Buffer.from(args[0], "base64").toString("utf-8"));
-    fs.writeFileSync(`./jadibts/${targetId}/creds.json`, JSON.stringify(creds, null, 2));
+    fs.writeFileSync(`./Alya-SubBots/${targetId}/creds.json`, JSON.stringify(creds, null, 2));
   }
 
   if (fs.existsSync(`./Alya-SubBots/${targetId}/creds.json`)) {
