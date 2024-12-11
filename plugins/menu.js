@@ -13,16 +13,22 @@ const defaultData = {
 
 let handler = async (m, { conn }) => {
     try {
+        // Verificar si el archivo de personalización existe, si no, crearlo
         if (!fs.existsSync(filePath)) {
             const initialData = { default: defaultData, users: {} };
             fs.writeFileSync(filePath, JSON.stringify(initialData, null, 2));
         }
 
+        // Leer la configuración del archivo
         const config = JSON.parse(fs.readFileSync(filePath));
+
+        // Obtener las configuraciones personalizadas del usuario, o usar las predeterminadas
         const userConfig = config.users[m.sender] || config.default;
 
+        // Seleccionar un video aleatoriamente
         const randomVideoUrl = userConfig.videos[Math.floor(Math.random() * userConfig.videos.length)];
 
+        // Texto del mensaje del menú con personalización o datos predeterminados
         const menuMessage = `
 ┎┈┈┈┈┈┈┈┈┈┈┈୨ Ｉｎｆｏ ୧┈┈┈┈┈┈┈┈┈┈┒
 ┊
@@ -31,9 +37,12 @@ let handler = async (m, { conn }) => {
 ┊   
 ┊   ✦ Versión actual: 1.2.3
 ┊
+┊   ✦ *Nombre del Bot:* ${userConfig.botName}
+┊   ✦ *Moneda:* ${userConfig.currency}
 ┊
 ┖┈┈┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈┈┚`;
 
+        // Enviar el video aleatorio como GIF
         await conn.sendMessage(
             m.chat,
             {
