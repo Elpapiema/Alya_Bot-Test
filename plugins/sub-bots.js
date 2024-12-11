@@ -22,8 +22,8 @@ let handler = async (message, { conn, args, usedPrefix, command, isOwner }) => {
   const targetJid = message.mentionedJid?.[0] || (message.fromMe ? conn.user.jid : message.sender);
   const targetId = targetJid.split('@')[0];
 
-  if (!fs.existsSync(`./jadibts/${targetId}`)) {
-    fs.mkdirSync(`./jadibts/${targetId}`, { recursive: true });
+  if (!fs.existsSync(`./Alya-SubBots/${targetId}`)) {
+    fs.mkdirSync(`./Alya-SubBots/${targetId}`, { recursive: true });
   }
 
   if (args[0] && isCodeMode) {
@@ -32,10 +32,10 @@ let handler = async (message, { conn, args, usedPrefix, command, isOwner }) => {
     fs.writeFileSync(`./jadibts/${targetId}/creds.json`, JSON.stringify(creds, null, 2));
   }
 
-  if (fs.existsSync(`./jadibts/${targetId}/creds.json`)) {
-    const creds = JSON.parse(fs.readFileSync(`./jadibts/${targetId}/creds.json`));
+  if (fs.existsSync(`./Alya-SubBots/${targetId}/creds.json`)) {
+    const creds = JSON.parse(fs.readFileSync(`./Alya-SubBots/${targetId}/creds.json`));
     if (!creds.registered) {
-      fs.unlinkSync(`./jadibts/${targetId}/creds.json`);
+      fs.unlinkSync(`./Alya-SubBots/${targetId}/creds.json`);
     }
   }
 
@@ -43,7 +43,7 @@ let handler = async (message, { conn, args, usedPrefix, command, isOwner }) => {
   const msgRetry = () => {};
   const cache = new NodeCache();
 
-  const { state, saveState } = await useMultiFileAuthState(`./jadibts/${targetId}`);
+  const { state, saveState } = await useMultiFileAuthState(`./Alya-SubBots/${targetId}`);
 
   const options = {
     logger: pino({ level: 'silent' }),
@@ -54,8 +54,8 @@ let handler = async (message, { conn, args, usedPrefix, command, isOwner }) => {
     msgRetryCache: cache,
     version,
     syncFullHistory: true,
-    browser: isCodeMode ? ["Ubuntu", "Chrome", "110.0.5585.95"] : ["LoliBot-MD", "Chrome", "2.0.0"],
-    getMessage: async () => ({ conversation: "LoliBot-MD" }),
+    browser: isCodeMode ? ["Ubuntu", "Chrome", "110.0.5585.95"] : ["AlyaBot", "Chrome", "2.0.0"],
+    getMessage: async () => ({ conversation: "AlyaBot-MD" }),
   };
 
   let socket = makeWASocket(options);
@@ -68,7 +68,7 @@ let handler = async (message, { conn, args, usedPrefix, command, isOwner }) => {
       const qrImage = await qrcode.toBuffer(qr, { scale: 8 });
       const qrMessage = await conn.sendMessage(message.chat, {
         image: qrImage,
-        caption: "🔰 *LoliBot-MD* 🔰\nEscanea este QR para convertirte en un sub bot.",
+        caption: "🔰 *AlyaBot* 🔰\nEscanea este QR para convertirte en un sub bot.",
       }, { quoted: message });
 
       setTimeout(async () => {
