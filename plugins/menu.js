@@ -42,7 +42,7 @@ let handler = async (m, { conn }) => {
    ✦ *La Moneda actual es :* ${userConfig.currency}
 
 ┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
-> Perzonalizacion
+> Personalizacion
 
    .setname 
    .setbanner
@@ -57,7 +57,7 @@ let handler = async (m, { conn }) => {
    .rw .rollwaifu
    .c .claim
    .harem
-   
+
 ┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
 > Descargas
 
