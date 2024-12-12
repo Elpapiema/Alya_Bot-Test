@@ -31,15 +31,20 @@ let handler = async (m, { conn }) => {
         // Texto del mensaje del menú con personalización o datos predeterminados
         const menuMessage = `
 ┎┈┈┈┈┈┈┈┈୨ Ｉｎｆｏ ୧┈┈┈┈┈┈┈┈┒
-┊
-┊
-┊   ✦ Desarrollado por: 𝓔𝓶𝓶𝓪 (𝓥𝓲𝓸𝓵𝓮𝓽'𝓼 𝓥𝓮𝓻𝓼𝓲𝓸𝓷)
-┊   
-┊   ✦ Versión actual: 1.2.3
-┊
-┊   ✦ *Nombre del Bot:* ${userConfig.botName}
-┊   ✦ *Moneda:* ${userConfig.currency}
-┊
+
+
+   ✦ Desarrollado por: 𝓔𝓶𝓶𝓪 (𝓥𝓲𝓸𝓵𝓮𝓽'𝓼 𝓥𝓮𝓻𝓼𝓲𝓸𝓷)
+   ✦ Versión actual: ${vs}
+┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
+   *Hola!* soy ${userConfig.botName} aqui tenes la lista de comandos
+   ✦ *La Moneda actual es :* ${userConfig.currency}
+┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
+   > Perzonalizacion
+
+   ${usedPrefix}setname 
+   ${usedPrefix}setbanner
+   ${usedPrefix}setmoneda
+
 ┖┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈┚`;
 
         // Enviar el video aleatorio como GIF
