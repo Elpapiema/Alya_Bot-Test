@@ -34,10 +34,13 @@ let handler = async (m, { conn }) => {
 
 
    ✦ Desarrollado por: 𝓔𝓶𝓶𝓪 (𝓥𝓲𝓸𝓵𝓮𝓽'𝓼 𝓥𝓮𝓻𝓼𝓲𝓸𝓷)
+
    ✦ Versión actual: ${vs}
+
 ┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
    *Hola!* soy ${userConfig.botName} aqui tenes la lista de comandos
    ✦ *La Moneda actual es :* ${userConfig.currency}
+
 ┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
 > Perzonalizacion
 
@@ -47,12 +50,14 @@ let handler = async (m, { conn }) => {
    .viewbanner
    .deletebanner
    .resetpreferences
+
 ┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
 > Random
 
    .rw .rollwaifu
    .c .claim
    .harem
+   
 ┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
 > Descargas
 
