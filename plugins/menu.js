@@ -39,7 +39,7 @@ let handler = async (m, { conn }) => {
    *Hola!* soy ${userConfig.botName} aqui tenes la lista de comandos
    ✦ *La Moneda actual es :* ${userConfig.currency}
 ┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
-   > Perzonalizacion
+> Perzonalizacion
 
    .setname 
    .setbanner
@@ -48,7 +48,7 @@ let handler = async (m, { conn }) => {
    .deletebanner
    .resetpreferences
 ┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
-   > Random
+> Random
 
    .rw .rollwaifu
    .c .claim
@@ -56,8 +56,8 @@ let handler = async (m, { conn }) => {
 ┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
 > Descargas
 
-.play _nombre de la cancion_ (audio)
-.play2 _nombre de la cancion_ (video)
+   .play _nombre de la cancion_ (audio)
+   .play2 _nombre de la cancion_ (video)
 
 ┖┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈┚`;
 
