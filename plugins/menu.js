@@ -41,9 +41,23 @@ let handler = async (m, { conn }) => {
 ┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
    > Perzonalizacion
 
-   ${usedPrefix}setname 
-   ${usedPrefix}setbanner
-   ${usedPrefix}setmoneda
+   .setname 
+   .setbanner
+   .setmoneda
+   .viewbanner
+   .deletebanner
+   .resetpreferences
+┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
+   > Random
+
+   .rw .rollwaifu
+   .c .claim
+   .harem
+┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
+> Descargas
+
+.play _nombre de la cancion_ (audio)
+.play2 _nombre de la cancion_ (video)
 
 ┖┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈┚`;
 
