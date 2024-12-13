@@ -2,27 +2,35 @@ import fs from 'fs';
 
 const filePath = './personalize.json';
 
-let handler = async (m, { isOwner }) => {
+let handler = async (m, { conn }) => {
     try {
-        if (!fs.existsSync(filePath)) throw 'No se encontró el archivo de personalización.';
+        if (!fs.existsSync(filePath)) {
+            return conn.reply(m.chat, '❌ No se ha encontrado la configuración personalizada.', m);
+        }
 
         const config = JSON.parse(fs.readFileSync(filePath));
-        const userType = isOwner ? `owners.${m.sender}` : `users.${m.sender}`;
 
-        if (config[userType]) {
-            delete config[userType];
+        if (config.owners[m.sender]) {
+            delete config.owners[m.sender];
             fs.writeFileSync(filePath, JSON.stringify(config, null, 2));
-            m.reply(`✅ Personalización eliminada para ${isOwner ? 'owner' : 'usuario'}.`);
-        } else {
-            m.reply('No hay personalización para eliminar.');
+            return conn.reply(m.chat, '¡Preferencias del bot restablecidas exitosamente!', m);
         }
+
+        if (config.users[m.sender]) {
+            delete config.users[m.sender];
+            fs.writeFileSync(filePath, JSON.stringify(config, null, 2));
+            return conn.reply(m.chat, '¡Tus preferencias han sido restablecidas exitosamente!', m);
+        }
+
+        return conn.reply(m.chat, '❌ No se encontraron preferencias personalizadas para restablecer.', m);
     } catch (error) {
-        m.reply(`❌ Error: ${error.message}`);
+        console.error(error);
+        conn.reply(m.chat, '❌ Error al restablecer las preferencias.', m);
     }
 };
 
-handler.help = ['resetpreferences', 'reiniciarpreferencias'];
-handler.tags = ['owner', 'personalization'];
-handler.command = /^(resetpreferences|reiniciarpreferencias)$/i;
+handler.help = ['resetpreferences'];
+handler.tags = ['personalizacion'];
+handler.command = /^(resetpreferences)$/i;
 
 export default handler;
