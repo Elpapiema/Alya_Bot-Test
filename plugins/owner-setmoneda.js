@@ -1,43 +1,33 @@
 import fs from 'fs';
 
 const filePath = './personalize.json';
-const defaultData = {
-    botName: "Alya Mikhailovna Kujou",
-    currency: "yen",
-    videos: []
-};
 
-let handler = async (m, { conn, args, isOwner }) => {
+let handler = async (m, { args, isOwner }) => {
     try {
-        if (!isOwner) return conn.reply(m.chat, '❌ Solo los propietarios del bot pueden usar este comando.', m);
-
-        if (args.length === 0) return conn.reply(m.chat, '❌ Por favor, proporciona una nueva moneda para el bot.', m);
-
-        const newCurrency = args.join(' ');
-
         if (!fs.existsSync(filePath)) {
-            const initialData = { default: defaultData, users: {} };
+            const initialData = { default: {}, owners: {}, users: {} };
             fs.writeFileSync(filePath, JSON.stringify(initialData, null, 2));
         }
 
         const config = JSON.parse(fs.readFileSync(filePath));
-        if (!config.users[m.sender]) {
-            config.users[m.sender] = { ...config.default };
-        }
+        const userType = isOwner ? `owners.${m.sender}` : `users.${m.sender}`;
+        const newCurrency = args.join(' ').trim();
 
-        config.users[m.sender].currency = newCurrency;
+        if (!newCurrency) throw 'Debe proporcionar un nombre para la moneda.';
+
+        // Crear estructura si no existe
+        if (!config[userType]) config[userType] = {};
+        config[userType].currency = newCurrency;
 
         fs.writeFileSync(filePath, JSON.stringify(config, null, 2));
-
-        conn.reply(m.chat, `✅ Moneda personalizada cambiada a: *${newCurrency}*`, m);
+        m.reply(`✅ Moneda del bot actualizada a "${newCurrency}" para ${isOwner ? 'owner' : 'usuario'}.`);
     } catch (error) {
-        conn.reply(m.chat, `❌ Error al cambiar la moneda: ${error.message}`, m);
+        m.reply(`❌ Error: ${error.message}`);
     }
 };
 
-handler.help = ['setmoneda', 'setbotmoneda'];
-handler.tags = ['owner'];
+handler.help = ['setmoneda <moneda>', 'setbotmoneda <moneda>'];
+handler.tags = ['owner', 'personalization'];
 handler.command = /^(setmoneda|setbotmoneda)$/i;
-handler.owner = true;
 
 export default handler;
