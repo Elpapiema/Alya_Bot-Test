@@ -5,9 +5,9 @@ const defaultData = {
     botName: "Alya Mikhailovna Kujou",
     currency: "yen",
     videos: [
-        'https://qu.ax/WgJR.mp4',
-        'https://qu.ax/kOwY.mp4',
-        'https://qu.ax/UYGf.mp4'
+        "https://qu.ax/WgJR.mp4",
+        "https://qu.ax/kOwY.mp4",
+        "https://qu.ax/UYGf.mp4"
     ]
 };
 
@@ -20,15 +20,21 @@ let handler = async (m, { conn, isOwner }) => {
 
         const config = JSON.parse(fs.readFileSync(filePath));
 
-        // Obtener configuración del owner principal (si aplica)
-        const ownerConfig = Object.keys(config.owners).length > 0 ? config.owners : null;
+        // Identificar si el usuario actual es un owner
+        const ownerConfig = config.owners[m.sender] || null;
+
+        // Si es owner, todos los usuarios bajo este owner heredarán su configuración
         const userConfig = config.users[m.sender];
+        const inheritedOwnerConfig = ownerConfig 
+            ? config.owners[Object.keys(config.owners).find((id) => id === m.sender)] 
+            : null;
+
         const defaultConfig = config.default;
 
-        // Verificar configuración
-        const botName = userConfig?.botName || ownerConfig?.botName || defaultConfig.botName;
-        const currency = userConfig?.currency || ownerConfig?.currency || defaultConfig.currency;
-        const videos = userConfig?.videos || ownerConfig?.videos || defaultConfig.videos;
+        // Prioridad: User > Owner > Default
+        const botName = userConfig?.botName || inheritedOwnerConfig?.botName || defaultConfig.botName;
+        const currency = userConfig?.currency || inheritedOwnerConfig?.currency || defaultConfig.currency;
+        const videos = userConfig?.videos || inheritedOwnerConfig?.videos || defaultConfig.videos;
 
         const randomVideoUrl = videos[Math.floor(Math.random() * videos.length)];
 
