@@ -2,7 +2,7 @@ import fs from 'fs';
 
 const filePath = './personalize.json';
 
-let handler = async (m, { args, isOwner }) => {
+let handler = async (m, { conn, text }) => {
     try {
         if (!fs.existsSync(filePath)) {
             const initialData = { default: {}, owners: {}, users: {} };
@@ -10,27 +10,42 @@ let handler = async (m, { args, isOwner }) => {
         }
 
         const config = JSON.parse(fs.readFileSync(filePath));
-        const userType = isOwner ? `owners.${m.sender}` : `users.${m.sender}`;
-        const videoUrl = args[0];
+        const isOwner = config.owners.hasOwnProperty(m.sender);
 
-        if (!videoUrl) throw 'Debe proporcionar un link de video para establecer.';
+        // Si es owner, guardar el banner en "owners"
+        if (isOwner) {
+            if (!text) {
+                return conn.reply(m.chat, 'Por favor, proporciona una URL para el banner.', m);
+            }
 
-        // Crear estructura si no existe
-        if (!config[userType]) config[userType] = {};
-        if (!config[userType].videos) config[userType].videos = [];
-        
-        // Agregar el video
-        config[userType].videos.push(videoUrl);
+            // Modificar el banner del owner
+            if (!config.owners[m.sender]) {
+                config.owners[m.sender] = {};
+            }
+
+            config.owners[m.sender].banner = text;
+
+            fs.writeFileSync(filePath, JSON.stringify(config, null, 2));
+            return conn.reply(m.chat, `¡Banner actualizado para el bot *${config.owners[m.sender].botName}* con éxito!`, m);
+        } 
+
+        // Si no es owner, guardamos el banner bajo "users"
+        if (!config.users[m.sender]) {
+            config.users[m.sender] = {};
+        }
+
+        config.users[m.sender].banner = text;
 
         fs.writeFileSync(filePath, JSON.stringify(config, null, 2));
-        m.reply(`✅ Video añadido correctamente a la personalización de ${isOwner ? 'owner' : 'usuario'}.`);
+        return conn.reply(m.chat, `¡Banner actualizado para tu cuenta con éxito!`, m);
     } catch (error) {
-        m.reply(`❌ Error: ${error.message}`);
+        console.error(error);
+        conn.reply(m.chat, '❌ Error al actualizar el banner.', m);
     }
 };
 
-handler.help = ['setbanner <link>'];
-handler.tags = ['owner', 'personalization'];
-handler.command = /^(setbanner|setbotimg)$/i;
+handler.help = ['setbanner <url>'];
+handler.tags = ['personalizacion'];
+handler.command = /^(setbanner)$/i;
 
 export default handler;
