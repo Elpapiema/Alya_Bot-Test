@@ -20,11 +20,12 @@ let handler = async (m, { conn, isOwner }) => {
 
         const config = JSON.parse(fs.readFileSync(filePath));
 
-        // Obtener configuración del usuario o owner
-        const ownerConfig = config.owners[m.sender];
+        // Obtener configuración del owner principal (si aplica)
+        const ownerConfig = Object.keys(config.owners).length > 0 ? config.owners : null;
         const userConfig = config.users[m.sender];
         const defaultConfig = config.default;
 
+        // Verificar configuración
         const botName = userConfig?.botName || ownerConfig?.botName || defaultConfig.botName;
         const currency = userConfig?.currency || ownerConfig?.currency || defaultConfig.currency;
         const videos = userConfig?.videos || ownerConfig?.videos || defaultConfig.videos;
@@ -40,7 +41,7 @@ let handler = async (m, { conn, isOwner }) => {
    ✦ Versión actual: ${vs}
 
 ┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
-   *Hola!* soy ${botName} no aqui tenes la lista de comandos
+   *Hola!* soy ${botName}, aquí tienes la lista de comandos
    ✦ *La Moneda actual es :* ${currency}
 
 ┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
@@ -63,10 +64,9 @@ let handler = async (m, { conn, isOwner }) => {
 > 𝙳𝚎𝚜𝚌𝚊𝚛𝚐𝚊𝚜   (ノ^o^)ノ  
 
   ❀ .play ➩ _nombre de la cancion ➩_ (audio)
-  ❀  .play2 ➩ _nombre de la cancion_ (video)
+  ❀ .play2 ➩ _nombre de la cancion_ (video)
 
-┖┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈┚
-
+┖┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┚
 `;
 
         await conn.sendMessage(
