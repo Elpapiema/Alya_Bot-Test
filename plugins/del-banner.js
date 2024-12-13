@@ -1,63 +1,40 @@
 import fs from 'fs';
 
 const filePath = './personalize.json';
-const defaultData = {
-    botName: "Alya Mikhailovna Kujou",
-    currency: "yen",
-    videos: [
-        'https://qu.ax/WgJR.mp4',
-        'https://qu.ax/kOwY.mp4',
-        'https://qu.ax/UYGf.mp4'
-    ]
-};
 
-let handler = async (m, { conn, args }) => {
+let handler = async (m, { conn }) => {
     try {
-        if (args.length === 0) {
-            return conn.reply(m.chat, '❌ Por favor, proporciona el enlace del video a eliminar.', m);
-        }
-
-        const videoToRemove = args[0];
-
-        // Verificar si el archivo de personalización existe, si no, crearlo
         if (!fs.existsSync(filePath)) {
-            const initialData = { default: defaultData, users: {} };
-            fs.writeFileSync(filePath, JSON.stringify(initialData, null, 2));
+            return conn.reply(m.chat, '❌ No se ha encontrado la configuración personalizada.', m);
         }
 
-        // Leer la configuración
         const config = JSON.parse(fs.readFileSync(filePath));
+        const isOwner = config.owners.hasOwnProperty(m.sender);
 
-        // Crear configuración específica para el usuario si no existe
-        if (!config.users[m.sender]) {
-            config.users[m.sender] = { ...config.default };
+        if (isOwner) {
+            if (!config.owners[m.sender]?.banner) {
+                return conn.reply(m.chat, '❌ No se ha configurado un banner para este bot.', m);
+            }
+            delete config.owners[m.sender].banner;
+            fs.writeFileSync(filePath, JSON.stringify(config, null, 2));
+            return conn.reply(m.chat, '¡Banner eliminado exitosamente para el bot!', m);
         }
 
-        // Obtener la lista de videos personalizados del usuario
-        const userVideos = config.users[m.sender].videos;
-
-        // Verificar si el video a eliminar existe en la lista de videos del usuario
-        const videoIndex = userVideos.indexOf(videoToRemove);
-
-        if (videoIndex === -1) {
-            return conn.reply(m.chat, '❌ El video especificado no está en tu lista de videos personalizados.', m);
+        if (config.users[m.sender]?.banner) {
+            delete config.users[m.sender].banner;
+            fs.writeFileSync(filePath, JSON.stringify(config, null, 2));
+            return conn.reply(m.chat, '¡Banner eliminado exitosamente de tu cuenta!', m);
         }
 
-        // Eliminar el video de la lista
-        userVideos.splice(videoIndex, 1);
-
-        // Guardar los cambios en el archivo
-        fs.writeFileSync(filePath, JSON.stringify(config, null, 2));
-
-        conn.reply(m.chat, `✅ El video ha sido eliminado correctamente.`, m);
+        return conn.reply(m.chat, '❌ No se ha configurado un banner para tu cuenta.', m);
     } catch (error) {
-        conn.reply(m.chat, `❌ Error al eliminar el video: ${error.message}`, m);
+        console.error(error);
+        conn.reply(m.chat, '❌ Error al eliminar el banner.', m);
     }
 };
 
-handler.help = ['delbanner'];
-handler.tags = ['owner'];
-handler.command = /^(delbanner)$/i;
-handler.owner = true;
+handler.help = ['deletebanner'];
+handler.tags = ['personalizacion'];
+handler.command = /^(deletebanner)$/i;
 
 export default handler;
