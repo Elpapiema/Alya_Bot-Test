@@ -11,62 +11,36 @@ const defaultData = {
     ]
 };
 
-let handler = async (m, { conn }) => {
+let handler = async (m, { conn, isOwner }) => {
     try {
-        // Verificar si el archivo de personalización existe, si no, crearlo
         if (!fs.existsSync(filePath)) {
-            const initialData = { default: defaultData, users: {} };
+            const initialData = { default: defaultData, owners: {}, users: {} };
             fs.writeFileSync(filePath, JSON.stringify(initialData, null, 2));
         }
 
-        // Leer la configuración del archivo
         const config = JSON.parse(fs.readFileSync(filePath));
 
-        // Obtener las configuraciones personalizadas del usuario, o usar las predeterminadas
-        const userConfig = config.users[m.sender] || config.default;
+        // Obtener configuración del usuario o owner
+        const ownerConfig = config.owners[m.sender];
+        const userConfig = config.users[m.sender];
+        const defaultConfig = config.default;
 
-        // Seleccionar un video aleatoriamente
-        const randomVideoUrl = userConfig.videos[Math.floor(Math.random() * userConfig.videos.length)];
+        const botName = userConfig?.botName || ownerConfig?.botName || defaultConfig.botName;
+        const currency = userConfig?.currency || ownerConfig?.currency || defaultConfig.currency;
+        const videos = userConfig?.videos || ownerConfig?.videos || defaultConfig.videos;
 
-        // Texto del mensaje del menú con personalización o datos predeterminados
+        const randomVideoUrl = videos[Math.floor(Math.random() * videos.length)];
+
         const menuMessage = `
-┎┈┈┈┈┈┈┈┈୨ Ｉｎｆｏ ୧┈┈┈┈┈┈┈┈┒
+┎┈┈┈┈┈┈┈┈┈┈┈୨ Ｉｎｆｏ ୧┈┈┈┈┈┈┈┈┈┈┒
+┊
+┊   ✦ Bot: ${botName}
+┊   ✦ Moneda: ${currency}
+┊   ✦ Desarrollado por: 𝓔𝓶𝓶𝓪 (𝓥𝓲𝓸𝓵𝓮𝓽'𝓼 𝓥𝓮𝓻𝓼𝓲𝓸𝓷)
+┊   ✦ Versión actual: 1.2.3
+┊
+┖┈┈┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈┈┚`;
 
-
-   ✦ Desarrollado por: 𝓔𝓶𝓶𝓪 (𝓥𝓲𝓸𝓵𝓮𝓽'𝓼 𝓥𝓮𝓻𝓼𝓲𝓸𝓷)
-
-   ✦ Versión actual: ${vs}
-
-┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
-   *Hola!* soy ${userConfig.botName} aqui tenes la lista de comandos
-   ✦ *La Moneda actual es :* ${userConfig.currency}
-
-┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
-> Personalizacion
-
-   .setname 
-   .setbanner
-   .setmoneda
-   .viewbanner
-   .deletebanner
-   .resetpreferences
-
-┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
-> Random
-
-   .rw .rollwaifu
-   .c .claim
-   .harem
-
-┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
-> Descargas
-
-   .play _nombre de la cancion_ (audio)
-   .play2 _nombre de la cancion_ (video)
-
-┖┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈┚`;
-
-        // Enviar el video aleatorio como GIF
         await conn.sendMessage(
             m.chat,
             {
