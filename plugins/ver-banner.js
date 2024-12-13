@@ -1,51 +1,32 @@
 import fs from 'fs';
 
 const filePath = './personalize.json';
-const defaultData = {
-    botName: "Alya Mikhailovna Kujou",
-    currency: "yen",
-    videos: [
-        'https://qu.ax/WgJR.mp4',
-        'https://qu.ax/kOwY.mp4',
-        'https://qu.ax/UYGf.mp4'
-    ]
-};
 
-let handler = async (m, { conn }) => {
+let handler = async (m, { isOwner }) => {
     try {
-        // Verificar si el archivo de personalización existe, si no, crearlo
-        if (!fs.existsSync(filePath)) {
-            const initialData = { default: defaultData, users: {} };
-            fs.writeFileSync(filePath, JSON.stringify(initialData, null, 2));
-        }
+        if (!fs.existsSync(filePath)) throw 'No se encontró el archivo de personalización.';
 
-        // Leer la configuración
         const config = JSON.parse(fs.readFileSync(filePath));
-        
-        // Obtener los videos personalizados del usuario o los predeterminados
-        const userConfig = config.users[m.sender] || config.default;
-        const videos = userConfig.videos;
+        const ownerConfig = config.owners[m.sender];
+        const userConfig = config.users[m.sender];
+        const defaultConfig = config.default;
 
-        // Verificar si el usuario tiene videos personalizados
-        if (videos.length === 0) {
-            return conn.reply(m.chat, '❌ No tienes videos personalizados configurados. Usa *setbanner* para añadirlos.', m);
+        // Jerarquía: Usuario -> Owner -> Default
+        const banners = userConfig?.videos || ownerConfig?.videos || defaultConfig.videos;
+
+        if (!banners || banners.length === 0) {
+            return m.reply('No hay videos personalizados disponibles.');
         }
 
-        // Crear el mensaje que incluirá los videos
-        let videoList = `🔹 *Tus Videos Personalizados:*\n\n`;
-        videos.forEach((video, index) => {
-            videoList += `\n${index + 1}. ${video}`;
-        });
-
-        conn.reply(m.chat, videoList, m);
-
+        const videoList = banners.map((url, index) => `${index + 1}. ${url}`).join('\n');
+        m.reply(`🎥 Videos disponibles:\n\n${videoList}`);
     } catch (error) {
-        conn.reply(m.chat, `❌ Error al mostrar los videos: ${error.message}`, m);
+        m.reply(`❌ Error: ${error.message}`);
     }
 };
 
 handler.help = ['verbanner', 'viewbanner'];
-handler.tags = ['info'];
+handler.tags = ['info', 'personalization'];
 handler.command = /^(verbanner|viewbanner)$/i;
 
 export default handler;
