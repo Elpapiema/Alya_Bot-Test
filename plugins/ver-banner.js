@@ -2,31 +2,40 @@ import fs from 'fs';
 
 const filePath = './personalize.json';
 
-let handler = async (m, { isOwner }) => {
+let handler = async (m, { conn }) => {
     try {
-        if (!fs.existsSync(filePath)) throw 'No se encontró el archivo de personalización.';
-
-        const config = JSON.parse(fs.readFileSync(filePath));
-        const ownerConfig = config.owners[m.sender];
-        const userConfig = config.users[m.sender];
-        const defaultConfig = config.default;
-
-        // Jerarquía: Usuario -> Owner -> Default
-        const banners = userConfig?.videos || ownerConfig?.videos || defaultConfig.videos;
-
-        if (!banners || banners.length === 0) {
-            return m.reply('No hay videos personalizados disponibles.');
+        if (!fs.existsSync(filePath)) {
+            return conn.reply(m.chat, '❌ No se ha encontrado la configuración personalizada.', m);
         }
 
-        const videoList = banners.map((url, index) => `${index + 1}. ${url}`).join('\n');
-        m.reply(`🎥 Videos disponibles:\n\n${videoList}`);
+        const config = JSON.parse(fs.readFileSync(filePath));
+        const isOwner = config.owners.hasOwnProperty(m.sender);
+
+        let banner;
+        // Buscar el banner del owner
+        if (isOwner) {
+            banner = config.owners[m.sender]?.banner;
+            if (!banner) {
+                return conn.reply(m.chat, '❌ No se ha configurado un banner para tu bot.', m);
+            }
+            return conn.reply(m.chat, `Banner para el bot *${config.owners[m.sender].botName}*:\n${banner}`, m);
+        }
+
+        // Buscar el banner del usuario
+        if (config.users[m.sender]?.banner) {
+            banner = config.users[m.sender].banner;
+            return conn.reply(m.chat, `Tu banner personalizado:\n${banner}`, m);
+        }
+
+        return conn.reply(m.chat, '❌ No se ha configurado un banner.', m);
     } catch (error) {
-        m.reply(`❌ Error: ${error.message}`);
+        console.error(error);
+        conn.reply(m.chat, '❌ Error al obtener el banner.', m);
     }
 };
 
-handler.help = ['verbanner', 'viewbanner'];
-handler.tags = ['info', 'personalization'];
-handler.command = /^(verbanner|viewbanner)$/i;
+handler.help = ['viewbanner'];
+handler.tags = ['personalizacion'];
+handler.command = /^(viewbanner)$/i;
 
 export default handler;
