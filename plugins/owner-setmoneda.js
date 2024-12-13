@@ -2,7 +2,7 @@ import fs from 'fs';
 
 const filePath = './personalize.json';
 
-let handler = async (m, { args, isOwner }) => {
+let handler = async (m, { conn, text }) => {
     try {
         if (!fs.existsSync(filePath)) {
             const initialData = { default: {}, owners: {}, users: {} };
@@ -10,24 +10,41 @@ let handler = async (m, { args, isOwner }) => {
         }
 
         const config = JSON.parse(fs.readFileSync(filePath));
-        const userType = isOwner ? `owners.${m.sender}` : `users.${m.sender}`;
-        const newCurrency = args.join(' ').trim();
+        const isOwner = config.owners.hasOwnProperty(m.sender);
 
-        if (!newCurrency) throw 'Debe proporcionar un nombre para la moneda.';
+        // Si es owner, actualizar la moneda en "owners"
+        if (isOwner) {
+            if (!text) {
+                return conn.reply(m.chat, 'Por favor, proporciona una moneda para el bot.', m);
+            }
 
-        // Crear estructura si no existe
-        if (!config[userType]) config[userType] = {};
-        config[userType].currency = newCurrency;
+            if (!config.owners[m.sender]) {
+                config.owners[m.sender] = {};
+            }
+
+            config.owners[m.sender].currency = text;
+
+            fs.writeFileSync(filePath, JSON.stringify(config, null, 2));
+            return conn.reply(m.chat, `¡Moneda actualizada para el bot *${config.owners[m.sender].botName}* a *${text}*`, m);
+        }
+
+        // Si no es owner, actualizar la moneda bajo "users"
+        if (!config.users[m.sender]) {
+            config.users[m.sender] = {};
+        }
+
+        config.users[m.sender].currency = text;
 
         fs.writeFileSync(filePath, JSON.stringify(config, null, 2));
-        m.reply(`✅ Moneda del bot actualizada a "${newCurrency}" para ${isOwner ? 'owner' : 'usuario'}.`);
+        return conn.reply(m.chat, `✅ ¡Moneda actualizada para tu cuenta a *${text}*`, m);
     } catch (error) {
-        m.reply(`❌ Error: ${error.message}`);
+        console.error(error);
+        conn.reply(m.chat, '❌ Error al actualizar la moneda.', m);
     }
 };
 
-handler.help = ['setmoneda <moneda>', 'setbotmoneda <moneda>'];
-handler.tags = ['owner', 'personalization'];
-handler.command = /^(setmoneda|setbotmoneda)$/i;
+handler.help = ['setmoneda <moneda>'];
+handler.tags = ['personalizacion'];
+handler.command = /^(setmoneda)$/i;
 
 export default handler;
