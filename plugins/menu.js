@@ -33,6 +33,11 @@ let handler = async (m, { conn, isOwner }) => {
         const currency = inheritedOwnerConfig?.currency || defaultData.currency;
         const videos = inheritedOwnerConfig?.videos || defaultData.videos;
 
+        // Verificación: asegurarnos de que la lista de videos tiene contenido
+        if (!Array.isArray(videos) || videos.length === 0) {
+            throw new Error("No videos found in the configuration.");
+        }
+
         const randomVideoUrl = videos[Math.floor(Math.random() * videos.length)];
 
         const menuMessage = `
