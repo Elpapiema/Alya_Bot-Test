@@ -2,48 +2,42 @@ import fs from 'fs';
 
 const filePath = './personalize.json';
 
-let handler = async (m, { conn, text }) => {
+const handler = async (m, { text, isOwner }) => {
     try {
-        if (!fs.existsSync(filePath)) {
-            const initialData = { default: {}, owners: {}, users: {} };
-            fs.writeFileSync(filePath, JSON.stringify(initialData, null, 2));
+        if (!isOwner) {
+            return m.reply("❌ Solo los administradores del bot pueden cambiar la moneda.");
         }
 
-        const config = JSON.parse(fs.readFileSync(filePath));
-        const isOwner = config.owners.hasOwnProperty(m.sender);
-
-        // Si es owner, actualizar la moneda en "owners"
-        if (isOwner) {
-            if (!text) {
-                return conn.reply(m.chat, 'Por favor, proporciona una moneda para el bot.', m);
-            }
-
-            if (!config.owners[m.sender]) {
-                config.owners[m.sender] = {};
-            }
-
-            config.owners[m.sender].currency = text;
-
-            fs.writeFileSync(filePath, JSON.stringify(config, null, 2));
-            return conn.reply(m.chat, `¡Moneda actualizada para el bot *${config.owners[m.sender].botName}* a *${text}*`, m);
+        if (!text) {
+            return m.reply("⚠️ Por favor, proporciona la nueva moneda para el bot. Ejemplo:\n*.setmoneda dólar*");
         }
 
-        // Si no es owner, actualizar la moneda bajo "users"
-        if (!config.users[m.sender]) {
-            config.users[m.sender] = {};
+        // Leer el archivo personalize.json
+        let data = fs.existsSync(filePath) ? JSON.parse(fs.readFileSync(filePath, 'utf8')) : { owners: {}, default: {} };
+
+        // Obtener el ID del owner
+        const ownerId = m.sender;
+
+        // Asegurarse de que la estructura exista
+        if (!data.owners[ownerId]) {
+            data.owners[ownerId] = {};
         }
 
-        config.users[m.sender].currency = text;
+        // Actualizar la moneda del bot
+        data.owners[ownerId].currency = text;
 
-        fs.writeFileSync(filePath, JSON.stringify(config, null, 2));
-        return conn.reply(m.chat, `✅ ¡Moneda actualizada para tu cuenta a *${text}*`, m);
+        // Guardar cambios en el archivo personalize.json
+        fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+
+        // Confirmar al usuario
+        m.reply(`✅ La moneda del bot ha sido actualizada exitosamente a: *${text}*`);
     } catch (error) {
-        console.error(error);
-        conn.reply(m.chat, '❌ Error al actualizar la moneda.', m);
+        console.error(`[ERROR] setmoneda: ${error.message}`);
+        m.reply("❌ Ocurrió un error al intentar cambiar la moneda del bot.");
     }
 };
 
-handler.help = ['setmoneda <moneda>'];
+handler.help = ['setmoneda'];
 handler.tags = ['personalizacion'];
 handler.command = /^(setmoneda)$/i;
 
