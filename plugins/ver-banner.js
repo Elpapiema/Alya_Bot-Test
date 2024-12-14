@@ -2,41 +2,39 @@ import fs from 'fs';
 
 const filePath = './personalize.json';
 
-let handler = async (m, { conn }) => {
+const handler = async (m, { isOwner }) => {
     try {
+        if (!isOwner) {
+            return m.reply("❌ Solo los administradores del bot pueden ver los banners personalizados.");
+        }
+
         if (!fs.existsSync(filePath)) {
-            return conn.reply(m.chat, 'No se ha encontrado el archivo de personalización.', m);
+            return m.reply("⚠️ El archivo personalize.json no existe. No hay banners personalizados.");
         }
 
-        const config = JSON.parse(fs.readFileSync(filePath));
-        const isOwner = config.owners.hasOwnProperty(m.sender);
+        // Leer el archivo personalize.json
+        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-        // Determinar qué entrada mostrar: Owner o Usuario
-        const videos =
-            (isOwner && config.owners[m.sender]?.videos) ||
-            config.users[m.sender]?.videos ||
-            config.default.videos;
+        // Obtener el ID del owner
+        const ownerId = m.sender;
 
-        if (!videos || videos.length === 0) {
-            return conn.reply(
-                m.chat,
-                'No se encontraron videos personalizados para este bot o usuario.',
-                m
-            );
+        if (!data.owners[ownerId] || !data.owners[ownerId].videos || data.owners[ownerId].videos.length === 0) {
+            return m.reply("⚠️ No tienes banners personalizados.");
         }
 
-        const videoList = videos.map((url, index) => `${index + 1}. ${url}`).join('\n');
-        const message = `🎥 *Videos Personalizados:*\n\n${videoList}`;
+        // Obtener la lista de videos del owner
+        const videoList = data.owners[ownerId].videos.map((video, index) => `${index + 1}. ${video}`).join('\n');
 
-        conn.reply(m.chat, message, m);
+        // Enviar la lista de banners
+        m.reply(`📜 *Tus banners personalizados:*\n\n${videoList}`);
     } catch (error) {
-        console.error(error);
-        conn.reply(m.chat, '❌ Error al cargar los videos personalizados.', m);
+        console.error(`[ERROR] verbanner: ${error.message}`);
+        m.reply("❌ Ocurrió un error al intentar mostrar los banners.");
     }
 };
 
-handler.help = ['viewbanner'];
+handler.help = ['verbanner'];
 handler.tags = ['personalizacion'];
-handler.command = /^(viewbanner)$/i;
+handler.command = /^(verbanner|viewbanner)$/i;
 
 export default handler;
