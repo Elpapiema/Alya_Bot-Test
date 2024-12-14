@@ -2,30 +2,35 @@ import fs from 'fs';
 
 const filePath = './personalize.json';
 
-let handler = async (m, { conn }) => {
+const handler = async (m, { isOwner, sender }) => {
     try {
+        if (!isOwner) {
+            return m.reply("❌ Solo los administradores del bot pueden restablecer sus preferencias.");
+        }
+
+        // Comprobar si el archivo existe
         if (!fs.existsSync(filePath)) {
-            return conn.reply(m.chat, '❌ No se ha encontrado la configuración personalizada.', m);
+            return m.reply("⚠️ No se encontraron preferencias guardadas.");
         }
 
-        const config = JSON.parse(fs.readFileSync(filePath));
+        // Leer el archivo personalize.json
+        let data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-        if (config.owners[m.sender]) {
-            delete config.owners[m.sender];
-            fs.writeFileSync(filePath, JSON.stringify(config, null, 2));
-            return conn.reply(m.chat, '¡Preferencias del bot restablecidas exitosamente!', m);
+        // Eliminar las personalizaciones del owner que ejecuta el comando
+        if (data.owners[sender]) {
+            delete data.owners[sender]; // Eliminar la personalización del owner
+        } else {
+            return m.reply("⚠️ No se encontraron preferencias personalizadas para tu cuenta.");
         }
 
-        if (config.users[m.sender]) {
-            delete config.users[m.sender];
-            fs.writeFileSync(filePath, JSON.stringify(config, null, 2));
-            return conn.reply(m.chat, '¡Tus preferencias han sido restablecidas exitosamente!', m);
-        }
+        // Guardar los cambios en el archivo
+        fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 
-        return conn.reply(m.chat, '❌ No se encontraron preferencias personalizadas para restablecer.', m);
+        // Confirmar al owner que su personalización ha sido restablecida
+        m.reply("✅ Tu personalización ha sido restablecida a los valores predeterminados.");
     } catch (error) {
-        console.error(error);
-        conn.reply(m.chat, '❌ Error al restablecer las preferencias.', m);
+        console.error(`[ERROR] resetpreferences: ${error.message}`);
+        m.reply("❌ Ocurrió un error al intentar restablecer las preferencias.");
     }
 };
 
