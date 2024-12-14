@@ -72,7 +72,7 @@ let handler = async (m, { conn, isOwner }) => {
   ❀ .play ➩ _nombre de la cancion ➩_ (audio)
   ❀ .play2 ➩ _nombre de la cancion_ (video)
 
-┖┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┚
+┖┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┚
 `;
 
         await conn.sendMessage(
