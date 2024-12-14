@@ -1,35 +1,52 @@
 import fs from 'fs';
 
 const filePath = './personalize.json';
+
 const defaultData = {
     default: {
         botName: "Alya Mikhailovna Kujou",
-        currency: "yen",
+        currency: "Yenes",
         videos: [
-            'https://qu.ax/WgJR.mp4',
-            'https://qu.ax/kOwY.mp4',
-            'https://qu.ax/UYGf.mp4'
+            "https://files.catbox.moe/b5n81s.mp4",
+            "https://files.catbox.moe/o9vzpe.mp4",
+            "https://files.catbox.moe/4qg0nz.mp4"
         ]
     },
     owners: {},
     users: {}
 };
 
-// Inicialización automática
-const initPersonalizeFile = () => {
+const createPreferences = () => {
     try {
         if (!fs.existsSync(filePath)) {
+            // Crear archivo con datos predeterminados si no existe
             fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2));
-            console.log('✅ Archivo `personalize.json` creado con datos predeterminados.');
+            console.log("[INFO] Archivo personalize.json creado con datos predeterminados.");
         } else {
-            console.log('✅ Archivo `personalize.json` ya existe. No se realizaron cambios.');
+            // Validar y corregir la estructura del archivo existente
+            const existingData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+            // Validar las claves principales
+            if (!existingData.default || typeof existingData.default !== "object") {
+                existingData.default = defaultData.default;
+            }
+            if (!existingData.owners || typeof existingData.owners !== "object") {
+                existingData.owners = {};
+            }
+            if (!existingData.users || typeof existingData.users !== "object") {
+                existingData.users = {};
+            }
+
+            // Escribir los cambios, si es necesario
+            fs.writeFileSync(filePath, JSON.stringify(existingData, null, 2));
+            console.log("[INFO] Archivo personalize.json validado y actualizado.");
         }
     } catch (error) {
-        console.error('❌ Error al inicializar el archivo `personalize.json`:', error.message);
+        console.error(`[ERROR] Ocurrió un problema al gestionar personalize.json: ${error.message}`);
     }
 };
 
-// Llamar la función al cargar el plugin
-initPersonalizeFile();
+// Ejecutar automáticamente al inicio
+createPreferences();
 
-export default {}; // No se necesita exportar comandos
+export default createPreferences;
