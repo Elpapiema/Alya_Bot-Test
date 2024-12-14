@@ -24,17 +24,16 @@ let handler = async (m, { conn, isOwner }) => {
         const ownerConfig = config.owners[m.sender] || null;
 
         // Si es owner, todos los usuarios bajo este owner heredarán su configuración
-        const userConfig = config.users[m.sender];
         const inheritedOwnerConfig = ownerConfig 
             ? config.owners[Object.keys(config.owners).find((id) => id === m.sender)] 
             : null;
 
         const defaultConfig = config.default;
 
-        // Prioridad: User > Owner > Default
-        const botName = userConfig?.botName || inheritedOwnerConfig?.botName || defaultConfig.botName;
-        const currency = userConfig?.currency || inheritedOwnerConfig?.currency || defaultConfig.currency;
-        const videos = userConfig?.videos || inheritedOwnerConfig?.videos || defaultConfig.videos;
+        // Si no hay configuración para el usuario, heredará la del owner o usará la predeterminada
+        const botName = inheritedOwnerConfig?.botName || defaultConfig.botName;
+        const currency = inheritedOwnerConfig?.currency || defaultConfig.currency;
+        const videos = inheritedOwnerConfig?.videos || defaultConfig.videos;
 
         const randomVideoUrl = videos[Math.floor(Math.random() * videos.length)];
 
