@@ -2,55 +2,42 @@ import fs from 'fs';
 
 const filePath = './personalize.json';
 
-let handler = async (m, { conn, text }) => {
+const handler = async (m, { text, isOwner }) => {
     try {
-        if (!fs.existsSync(filePath)) {
-            const initialData = { default: {}, owners: {}, users: {} };
-            fs.writeFileSync(filePath, JSON.stringify(initialData, null, 2));
+        if (!isOwner) {
+            return m.reply("❌ Solo los administradores del bot pueden cambiar el nombre del bot.");
         }
 
-        const config = JSON.parse(fs.readFileSync(filePath));
-
-        // Verificar si el sender es un owner
-        const isOwner = config.owners.hasOwnProperty(m.sender);
-        
-        // Si es owner, la personalización se guarda bajo "owners"
-        if (isOwner) {
-            if (!text) {
-                return conn.reply(m.chat, 'Por favor, proporciona un nombre para el bot.', m);
-            }
-
-            // Modificar el botName del owner
-            if (!config.owners[m.sender]) {
-                config.owners[m.sender] = {};
-            }
-
-            config.owners[m.sender].botName = text;
-
-            // Guardar la configuración actualizada
-            fs.writeFileSync(filePath, JSON.stringify(config, null, 2));
-
-            return conn.reply(m.chat, `¡Nombre del bot actualizado a *${text}* para este bot!`, m);
-        } 
-
-        // Si el usuario no es owner, personalizar bajo "users"
-        if (!config.users[m.sender]) {
-            config.users[m.sender] = {};
+        if (!text) {
+            return m.reply("⚠️ Por favor, proporciona un nuevo nombre para el bot. Ejemplo:\n*.setname Alya Bot*");
         }
 
-        config.users[m.sender].botName = text;
+        // Leer el archivo personalize.json
+        let data = fs.existsSync(filePath) ? JSON.parse(fs.readFileSync(filePath, 'utf8')) : { owners: {}, default: {} };
 
-        // Guardar la configuración actualizada
-        fs.writeFileSync(filePath, JSON.stringify(config, null, 2));
+        // Obtener el ID del owner
+        const ownerId = m.sender;
 
-        return conn.reply(m.chat, `¡Nombre del bot actualizado a *${text}* para tu cuenta!`, m);
+        // Asegurarse de que la estructura exista
+        if (!data.owners[ownerId]) {
+            data.owners[ownerId] = {};
+        }
+
+        // Actualizar el nombre del bot
+        data.owners[ownerId].botName = text;
+
+        // Guardar cambios en el archivo personalize.json
+        fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+
+        // Confirmar al usuario
+        m.reply(`✅ El nombre del bot ha sido actualizado exitosamente a: *${text}*`);
     } catch (error) {
-        console.error(error);
-        conn.reply(m.chat, '❌ Error al actualizar el nombre del bot.', m);
+        console.error(`[ERROR] setname: ${error.message}`);
+        m.reply("❌ Ocurrió un error al intentar cambiar el nombre del bot.");
     }
 };
 
-handler.help = ['setname <nombre>'];
+handler.help = ['setname'];
 handler.tags = ['personalizacion'];
 handler.command = /^(setname)$/i;
 
