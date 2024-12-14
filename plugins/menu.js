@@ -20,19 +20,18 @@ let handler = async (m, { conn, isOwner }) => {
 
         const config = JSON.parse(fs.readFileSync(filePath));
 
-        // Si el usuario es un owner, toma su configuración. Si no, hereda la configuración del owner o usa la predeterminada.
+        // Identificar si el usuario es un owner
         const ownerConfig = config.owners[m.sender] || null;
-        const defaultConfig = config.default;
 
-        // Los usuarios comunes siempre heredarán la configuración del owner si existe.
+        // Si el usuario es un owner, la configuración de ese owner se aplicará a todos sus usuarios
         const inheritedOwnerConfig = ownerConfig 
-            ? config.owners[Object.keys(config.owners).find((id) => id === m.sender)] 
+            ? ownerConfig // Si el owner tiene personalización, usarla
             : null;
 
-        // Si no hay personalización del owner, se utilizan los valores predeterminados.
-        const botName = inheritedOwnerConfig?.botName || defaultConfig.botName;
-        const currency = inheritedOwnerConfig?.currency || defaultConfig.currency;
-        const videos = inheritedOwnerConfig?.videos || defaultConfig.videos;
+        // Usar la configuración del owner o los valores predeterminados si no hay configuración del owner
+        const botName = inheritedOwnerConfig?.botName || defaultData.botName;
+        const currency = inheritedOwnerConfig?.currency || defaultData.currency;
+        const videos = inheritedOwnerConfig?.videos || defaultData.videos;
 
         const randomVideoUrl = videos[Math.floor(Math.random() * videos.length)];
 
@@ -70,7 +69,7 @@ let handler = async (m, { conn, isOwner }) => {
   ❀ .play ➩ _nombre de la cancion ➩_ (audio)
   ❀ .play2 ➩ _nombre de la cancion_ (video)
 
-┖┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┚
+┖┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┚
 `;
 
         await conn.sendMessage(
