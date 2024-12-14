@@ -20,17 +20,16 @@ let handler = async (m, { conn, isOwner }) => {
 
         const config = JSON.parse(fs.readFileSync(filePath));
 
-        // Identificar si el usuario actual es un owner
+        // Si el usuario es un owner, toma su configuración. Si no, hereda la configuración del owner o usa la predeterminada.
         const ownerConfig = config.owners[m.sender] || null;
+        const defaultConfig = config.default;
 
-        // Si es owner, todos los usuarios bajo este owner heredarán su configuración
+        // Los usuarios comunes siempre heredarán la configuración del owner si existe.
         const inheritedOwnerConfig = ownerConfig 
             ? config.owners[Object.keys(config.owners).find((id) => id === m.sender)] 
             : null;
 
-        const defaultConfig = config.default;
-
-        // Si no hay configuración para el usuario, heredará la del owner o usará la predeterminada
+        // Si no hay personalización del owner, se utilizan los valores predeterminados.
         const botName = inheritedOwnerConfig?.botName || defaultConfig.botName;
         const currency = inheritedOwnerConfig?.currency || defaultConfig.currency;
         const videos = inheritedOwnerConfig?.videos || defaultConfig.videos;
