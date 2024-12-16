@@ -10,10 +10,10 @@ const getRandomJob = async () => {
     return jobs[Math.floor(Math.random() * jobs.length)];
 };
 
-// Función para obtener el nombre de la moneda desde 'personalize.json'
+// Función para obtener el nombre de la moneda desde 'personalize.json' (bajo la etiqueta global)
 const getCurrencyName = () => {
     const config = JSON.parse(fs.readFileSync('./personalize.json'));
-    return config.default.currency || 'Yenes'; // Si no hay moneda personalizada, usa 'Yenes'
+    return config.global?.currency || 'Yenes'; // Si no hay moneda personalizada, usa 'Yenes'
 };
 
 // Guardar el dinero ganado en 'database.json'
