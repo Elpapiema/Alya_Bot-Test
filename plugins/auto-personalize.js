@@ -2,51 +2,45 @@ import fs from 'fs';
 
 const filePath = './personalize.json';
 
+// Datos predeterminados que se agregarán al archivo si no existe
 const defaultData = {
     default: {
         botName: "Alya Mikhailovna Kujou",
-        currency: "Yenes",
+        currency: "yenes",
         videos: [
             "https://files.catbox.moe/b5n81s.mp4",
             "https://files.catbox.moe/o9vzpe.mp4",
             "https://files.catbox.moe/4qg0nz.mp4"
         ]
     },
-    owners: {},
-    users: {}
-};
-
-const createPreferences = () => {
-    try {
-        if (!fs.existsSync(filePath)) {
-            // Crear archivo con datos predeterminados si no existe
-            fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2));
-            console.log("[INFO] Archivo personalize.json creado con datos predeterminados.");
-        } else {
-            // Validar y corregir la estructura del archivo existente
-            const existingData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-
-            // Validar las claves principales
-            if (!existingData.default || typeof existingData.default !== "object") {
-                existingData.default = defaultData.default;
-            }
-            if (!existingData.owners || typeof existingData.owners !== "object") {
-                existingData.owners = {};
-            }
-            if (!existingData.users || typeof existingData.users !== "object") {
-                existingData.users = {};
-            }
-
-            // Escribir los cambios, si es necesario
-            fs.writeFileSync(filePath, JSON.stringify(existingData, null, 2));
-            console.log("[INFO] Archivo personalize.json validado y actualizado.");
-        }
-    } catch (error) {
-        console.error(`[ERROR] Ocurrió un problema al gestionar personalize.json: ${error.message}`);
+    global: {
+        botName: null,
+        currency: null,
+        videos: []
     }
 };
 
-// Ejecutar automáticamente al inicio
-createPreferences();
+let handler = async () => {
+    try {
+        // Verificar si el archivo existe
+        if (!fs.existsSync(filePath)) {
+            // Crear el archivo con la estructura predeterminada
+            fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2));
+            console.log('✅ Archivo personalize.json creado exitosamente.');
+        } else {
+            // Validar la integridad del archivo existente
+            const currentData = JSON.parse(fs.readFileSync(filePath));
+            if (!currentData.default || !currentData.global) {
+                console.log('⚠️ Archivo personalize.json incompleto. Se restablecerán los valores predeterminados.');
+                fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2));
+            }
+        }
+    } catch (error) {
+        console.error(`❌ Error al verificar o crear el archivo personalize.json: ${error.message}`);
+    }
+};
 
-export default createPreferences;
+// Ejecución automática
+handler();
+
+export default handler;
