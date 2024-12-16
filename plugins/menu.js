@@ -1,48 +1,23 @@
 import fs from 'fs';
 
 const filePath = './personalize.json';
-const defaultData = {
-    botName: "Alya Mikhailovna Kujou",
-    currency: "yen",
-    videos: [
-        "https://qu.ax/WgJR.mp4",
-        "https://qu.ax/kOwY.mp4",
-        "https://qu.ax/UYGf.mp4"
-    ]
-};
 
-let handler = async (m, { conn, isOwner }) => {
+let handler = async (m, { conn }) => {
     try {
-        if (!fs.existsSync(filePath)) {
-            const initialData = { default: defaultData, owners: {}, users: {} };
-            fs.writeFileSync(filePath, JSON.stringify(initialData, null, 2));
-        }
+        const data = JSON.parse(fs.readFileSync(filePath));
 
-        const config = JSON.parse(fs.readFileSync(filePath));
+        // Cargar datos globales y predeterminados
+        const globalConfig = data.global;
+        const defaultConfig = data.default;
 
-        // Identificar si el usuario es un owner
-        const ownerConfig = config.owners[m.sender] || null;
-
-        // Si el usuario es un owner, la configuración de ese owner se aplicará a todos sus usuarios
-        const inheritedOwnerConfig = ownerConfig 
-            ? ownerConfig // Si el owner tiene personalización, usarla
-            : null;
-
-        // Usar la configuración del owner o los valores predeterminados si no hay configuración del owner
-        const botName = inheritedOwnerConfig?.botName || defaultData.botName;
-        const currency = inheritedOwnerConfig?.currency || defaultData.currency;
-        const videos = inheritedOwnerConfig?.videos || defaultData.videos;
-
-        // Verificación: asegurarnos de que la lista de videos tiene contenido
-        if (!Array.isArray(videos) || videos.length === 0) {
-            throw new Error("No videos found in the configuration.");
-        }
+        const botName = globalConfig.botName || defaultConfig.botName;
+        const currency = globalConfig.currency || defaultConfig.currency;
+        const videos = globalConfig.videos.length > 0 ? globalConfig.videos : defaultConfig.videos;
 
         const randomVideoUrl = videos[Math.floor(Math.random() * videos.length)];
 
         const menuMessage = `
 ┎┈┈┈┈┈┈┈┈୨ Ｉｎｆｏ ୧┈┈┈┈┈┈┈┈┒
-
 
    ✦ Desarrollado por: 𝓔𝓶𝓶𝓪 (𝓥𝓲𝓸𝓵𝓮𝓽'𝓼 𝓥𝓮𝓻𝓼𝓲𝓸𝓷)
 
