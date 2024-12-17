@@ -50,7 +50,7 @@ let handler = async (m, { conn }) => {
   ❀ .play2 ➩ _nombre de la cancion_ (video)
 
 ┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
->RPG
+> RPG
 
  ❀ .w .work
  ❀ .slut
