@@ -49,6 +49,12 @@ let handler = async (m, { conn }) => {
   ❀ .play ➩ _nombre de la cancion ➩_ (audio)
   ❀ .play2 ➩ _nombre de la cancion_ (video)
 
+┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
+>RPG
+
+ ❀ .w .work
+ ❀ .slut
+
 ┖┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┚
 `;
 
