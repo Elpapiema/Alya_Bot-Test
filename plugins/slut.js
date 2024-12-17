@@ -42,7 +42,7 @@ const handler = async (m, { conn, command }) => {
         await conn.reply(m.chat, message, m);
     } catch (error) {
         console.error(error);
-        await conn.reply(m.chat, '❌ Hubo un error al procesar tu trabajo.', m);
+        await conn.reply(m.chat, '❌ Hubo un error al procesar \n \n Error de Sintaxis en slut.json.', m);
     }
 };
 
