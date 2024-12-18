@@ -14,13 +14,13 @@ const handler = async (m, { conn, text, command }) => {
             return conn.reply(m.chat, '❌ No se pudo descargar el video. Verifica el enlace e intenta nuevamente.', m);
         }
 
-        // Obtener el video con marca de agua (wm)
-        const media = result.data.meta.media.find((item) => item.type === 'video' && item.wm);
-        if (!media || !media.wm) {
-            return conn.reply(m.chat, '❌ No se encontró un video válido con marca de agua.', m);
+        // Obtener el video sin marca de agua (org)
+        const media = result.data.meta.media.find((item) => item.type === 'video' && item.org);
+        if (!media || !media.org) {
+            return conn.reply(m.chat, '❌ No se encontró un video válido sin marca de agua.', m);
         }
 
-        const videoUrl = media.wm;
+        const videoUrl = media.org;
 
         // Obtener información adicional
         const author = result.data.author?.nickname || 'Desconocido';
