@@ -38,7 +38,7 @@ const handler = async (m, { conn, command }) => {
         saveEarnings(userId, moneyEarned);
 
         // Responder con el mensaje de trabajo realizado
-        const message = ` ❀ ${job.description} y ganaste ${moneyEarned} ${currency}.`;
+        const message = ` ❀ ${job.description} ${moneyEarned} ${currency}.`;
         await conn.reply(m.chat, message, m);
     } catch (error) {
         console.error(error);
