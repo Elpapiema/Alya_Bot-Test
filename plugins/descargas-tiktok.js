@@ -10,16 +10,37 @@ const handler = async (m, { conn, text, command }) => {
         const response = await fetch(apiUrl);
         const result = await response.json();
 
-        if (!result || !result.success || !result.video) {
+        if (!result || !result.status || !result.data || !result.data.meta || !result.data.meta.media) {
             return conn.reply(m.chat, '❌ No se pudo descargar el video. Verifica el enlace e intenta nuevamente.', m);
         }
 
-        const videoUrl = result.video;
+        // Obtener el video con marca de agua (wm)
+        const media = result.data.meta.media.find((item) => item.type === 'video' && item.wm);
+        if (!media || !media.wm) {
+            return conn.reply(m.chat, '❌ No se encontró un video válido con marca de agua.', m);
+        }
+
+        const videoUrl = media.wm;
+
+        // Obtener información adicional
+        const author = result.data.author?.nickname || 'Desconocido';
+        const likes = result.data.like || '0';
+        const shares = result.data.share || '0';
+        const comments = result.data.comment || '0';
+
+        const caption = `
+✅ *Video descargado correctamente:*
+
+👤 Autor: ${author}
+👍 Me gusta: ${likes}
+🔄 Compartidos: ${shares}
+💬 Comentarios: ${comments}
+`;
 
         // Enviar el video al usuario
         await conn.sendMessage(m.chat, {
             video: { url: videoUrl },
-            caption: '✅ Aquí tienes tu video de TikTok.',
+            caption,
         }, { quoted: m });
     } catch (error) {
         console.error(error);
