@@ -21,7 +21,6 @@ const handler = async (m, { conn, text, command }) => {
 🎥 *Descarga completada:*
 *🔤 Título:* ${title}
 *🕒 Duración:* ${duration}
-*📝 Descripción:* ${description}
 `;
 
         // Enviar el video al usuario
