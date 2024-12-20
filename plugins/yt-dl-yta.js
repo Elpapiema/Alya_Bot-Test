@@ -1,46 +1,50 @@
 import fetch from 'node-fetch';
 
 const handler = async (m, { conn, text, command }) => {
+    const apiUrl = `https://exonity.tech/api/ytdlp2-faster?apikey=adminsepuh&url=${encodeURIComponent(text)}`;
+
     if (!text) {
-        return conn.reply(m.chat, '❌ Por favor proporciona un enlace válido de YouTube.', m);
+        return conn.reply(m.chat, '❌ Por favor, proporciona un enlace válido de YouTube.', m);
     }
 
     try {
-        const apiUrl = `https://exonity.tech/api/ytdlp2-faster?apikey=adminsepuh&url=${encodeURIComponent(text)}`;
+        // Conectar con la API
         const response = await fetch(apiUrl);
-        const result = await response.json();
+        if (!response.ok) throw new Error('Error al conectar con la API.');
+        const json = await response.json();
 
-        if (result.status !== 200 || !result.result || !result.result.audio) {
-            return conn.reply(m.chat, '❌ No se pudo descargar el audio. Verifica el enlace e intenta nuevamente.', m);
+        if (json.status !== 200 || !json.result) {
+            throw new Error('No se pudo obtener información del video.');
         }
 
-        // Obtener datos del video
-        const { title, thumb, duration, description, audio } = result.result;
+        const { title, thumb, duration, description, audio } = json.result;
 
-        const caption = `
-🎶 *Descarga completada:*
-*🔤 Título:* ${title}
-*🕒 Duración:* ${duration}
-*📝 Descripción:* ${description}
-`;
+        // Enviar mensaje con los detalles del video
+        const message = `
+⏳ Procesando tu solicitud...
 
-        // Enviar el audio al usuario
-        await conn.sendMessage(
-            m.chat,
-            {
-                audio: { url: audio },
-                mimetype: 'audio/mp4',
-                ptt: false, // Cambiar a true si se desea enviar como nota de voz
-                caption,
-            },
-            { quoted: m }
-        );
+📹 *Título*: ${title}
+⏳ *Duración*: ${duration}
+📝 *Descripción*: ${description || 'Sin descripción disponible.'}
+        `;
+        await conn.sendMessage(m.chat, {
+            image: { url: thumb },
+            caption: message,
+        });
+
+        // Enviar el audio por separado
+        await conn.sendMessage(m.chat, {
+            audio: { url: audio },
+            mimetype: 'audio/mpeg',
+        });
     } catch (error) {
         console.error(error);
-        conn.reply(m.chat, '❌ Ocurrió un error al intentar descargar el audio.', m);
+        conn.reply(m.chat, '❌ Ocurrió un error al procesar tu solicitud.', m);
     }
 };
 
+handler.help = ['yta', 'ytmp3'];
+handler.tags = ['downloader'];
 handler.command = /^(yta|ytmp3)$/i;
 
 export default handler;
