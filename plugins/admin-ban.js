@@ -1,10 +1,4 @@
-handler.command = /^(kick|ban)$/i;
-
-handler.group = true; // Solo funciona en grupos
-handler.admin = true; // Solo los administradores pueden usarlo
-handler.botAdmin = true; // El bot debe ser administrador
-
-handler = async (m, { conn, text, participants, quoted }) => {
+const handler = async (m, { conn, text, participants, quoted }) => {
     const groupMetadata = await conn.groupMetadata(m.chat);
     const groupAdmins = groupMetadata.participants.filter(p => p.admin === 'admin' || p.admin === 'superadmin').map(p => p.id);
 
@@ -38,5 +32,11 @@ handler = async (m, { conn, text, participants, quoted }) => {
         m.reply(`Error al intentar expulsar al usuario: ${err.message}`);
     }
 };
+
+// Configuración del handler
+handler.command = /^(kick|ban)$/i;
+handler.group = true; // Solo funciona en grupos
+handler.admin = true; // Solo los administradores pueden usarlo
+handler.botAdmin = true; // El bot debe ser administrador
 
 export default handler;
