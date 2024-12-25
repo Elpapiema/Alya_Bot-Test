@@ -1,66 +1,31 @@
 import fetch from 'node-fetch';
-import axios from 'axios';
 
-const storeUrl =
-  'https://raw.githubusercontent.com/Elpapiema/Adiciones-para-AlyaBot-RaphtaliaBot-/refs/heads/main/plugin_Store/store.json';
-
-let handler = async (m, { conn }) => {
-  conn.reply(m.chat, '🔄 Cargando la tienda de plugins...', m);
-
-  let storeData;
-
+const handler = async (m, { conn }) => {
   try {
-    // Intentar obtener el JSON con node-fetch
-    const response = await fetch(storeUrl);
-    if (!response.ok) throw new Error('Error al obtener datos con fetch');
-    storeData = await response.json();
-  } catch (fetchError) {
-    console.error('node-fetch falló, intentando con axios...', fetchError);
+    // URL del JSON
+    const url = 'https://raw.githubusercontent.com/Elpapiema/Adiciones-para-AlyaBot-RaphtaliaBot-/refs/heads/main/plugin_Store/store.json';
 
-    try {
-      // Si node-fetch falla, intentar con axios
-      const response = await axios.get(storeUrl);
-      storeData = response.data;
-    } catch (axiosError) {
-      console.error('axios también falló:', axiosError);
-      return conn.reply(
-        m.chat,
-        '❌ Ocurrió un error al cargar la tienda de plugins. Intenta nuevamente más tarde.',
-        m
-      );
-    }
+    // Intentar obtener el JSON
+    let response = await fetch(url);
+    if (!response.ok) throw new Error('Error al obtener el JSON');
+    const data = await response.json();
+
+    // Crear el mensaje
+    let message = '*Plugins y Paquetes Disponibles*\n\n';
+    data.plugins.forEach(plugin => {
+      message += `🔹 *${plugin.name}*\n${plugin.description}\n💲 *${plugin.price}*\n\n`;
+    });
+    data.packages.forEach(pack => {
+      message += `🔸 *${pack.name}*\n${pack.description}\n💲 *${pack.price}*\n\n`;
+    });
+
+    // Enviar el mensaje
+    await conn.reply(m.chat, message.trim(), m);
+  } catch (err) {
+    console.error(err);
+    await conn.reply(m.chat, 'Hubo un error al obtener la tienda. Inténtalo más tarde.', m);
   }
-
-  const plugins = storeData.plugins || [];
-  const packages = storeData.packages || [];
-
-  if (plugins.length === 0 && packages.length === 0) {
-    return conn.reply(m.chat, '❌ No hay elementos disponibles en la tienda en este momento.', m);
-  }
-
-  // Construir mensaje con todos los elementos
-  let storeMessage = '🛒 *Tienda de Plugins:*\n\n';
-
-  // Agregar plugins al mensaje
-  plugins.forEach((plugin, i) => {
-    storeMessage += `*${i + 1}. Plugin: ${plugin.name}*\n`;
-    storeMessage += `   📌 ${plugin.description}\n`;
-    storeMessage += `   💲 ${plugin.price}\n\n`;
-  });
-
-  // Agregar paquetes al mensaje
-  packages.forEach((pack, i) => {
-    storeMessage += `*${plugins.length + i + 1}. Paquete: ${pack.name}*\n`;
-    storeMessage += `   📌 ${pack.description}\n`;
-    storeMessage += `   💲 ${pack.price}\n\n`;
-  });
-
-  // Enviar mensaje al usuario
-  conn.reply(m.chat, storeMessage.trim(), m);
 };
 
-handler.help = ['store', 'pluginstore', 'tienda'];
-handler.tags = ['admin'];
-handler.command = /^(store|pluginstore|tienda)$/i;
-
+handler.command = /^(store|pluginstore|tienda)$/i; // Comandos
 export default handler;
