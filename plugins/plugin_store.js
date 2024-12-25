@@ -41,10 +41,18 @@ let handler = async (m, { conn }) => {
   // Construir mensaje con todos los elementos
   let storeMessage = '🛒 *Tienda de Plugins:*\n\n';
 
-  // Agregar plugins y paquetes al mensaje
-  [...plugins, ...packages].forEach((item, i) => {
-    storeMessage += `*${i + 1}.* ${item.name}\n`;
-    storeMessage += `   📌 ${item.description}\n\n`;
+  // Agregar plugins al mensaje
+  plugins.forEach((plugin, i) => {
+    storeMessage += `*${i + 1}. Plugin: ${plugin.name}*\n`;
+    storeMessage += `   📌 ${plugin.description}\n`;
+    storeMessage += `   💲 ${plugin.price}\n\n`;
+  });
+
+  // Agregar paquetes al mensaje
+  packages.forEach((pack, i) => {
+    storeMessage += `*${plugins.length + i + 1}. Paquete: ${pack.name}*\n`;
+    storeMessage += `   📌 ${pack.description}\n`;
+    storeMessage += `   💲 ${pack.price}\n\n`;
   });
 
   // Enviar mensaje al usuario
