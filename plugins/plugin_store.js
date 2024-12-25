@@ -31,7 +31,6 @@ let handler = async (m, { conn }) => {
     }
   }
 
-  // Continuar con el manejo de la tienda
   const plugins = storeData.plugins || [];
   const packages = storeData.packages || [];
 
@@ -39,31 +38,17 @@ let handler = async (m, { conn }) => {
     return conn.reply(m.chat, '❌ No hay elementos disponibles en la tienda en este momento.', m);
   }
 
-  // Construir mensaje para Plugins Disponibles
-  let pluginsMessage = '📂 *Plugins Disponibles:*\n\n';
-  if (plugins.length > 0) {
-    plugins.forEach((p, i) => {
-      pluginsMessage += `*${i + 1}.* ${p.name}\n`;
-      pluginsMessage += `   📌 ${p.description}\n\n`;
-    });
-  } else {
-    pluginsMessage += 'No hay plugins disponibles actualmente.\n\n';
-  }
+  // Construir mensaje con todos los elementos
+  let storeMessage = '🛒 *Tienda de Plugins:*\n\n';
 
-  // Construir mensaje para Paquetes de Plugins
-  let packagesMessage = '📦 *Paquetes de Plugins:*\n\n';
-  if (packages.length > 0) {
-    packages.forEach((p, i) => {
-      packagesMessage += `*${i + 1}.* ${p.name}\n`;
-      packagesMessage += `   📌 ${p.description}\n\n`;
-    });
-  } else {
-    packagesMessage += 'No hay paquetes de plugins disponibles actualmente.\n\n';
-  }
+  // Agregar plugins y paquetes al mensaje
+  [...plugins, ...packages].forEach((item, i) => {
+    storeMessage += `*${i + 1}.* ${item.name}\n`;
+    storeMessage += `   📌 ${item.description}\n\n`;
+  });
 
   // Enviar mensaje al usuario
-  const fullMessage = `${pluginsMessage}${packagesMessage}`;
-  conn.reply(m.chat, fullMessage.trim(), m);
+  conn.reply(m.chat, storeMessage.trim(), m);
 };
 
 handler.help = ['store', 'pluginstore', 'tienda'];
