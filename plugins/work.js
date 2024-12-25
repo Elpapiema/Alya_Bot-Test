@@ -18,12 +18,12 @@ const getCurrencyName = () => {
 
 // Guardar el dinero ganado en 'database.json'
 const saveEarnings = (userId, moneyEarned) => {
-    const database = fs.existsSync('./database1.json') ? JSON.parse(fs.readFileSync('./database1.json')) : {};
+    const database = fs.existsSync('./db_users.json') ? JSON.parse(fs.readFileSync('./db_users.json')) : {};
     if (!database[userId]) {
         database[userId] = { money: 0 };
     }
     database[userId].money += moneyEarned;
-    fs.writeFileSync('./database1.json', JSON.stringify(database, null, 2));
+    fs.writeFileSync('./db_users.json', JSON.stringify(database, null, 2));
 };
 
 // Comando para trabajar
