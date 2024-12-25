@@ -11,12 +11,12 @@ const handler = async (m, { conn }) => {
     const data = await response.json();
 
     // Crear el mensaje
-    let message = '*Plugins y Paquetes Disponibles*\n\n';
+    let message = '*Plugins Disponibles*\n\n';
     data.plugins.forEach(plugin => {
       message += `🔹 *${plugin.name}*\n${plugin.description}\n💲 *${plugin.price}*\n\n`;
     });
     data.packages.forEach(pack => {
-      message += `🔸 *${pack.name}*\n${pack.description}\n💲 *${pack.price}*\n\n`;
+      message += `*Paquetes disponibles*\n \n 🔸 *${pack.name}*\n${pack.description}\n💲 *${pack.price}*\n\n`;
     });
 
     // Enviar el mensaje
