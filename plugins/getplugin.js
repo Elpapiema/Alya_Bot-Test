@@ -3,8 +3,8 @@ import fs from 'fs';
 import path from 'path';
 
 let handler = async (m, { conn, text, isAdmin, isOwner }) => {
-    // Obtener el nombre del plugin desde el comando
-    const pluginName = text.trim().split(' ')[1];
+    // Extraer el nombre del plugin, ignorando el comando
+    const pluginName = text.split(' ')[1]; // Obtén lo que está después del espacio
     if (!pluginName) {
         conn.reply(m.chat, 'Por favor, proporciona el nombre del plugin que deseas instalar.', m);
         return;
