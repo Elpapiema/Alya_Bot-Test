@@ -1,9 +1,9 @@
 import fetch from 'node-fetch';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 let handler = async (m, { conn, text }) => {
-    // Extrae el nombre del plugin del texto del comando
     const pluginName = text.replace(/^(getplugin)\s+/i, '').trim();
 
     if (!pluginName) {
@@ -34,14 +34,18 @@ let handler = async (m, { conn, text }) => {
         if (!pluginFile.ok) throw new Error(`Error al descargar el plugin: ${pluginFile.statusText}`);
         const pluginContent = await pluginFile.text();
 
-        // Guardar el archivo en la carpeta plugins
+        // Manejo de rutas con ES Modules
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = path.dirname(__filename);
         const pluginsFolder = path.join(__dirname, 'plugins');
         const pluginPath = path.join(pluginsFolder, `${pluginName}.js`);
 
+        // Crear la carpeta plugins si no existe
         if (!fs.existsSync(pluginsFolder)) {
             fs.mkdirSync(pluginsFolder);
         }
 
+        // Guardar el archivo
         fs.writeFileSync(pluginPath, pluginContent);
 
         conn.reply(m.chat, `✅ El plugin "${pluginName}" se ha instalado correctamente.`, m);
