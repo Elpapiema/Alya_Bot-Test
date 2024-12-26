@@ -34,10 +34,9 @@ let handler = async (m, { conn, text }) => {
         if (!pluginFile.ok) throw new Error(`Error al descargar el plugin: ${pluginFile.statusText}`);
         const pluginContent = await pluginFile.text();
 
-        // Manejo de rutas con ES Modules
-        const __filename = fileURLToPath(import.meta.url);
-        const __dirname = path.dirname(__filename);
-        const pluginsFolder = path.join(__dirname, 'plugins');
+        // Ruta hacia la carpeta plugins en la raíz
+        const rootPath = path.resolve(); // Obtiene la ruta raíz del proyecto
+        const pluginsFolder = path.join(rootPath, 'plugins');
         const pluginPath = path.join(pluginsFolder, `${pluginName}.js`);
 
         // Crear la carpeta plugins si no existe
