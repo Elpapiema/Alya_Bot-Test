@@ -2,9 +2,9 @@ import fetch from 'node-fetch';
 import fs from 'fs';
 import path from 'path';
 
-let handler = async (m, { conn, text, isAdmin, isOwner }) => {
+let handler = async (m, { conn, text }) => {
     // Elimina el comando y extrae el nombre del plugin
-    const pluginName = text.replace(/^(getplugin)\s+/i, '').trim(); // Quita el comando 'getplugin' y los espacios adicionales
+    const pluginName = text.replace(/^(getplugin)\s+/i, '').trim();
 
     // Verificar si el nombre del plugin fue proporcionado
     if (!pluginName) {
@@ -21,7 +21,7 @@ let handler = async (m, { conn, text, isAdmin, isOwner }) => {
         // Buscar el plugin en la tienda
         const plugin = storeData.plugins.find(p => p.name.toLowerCase() === pluginName.toLowerCase());
         if (!plugin) {
-            conn.reply(m.chat, `El plugin ${pluginName} no se encuentra en la tienda.`, m);
+            conn.reply(m.chat, `El plugin "${pluginName}" no se encuentra en la tienda.`, m);
             return;
         }
 
@@ -30,19 +30,26 @@ let handler = async (m, { conn, text, isAdmin, isOwner }) => {
         const pluginContent = await pluginFile.text();
 
         // Guardar el archivo del plugin en la carpeta 'plugins'
-        const pluginPath = path.join(__dirname, 'plugins', `${pluginName}.js`);
+        const pluginsFolder = path.join(__dirname, 'plugins');
+        const pluginPath = path.join(pluginsFolder, `${pluginName}.js`);
+        
+        // Asegurarse de que la carpeta de plugins existe
+        if (!fs.existsSync(pluginsFolder)) {
+            fs.mkdirSync(pluginsFolder);
+        }
+
         fs.writeFileSync(pluginPath, pluginContent);
 
-        conn.reply(m.chat, `Plugin ${pluginName} instalado correctamente.`, m);
+        conn.reply(m.chat, `✅ Plugin "${pluginName}" instalado correctamente.`, m);
     } catch (error) {
         console.error('Error al obtener el plugin:', error);
-        conn.reply(m.chat, 'Hubo un error al intentar obtener el plugin. Intenta nuevamente más tarde.', m);
+        conn.reply(m.chat, '⚠️ Hubo un error al intentar obtener el plugin. Intenta nuevamente más tarde.', m);
     }
 };
 
 // Definición del comando
-handler.command = /^(getplugin)$/i; // Sin limitaciones por grupo o chat
-handler.admin = false; // No es necesario que el usuario sea admin
-handler.botAdmin = false; // No es necesario que el bot sea admin
+handler.command = /^(getplugin)$/i;
+handler.admin = false;
+handler.botAdmin = false;
 
 export default handler;
