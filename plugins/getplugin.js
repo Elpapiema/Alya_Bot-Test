@@ -30,18 +30,7 @@ let handler = async (m, { conn, text }) => {
             fs.writeFileSync(pluginPath, pluginContent);
             conn.reply(m.chat, `Plugin ${pluginName} instalado correctamente.`, m);
         } else {
-            // Buscar en los paquetes
-            const package = storeData.packages.find(p => p.name.toLowerCase() === pluginName);
-            if (package) {
-                const zipFile = await fetch(package.link);
-                const buffer = await zipFile.buffer();
-                const zip = require('adm-zip');
-                const zipInstance = new zip(buffer);
-                zipInstance.extractAllTo(path.join(__dirname, 'plugins'), true);
-                conn.reply(m.chat, `Paquete ${pluginName} instalado correctamente.`, m);
-            } else {
-                conn.reply(m.chat, `El plugin o paquete ${pluginName} no se encuentra en la tienda.`, m);
-            }
+            conn.reply(m.chat, `El plugin ${pluginName} no se encuentra en la tienda.`, m);
         }
     } catch (error) {
         console.error('Error al obtener el plugin:', error);
