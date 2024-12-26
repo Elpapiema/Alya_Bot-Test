@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import fs from 'fs';
 import path from 'path';
 
-let handler = async (m, { conn, text }) => {
+let handler = async (m, { conn, text, isAdmin, isOwner }) => {
     // Obtener el nombre del plugin desde el comando
     const pluginName = text.trim().split(' ')[1];
     if (!pluginName) {
@@ -39,7 +39,8 @@ let handler = async (m, { conn, text }) => {
 };
 
 // Definición del comando
-handler.command = /^(getplugin)$/i;
-handler.admin = true;
+handler.command = /^(getplugin)$/i; // Sin limitaciones por grupo o chat
+handler.admin = false; // No es necesario que el usuario sea admin
+handler.botAdmin = false; // No es necesario que el bot sea admin
 
 export default handler;
