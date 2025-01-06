@@ -16,24 +16,19 @@ export async function handler(client, event) {
 
     for (const participant of participants) {
         // Generar el mensaje de bienvenida
-        const welcomeMessage = `Hola @${participant.split('@')[0]} bienvenido al grupo *${groupName}*. Lee las reglas para evitar ser expulsado.`;
+        const welcomeMessage = `Hola @${participant.split('@')[0]} bienvenido al grupo *${groupName}*. Lee las reglas para evitar ser expulsado.\n\nEnlace útil: https://whatsapp.com/channel/0029VaGGynJLY6d43krQYR2g`;
 
-        // URL de la imagen para la vista previa
+        // URL de la imagen a enviar
         const imageURL = 'https://qu.ax/pMjB.jpeg';
 
-        // URL de redirección al pulsar en la vista previa
-        const linkURL = 'https://whatsapp.com/channel/0029VaGGynJLY6d43krQYR2g';
+        // Descargar la imagen desde el enlace remoto
+        const imageBuffer = await fetch(imageURL).then((res) => res.buffer());
 
-        // Enviar el mensaje con vista previa del link
+        // Enviar la imagen al grupo
         await client.sendMessage(groupId, {
-            text: welcomeMessage,
-            mentions: [participant], // Incluir al participante en la mención
-            linkPreview: {
-                title: `¡Bienvenido a ${groupName}!`,
-                jpegThumbnail: await fetch(imageURL).then((res) => res.buffer()),
-                description: 'Haz clic para unirte a nuestro canal.',
-                url: linkURL,
-            },
+            image: imageBuffer,
+            caption: welcomeMessage,
+            mentions: [participant], // Mencionar al nuevo miembro
         });
     }
 }
