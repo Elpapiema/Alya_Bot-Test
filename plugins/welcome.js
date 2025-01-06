@@ -4,20 +4,17 @@ export const name = 'welcome';
 export const description = 'Plugin de bienvenida para grupos';
 export const type = 'event'; // Indica que es un evento, no un comando
 
-export async function handler(client, message) {
-    const { participants, id: groupId } = message;
+export async function handler(client, event) {
+    // Verificar que el evento sea GROUP_PARTICIPANT_ADD
+    if (event.action !== 'add') return;
 
-    // Verificar que sea un evento de adición de participantes
-    if (!message.action || message.action !== 'add') return;
+    const { participants, id: groupId } = event;
 
     // Obtener información del grupo
     const groupMetadata = await client.groupMetadata(groupId);
     const groupName = groupMetadata.subject;
 
-    // Obtener los números de los nuevos participantes
-    const newParticipants = participants || [];
-
-    for (const participant of newParticipants) {
+    for (const participant of participants) {
         // Generar el mensaje de bienvenida
         const welcomeMessage = `Hola @${participant.split('@')[0]} bienvenido al grupo *${groupName}*. Lee las reglas para evitar ser expulsado.`;
 
