@@ -28,9 +28,7 @@ const handler = async (m, { conn, text, command }) => {
         const caption = `
 ✅ *Video descargado correctamente:*
 
-📄 Título: ${title}
 👤 Autor: ${author} (${username})
-👀 Reproducciones: ${repro}
 👍 Me gusta: ${likes}
 🔄 Compartidos: ${shares}
 💬 Comentarios: ${comments}
