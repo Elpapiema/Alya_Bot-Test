@@ -6,15 +6,9 @@ const handler = async (m, { conn, text, command }) => {
     }
 
     try {
-        // Obtener el recurso de audio desde la API secundaria, ignorando redirecciones
+        // Obtener información y recurso de audio desde la API secundaria
         const apiUrl = `https://api.siputzx.my.id/api/d/ytmp3?url=${encodeURIComponent(text)}`;
-        const response = await fetch(apiUrl, { redirect: 'manual' });
-        
-        // Verificamos si hubo alguna redirección
-        if (response.status >= 300 && response.status < 400) {
-            return conn.reply(m.chat, '❌ La URL solicitada tiene demasiadas redirecciones. Intenta nuevamente.', m);
-        }
-
+        const response = await fetch(apiUrl);
         const result = await response.json();
 
         // Validar respuesta de la API secundaria
@@ -22,15 +16,22 @@ const handler = async (m, { conn, text, command }) => {
             return conn.reply(m.chat, '❌ No se pudo obtener el recurso de audio. Verifica el enlace e intenta nuevamente.', m);
         }
 
-        const { dl: audioUrl } = result.data;
+        const { title, dl: audioUrl } = result.data;
 
-        // Enviar solo el audio al usuario
+        // Formatear el mensaje
+        const caption = `
+🎶 *Descarga completada:*
+*🔤 Título:* ${title}
+`;
+
+        // Enviar el audio al usuario
         await conn.sendMessage(
             m.chat,
             {
                 audio: { url: audioUrl },
                 mimetype: 'audio/mp3',
                 ptt: false, // Cambiar a true si se desea enviar como nota de voz
+                caption,
             },
             { quoted: m }
         );
