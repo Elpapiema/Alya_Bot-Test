@@ -6,22 +6,36 @@ const handler = async (m, { conn, text, command }) => {
     }
 
     try {
-        // Obtener información y recurso de audio desde la API secundaria
-        const apiUrl = `https://api.siputzx.my.id/api/d/ytmp3?url=${encodeURIComponent(text)}`;
-        const response = await fetch(apiUrl);
-        const result = await response.json();
+        // Obtener información del video desde la API principal
+        const infoApiUrl = `https://delirius-apiofc.vercel.app/download/ytmp3?url=${encodeURIComponent(text)}`;
+        const infoResponse = await fetch(infoApiUrl);
+        const infoResult = await infoResponse.json();
 
-        // Validar respuesta de la API secundaria
-        if (!result.status || !result.data || !result.data.dl) {
-            return conn.reply(m.chat, '❌ No se pudo obtener el recurso de audio. Verifica el enlace e intenta nuevamente.', m);
+        // Validar respuesta de la API principal
+        if (!infoResult.status || !infoResult.data) {
+            return conn.reply(m.chat, '❌ No se pudo obtener información del video. Intenta nuevamente.', m);
         }
 
-        const { title, dl: audioUrl } = result.data;
+        const { title, author, duration, image } = infoResult.data;
+
+        // Obtener el recurso de audio desde la segunda API
+        const downloadApiUrl = `https://api.siputzx.my.id/api/d/ytmp3?url=${encodeURIComponent(text)}`;
+        const downloadResponse = await fetch(downloadApiUrl);
+        const downloadResult = await downloadResponse.json();
+
+        // Validar respuesta de la segunda API
+        if (!downloadResult.status || !downloadResult.data || !downloadResult.data.dl) {
+            return conn.reply(m.chat, '❌ No se pudo obtener el recurso de audio. Intenta nuevamente.', m);
+        }
+
+        const audioUrl = downloadResult.data.dl;
 
         // Formatear el mensaje
         const caption = `
 🎶 *Descarga completada:*
 *🔤 Título:* ${title}
+*👤 Autor:* ${author}
+*🕒 Duración:* ${Math.floor(duration / 60)}:${String(duration % 60).padStart(2, '0')}
 `;
 
         // Enviar el audio al usuario
