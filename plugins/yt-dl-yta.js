@@ -1,46 +1,48 @@
-import fetch from 'node-fetch';
+import ytdl from 'ytdl-core';
+import axios from 'axios';
 
-const handler = async (m, { conn, text, command }) => {
-    if (!text) {
-        return conn.reply(m.chat, '❌ Por favor proporciona un enlace válido de YouTube.', m);
+const handler = async (msg, { text, sendAudio, sendMessage }) => {
+  if (!text) {
+    await sendMessage(msg.chat, 'Por favor, proporciona un enlace de YouTube.', { quoted: msg });
+    return;
+  }
+
+  const url = text.trim();
+  if (!ytdl.validateURL(url)) {
+    await sendMessage(msg.chat, 'El enlace proporcionado no es válido. Por favor, proporciona un enlace válido de YouTube.', { quoted: msg });
+    return;
+  }
+
+  try {
+    // Obtener metadatos usando la API
+    const apiResponse = await axios.get(`https://delirius-apiofc.vercel.app/download/ytmp3?url=${url}`);
+    const { data } = apiResponse;
+
+    if (!data || !data.status) {
+      await sendMessage(msg.chat, 'No se pudo obtener información del video. Inténtalo más tarde.', { quoted: msg });
+      return;
     }
 
-    try {
-        const apiUrl = `https://exonity.tech/api/ytdlp2-faster?apikey=adminsepuh&url=${encodeURIComponent(text)}`;
-        const response = await fetch(apiUrl);
-        const result = await response.json();
+    const videoData = data.data;
 
-        if (result.status !== 200 || !result.result || !result.result.audio) {
-            return conn.reply(m.chat, '❌ No se pudo descargar el audio. Verifica el enlace e intenta nuevamente.', m);
-        }
+    // Descarga del audio con ytdl-core
+    const stream = ytdl(url, { filter: 'audioonly', quality: 'highestaudio' });
 
-        // Obtener datos del video
-        const { title, thumb, duration, description, audio } = result.result;
-
-        const caption = `
-🎶 *Descarga completada:*
-*🔤 Título:* ${title}
-*🕒 Duración:* ${duration}
-*📝 Descripción:* ${description}
-`;
-
-        // Enviar el audio al usuario
-        await conn.sendMessage(
-            m.chat,
-            {
-                audio: { url: audio },
-                mimetype: 'audio/mp4',
-                ptt: false, // Cambiar a true si se desea enviar como nota de voz
-               // caption,
-            },
-            { quoted: m }
-        );
-    } catch (error) {
-        console.error(error);
-        conn.reply(m.chat, '❌ Ocurrió un error al intentar descargar el audio.', m);
-    }
+    await sendAudio(msg.chat, stream, {
+      mimetype: 'audio/mp3',
+      ptt: false, // Cambiar a true si deseas enviarlo como nota de voz
+      fileName: `${videoData.title}.mp3`,
+      quoted: msg,
+      caption: `🎵 *Título:* ${videoData.title}\n👤 *Autor:* ${videoData.author}\n📁 *Tamaño:* ${videoData.download.size}\n🕒 *Duración:* ${Math.floor(videoData.duration / 60)}:${videoData.duration % 60}`,
+    });
+  } catch (error) {
+    console.error(error);
+    await sendMessage(msg.chat, 'Ocurrió un error al intentar descargar el audio. Por favor, inténtalo nuevamente.', { quoted: msg });
+  }
 };
 
-handler.command = /^(yta|ytmp3)$/i;
+handler.help = ['ytaudio <link de YouTube>', 'yta <link de YouTube>'];
+handler.tags = ['downloader'];
+handler.command = /^(ytaudio|ytmp3|yta)$/i;
 
 export default handler;
