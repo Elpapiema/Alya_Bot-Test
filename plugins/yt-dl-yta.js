@@ -31,6 +31,6 @@ const handler = async (m, { conn, text, command }) => {
 };
 
 // Comandos aceptados
-handler.command = /^(ytmp3|yt|yta)$/i;
+handler.command = /^(ytmp3|yta)$/i;
 
 export default handler;
