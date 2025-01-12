@@ -1,55 +1,51 @@
-import ytdl from 'ytdl-core';
-import axios from 'axios';
+import fetch from 'node-fetch';
 
-const handler = async (msg, { text, sendMessage, sendAudio }) => {
-  if (!text) {
-    if (typeof sendMessage === 'function') {
-      await sendMessage(msg.chat, 'Por favor, proporciona un enlace de YouTube.', { quoted: msg });
-    }
-    return;
-  }
-
-  const url = text.trim();
-  if (!ytdl.validateURL(url)) {
-    if (typeof sendMessage === 'function') {
-      await sendMessage(msg.chat, 'El enlace proporcionado no es válido. Por favor, proporciona un enlace válido de YouTube.', { quoted: msg });
-    }
-    return;
-  }
-
-  try {
-    const apiResponse = await axios.get(`https://delirius-apiofc.vercel.app/download/ytmp3?url=${url}`);
-    const { data } = apiResponse;
-
-    if (!data || !data.status) {
-      if (typeof sendMessage === 'function') {
-        await sendMessage(msg.chat, 'No se pudo obtener información del video. Inténtalo más tarde.', { quoted: msg });
-      }
-      return;
+const handler = async (m, { conn, text, command }) => {
+    if (!text) {
+        return conn.reply(m.chat, '❌ Por favor proporciona un enlace válido de YouTube.', m);
     }
 
-    const videoData = data.data;
-    const stream = ytdl(url, { filter: 'audioonly', quality: 'highestaudio' });
+    try {
+        // Usar la API proporcionada
+        const apiUrl = `https://delirius-apiofc.vercel.app/download/ytmp3?url=${encodeURIComponent(text)}`;
+        const response = await fetch(apiUrl);
+        const result = await response.json();
 
-    if (typeof sendAudio === 'function') {
-      await sendAudio(msg.chat, stream, {
-        mimetype: 'audio/mp3',
-        ptt: false,
-        fileName: `${videoData.title}.mp3`,
-        quoted: msg,
-        caption: `🎵 *Título:* ${videoData.title}\n👤 *Autor:* ${videoData.author}\n📁 *Tamaño:* ${videoData.download.size}\n🕒 *Duración:* ${Math.floor(videoData.duration / 60)}:${videoData.duration % 60}`,
-      });
+        // Validar respuesta
+        if (!result.status || !result.data || !result.data.download || !result.data.download.url) {
+            return conn.reply(m.chat, '❌ No se pudo descargar el audio. Verifica el enlace e intenta nuevamente.', m);
+        }
+
+        // Obtener datos del video
+        const { title, author, duration, image, download } = result.data;
+        const { url: audioUrl, size, quality } = download;
+
+        const caption = `
+🎶 *Descarga completada:*
+*🔤 Título:* ${title}
+*👤 Autor:* ${author}
+*🕒 Duración:* ${Math.floor(duration / 60)}:${String(duration % 60).padStart(2, '0')}
+*📁 Tamaño:* ${size}
+*🎧 Calidad:* ${quality}
+`;
+
+        // Enviar el audio al usuario
+        await conn.sendMessage(
+            m.chat,
+            {
+                audio: { url: audioUrl },
+                mimetype: 'audio/mp3',
+                ptt: false, // Cambiar a true si se desea enviar como nota de voz
+                caption, // Incluir detalles del video
+            },
+            { quoted: m }
+        );
+    } catch (error) {
+        console.error(error);
+        conn.reply(m.chat, '❌ Ocurrió un error al intentar descargar el audio.', m);
     }
-  } catch (error) {
-    console.error(error);
-    if (typeof sendMessage === 'function') {
-      await sendMessage(msg.chat, 'Ocurrió un error al intentar descargar el audio. Por favor, inténtalo nuevamente.', { quoted: msg });
-    }
-  }
 };
 
-handler.help = ['ytaudio <link de YouTube>', 'yta <link de YouTube>'];
-handler.tags = ['downloader'];
-handler.command = /^(ytaudio|ytmp3|yta)$/i;
+handler.command = /^(yta|ytmp3)$/i;
 
 export default handler;
