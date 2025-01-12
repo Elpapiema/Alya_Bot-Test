@@ -6,55 +6,31 @@ const handler = async (m, { conn, text, command }) => {
     }
 
     try {
-        // Obtener información del video desde la API principal
-        const infoApiUrl = `https://delirius-apiofc.vercel.app/download/ytmp3?url=${encodeURIComponent(text)}`;
-        const infoResponse = await fetch(infoApiUrl);
-        const infoResult = await infoResponse.json();
+        const apiUrl = `https://api.siputzx.my.id/api/dl/youtube/mp3?url=${encodeURIComponent(text)}`;
+        const response = await fetch(apiUrl);
+        const result = await response.json();
 
-        // Validar respuesta de la API principal
-        if (!infoResult.status || !infoResult.data) {
-            return conn.reply(m.chat, '❌ No se pudo obtener información del video. Intenta nuevamente.', m);
+        if (!result || !result.status || !result.data) {
+            return conn.reply(m.chat, '❌ No se pudo descargar el audio. Verifica el enlace e intenta nuevamente.', m);
         }
 
-        const { title, author, duration, image } = infoResult.data;
+        const audioUrl = result.data;
 
-        // Obtener el recurso de audio desde la segunda API
-        const downloadApiUrl = `https://api.siputzx.my.id/api/d/ytmp3?url=${encodeURIComponent(text)}`;
-        const downloadResponse = await fetch(downloadApiUrl);
-        const downloadResult = await downloadResponse.json();
-
-        // Validar respuesta de la segunda API
-        if (!downloadResult.status || !downloadResult.data || !downloadResult.data.dl) {
-            return conn.reply(m.chat, '❌ No se pudo obtener el recurso de audio. Intenta nuevamente.', m);
-        }
-
-        const audioUrl = downloadResult.data.dl;
-
-        // Formatear el mensaje
-        const caption = `
-🎶 *Descarga completada:*
-*🔤 Título:* ${title}
-*👤 Autor:* ${author}
-*🕒 Duración:* ${Math.floor(duration / 60)}:${String(duration % 60).padStart(2, '0')}
-`;
+        const caption = `✅ *Audio descargado correctamente*`;
 
         // Enviar el audio al usuario
-        await conn.sendMessage(
-            m.chat,
-            {
-                audio: { url: audioUrl },
-                mimetype: 'audio/mp3',
-                ptt: false, // Cambiar a true si se desea enviar como nota de voz
-                caption,
-            },
-            { quoted: m }
-        );
+        await conn.sendMessage(m.chat, {
+            audio: { url: audioUrl },
+            mimetype: 'audio/mp4',
+            caption,
+        }, { quoted: m });
     } catch (error) {
         console.error(error);
-        conn.reply(m.chat, '❌ Ocurrió un error al intentar procesar tu solicitud. Intenta nuevamente.', m);
+        conn.reply(m.chat, '❌ Ocurrió un error al intentar descargar el audio.', m);
     }
 };
 
-handler.command = /^(yta|ytmp3)$/i;
+// Comandos aceptados
+handler.command = /^(ytmp3|yt|yta)$/i;
 
 export default handler;
