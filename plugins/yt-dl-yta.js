@@ -6,9 +6,15 @@ const handler = async (m, { conn, text, command }) => {
     }
 
     try {
-        // Obtener el recurso de audio desde la API secundaria
+        // Obtener el recurso de audio desde la API secundaria, ignorando redirecciones
         const apiUrl = `https://api.siputzx.my.id/api/d/ytmp3?url=${encodeURIComponent(text)}`;
-        const response = await fetch(apiUrl);
+        const response = await fetch(apiUrl, { redirect: 'manual' });
+        
+        // Verificamos si hubo alguna redirección
+        if (response.status >= 300 && response.status < 400) {
+            return conn.reply(m.chat, '❌ La URL solicitada tiene demasiadas redirecciones. Intenta nuevamente.', m);
+        }
+
         const result = await response.json();
 
         // Validar respuesta de la API secundaria
