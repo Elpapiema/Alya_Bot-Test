@@ -6,7 +6,7 @@ const handler = async (m, { conn, text, command }) => {
     }
 
     try {
-        // Obtener información y recurso de audio desde la API secundaria
+        // Obtener el recurso de audio desde la API secundaria
         const apiUrl = `https://api.siputzx.my.id/api/d/ytmp3?url=${encodeURIComponent(text)}`;
         const response = await fetch(apiUrl);
         const result = await response.json();
@@ -16,22 +16,15 @@ const handler = async (m, { conn, text, command }) => {
             return conn.reply(m.chat, '❌ No se pudo obtener el recurso de audio. Verifica el enlace e intenta nuevamente.', m);
         }
 
-        const { title, dl: audioUrl } = result.data;
+        const { dl: audioUrl } = result.data;
 
-        // Formatear el mensaje
-        const caption = `
-🎶 *Descarga completada:*
-*🔤 Título:* ${title}
-`;
-
-        // Enviar el audio al usuario
+        // Enviar solo el audio al usuario
         await conn.sendMessage(
             m.chat,
             {
                 audio: { url: audioUrl },
                 mimetype: 'audio/mp3',
                 ptt: false, // Cambiar a true si se desea enviar como nota de voz
-                caption,
             },
             { quoted: m }
         );
