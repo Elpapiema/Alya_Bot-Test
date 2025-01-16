@@ -1,2 +1,3 @@
-# Base_Bot
- Base propia para Alya bot 
+# Advertencia ⚠️ 
+
+esta versión es solo de pruebas y puede ser inestable te recomiendo usar la versión estable
