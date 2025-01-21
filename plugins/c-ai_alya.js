@@ -1,13 +1,13 @@
 import fetch from 'node-fetch';
 
-const handler = async (m, { text }) => {
+let handler = async (m, { conn, text }) => {
   const query = text.replace(/^alya\s+/i, '').trim(); // Extrae el texto después de "alya"
   if (!query) {
     return m.reply('Por favor, proporciona un texto para que Alya pueda responder.');
   }
 
   const response = await getAlyaResponse(query);
-  m.reply(response);
+  conn.reply(m.chat, response, m); // Respuesta al chat desde el que se envió el mensaje
 };
 
 handler.command = /^alya\s+/i; // Comando para activar el plugin
