@@ -1,5 +1,18 @@
 import fetch from 'node-fetch';
 
+const handler = async (m, { text }) => {
+  const query = text.replace(/^alya\s+/i, '').trim(); // Extrae el texto después de "alya"
+  if (!query) {
+    return m.reply('Por favor, proporciona un texto para que Alya pueda responder.');
+  }
+
+  const response = await getAlyaResponse(query);
+  m.reply(response);
+};
+
+handler.command = /^alya\s+/i; // Comando para activar el plugin
+
+// Función para obtener la respuesta de la API
 async function getAlyaResponse(text) {
   try {
     const url = `https://delirius-apiofc.vercel.app/ia/gptprompt?text=${encodeURIComponent(
@@ -18,18 +31,5 @@ async function getAlyaResponse(text) {
     return 'Ocurrió un error al conectar con la API.';
   }
 }
-
-// Handler definido
-const handler = async (m, { text }) => {
-  const query = text.replace(/^alya\s+/i, '').trim(); // Extrae el texto después de "alya"
-  if (!query) {
-    return m.reply('Por favor, proporciona un texto para que Alya pueda responder.');
-  }
-
-  const response = await getAlyaResponse(query);
-  m.reply(response);
-};
-
-handler.command = /^alya\s+/i; // Comando para activar el plugin
 
 export default handler;
