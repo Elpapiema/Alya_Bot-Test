@@ -18,7 +18,7 @@ const handler = async (message, { command, text }) => {
   } catch (err) {
     console.error(err);
     message.reply(
-      'Lo siento, ocurrió un error al procesar tu solicitud. Por favor, inténtalo más tarde.'
+      'Necesitas especificar un mensaje para hablar conmigo.'
     );
   }
 };
