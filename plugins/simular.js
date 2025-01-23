@@ -1,36 +1,63 @@
-import { proto } from '@whiskeysockets/baileys';
+let handler = async (m, { conn, usedPrefix, command, args: [event], text }) => {
+    let chat = global.db.data.chats[m.chat];
+    if (!chat.welcome) throw `⚠️ Para usar este comando debe activar las Bienvenidas con *${usedPrefix}on* welcome`;
 
-const handler = async (m, { command, conn, text, args }) => {
-  const groupName = text || "Grupo Simulado"; // Nombre del grupo por defecto
-  const fakeUser = "123456789@s.whatsapp.net"; // Usuario simulado
-  const fakeParticipants = [{ id: fakeUser }];
+    let te = `
+    ┌─⊷ *EVENTOS*
+    ▢ welcome
+    ▢ bye
+    ▢ promote 
+    ▢ demote
+    └───────────
+    
+    📌 Ejemplo :
+    
+    *${usedPrefix + command}* welcome @user`;
 
-  if (command === "simular" || command === "simulate") {
-    switch (args[0]?.toLowerCase()) {
-      case "gpsalida":
-        await conn.ev.emit('groups.update', [
-          { id: m.chat, subject: groupName, action: "user-leave", participants: fakeParticipants },
-        ]);
-        await m.reply(`Simulación completada: Salida de un usuario en el grupo "${groupName}".`);
-        break;
+    if (!event) return await m.reply(te);
 
-      case "gpentrada":
-        await conn.ev.emit('groups.update', [
-          { id: m.chat, subject: groupName, action: "user-add", participants: fakeParticipants },
-        ]);
-        await m.reply(`Simulación completada: Entrada de un usuario en el grupo "${groupName}".`);
-        break;
+    let mentions = text.replace(event, '').trimStart();
+    let who = mentions ? conn.parseMention(mentions) : [];
+    let part = who.length ? who : [m.sender];
+    let act = false;
 
-      default:
-        await m.reply(
-          `Uso del comando:\n` +
-          `• .simular gpsalida - Simula la salida de un usuario del grupo\n` +
-          `• .simular gpentrada - Simula la entrada de un usuario al grupo`
-        );
-        break;
+    m.reply(`✅ Simulando ${event}...`);
+    switch (event.toLowerCase()) {
+        case 'add':
+        case 'bienvenida':
+        case 'invite':
+        case 'welcome':
+            act = 'add';
+            break;
+        case 'bye':
+        case 'despedida':
+        case 'leave':
+        case 'remove':
+            act = 'remove';
+            break;
+        case 'promote':
+        case 'promover':
+            act = 'promote';
+            break;
+        case 'demote':
+        case 'degradar':
+            act = 'demote';
+            break;
+        default:
+            throw te;
     }
-  }
+
+    if (act) return conn.participantsUpdate({
+        id: m.chat,
+        participants: part,
+        action: act
+    });
 };
 
-handler.command = ["simular", "simulate"]; // Define los comandos
+handler.help = ['simulate <event> @user'];
+handler.tags = ['group'];
+handler.command = ['simular', 'simulate'];
+handler.admin = true;
+handler.group = true;
+
 export default handler;
