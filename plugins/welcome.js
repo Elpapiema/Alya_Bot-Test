@@ -1,34 +1,29 @@
-import fetch from 'node-fetch';
+let handler = async (m, { conn, participants, isAdmin }) => {
+    const chat = global.db.data.chats[m.chat];
+    if (!chat.welcome) return; // Si las bienvenidas están desactivadas, no hacer nada
 
-export const name = 'welcome';
-export const description = 'Plugin de bienvenida para grupos';
-export const type = 'event'; // Indica que es un evento, no un comando
+    // Filtrar nuevos participantes
+    const newParticipants = participants.filter(p => p.action === 'add').map(p => p.id);
+    if (!newParticipants.length) return;
 
-export async function handler(client, event) {
-    // Verificar que el evento sea GROUP_PARTICIPANT_ADD
-    if (event.action !== 'add') return;
+    for (const user of newParticipants) {
+        const userName = await conn.getName(user);
+        const groupName = await conn.getName(m.chat);
 
-    const { participants, id: groupId } = event;
+        // Mensaje de bienvenida personalizado
+        const welcomeMessage = `👋 ¡Bienvenido(a), @${user.split('@')[0]}!
+        
+        💬 Estamos encantados de tenerte en *${groupName}*. Lee las reglas del grupo y disfruta tu estancia.
 
-    // Obtener información del grupo
-    const groupMetadata = await client.groupMetadata(groupId);
-    const groupName = groupMetadata.subject;
+        📌 Recuerda: Si necesitas ayuda, no dudes en pedirla.`;
 
-    for (const participant of participants) {
-        // Generar el mensaje de bienvenida
-        const welcomeMessage = `Hola @${participant.split('@')[0]} bienvenido al grupo *${groupName}*. Lee las reglas para evitar ser expulsado.\n\nEnlace útil: https://whatsapp.com/channel/0029VaGGynJLY6d43krQYR2g`;
-
-        // URL de la imagen a enviar
-        const imageURL = 'https://qu.ax/pMjB.jpeg';
-
-        // Descargar la imagen desde el enlace remoto
-        const imageBuffer = await fetch(imageURL).then((res) => res.buffer());
-
-        // Enviar la imagen al grupo
-        await client.sendMessage(groupId, {
-            image: imageBuffer,
-            caption: welcomeMessage,
-            mentions: [participant], // Mencionar al nuevo miembro
+        // Enviar mensaje de bienvenida
+        await conn.sendMessage(m.chat, {
+            text: welcomeMessage,
+            mentions: [user]
         });
     }
-}
+};
+
+handler.groupParticipantsUpdate = true; // Escucha eventos de participantes en grupos
+export default handler;
