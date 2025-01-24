@@ -19,19 +19,19 @@ await conn.sendFile(m.chat, yt_play[0].thumbnail, 'error.jpg', `${yt_play[0].tit
 try {
 const res = await fetch(`https://api.siputzx.my.id/api/d/ytmp3?url=${yt_play[0].url}`);
 let { data } = await res.json();
-await conn.sendMessage(m.chat, { audio: { url: data.dl }, mimetype: 'audio/mpeg' }, { quoted: m ||null });
+await conn.sendMessage(m.chat, { audio: { url: data.dl }, mimetype: 'audio/mp4' }, { quoted: m ||null });
 } catch (e1) {
 try {  
 const axeelUrl = `https://axeel.my.id/api/download/audio?url=${yt_play[0].url}`;
 const axeelResponse = await fetch(axeelUrl);
 const axeelData = await axeelResponse.json();
 if (!axeelData || !axeelData.downloads?.url) throw new Error();
-await conn.sendMessage(m.chat, { audio: { url: axeelData.downloads.url }, mimetype: 'audio/mpeg' }, { quoted: m });
+await conn.sendMessage(m.chat, { audio: { url: axeelData.downloads.url }, mimetype: 'audio/mp4' }, { quoted: m });
 } catch {
 try {
 const res = await fetch(`https://api.zenkey.my.id/api/download/ytmp3?apikey=zenkey&url=${yt_play[0].url}`)
 let { result } = await res.json()
-await conn.sendMessage(m.chat, { audio: { url: await result.download.url }, mimetype: 'audio/mpeg' }, { quoted: m })
+await conn.sendMessage(m.chat, { audio: { url: await result.download.url }, mimetype: 'audio/mp4' }, { quoted: m })
 } catch (e1) {
 try {    
 const ryzenUrl = `https://api.ryzendesu.vip/api/downloader/ytmp3?url=${encodeURIComponent(videoUrl)}`;
@@ -39,7 +39,7 @@ const ryzenResponse = await fetch(ryzenUrl);
 const ryzenData = await ryzenResponse.json();
 if (ryzenData.status === 'tunnel' && ryzenData.url) {
 const downloadUrl = ryzenData.url;
-await conn.sendMessage(m.chat, { audio: { url: downloadUrl }, mimetype: 'audio/mpeg' }, { quoted: m });
+await conn.sendMessage(m.chat, { audio: { url: downloadUrl }, mimetype: 'audio/mp4' }, { quoted: m });
 }
 } catch {
 try {          
@@ -49,7 +49,7 @@ const delius = await apiResponse.json();
 if (!delius.status) {
 return m.react("❌")}
 const downloadUrl = delius.data.download.url;
-await conn.sendMessage(m.chat, { audio: { url: downloadUrl }, mimetype: 'audio/mpeg' }, { quoted: m });
+await conn.sendMessage(m.chat, { audio: { url: downloadUrl }, mimetype: 'audio/mp4' }, { quoted: m });
 } catch (e1) {
 try {    
 let q = '128kbps'
@@ -71,7 +71,7 @@ try {
 const res = await fetch(`https://api.zenkey.my.id/api/download/ytmp3?apikey=zenkey&url=${yt_play[0].url}`)
 const audioData = await res.json()
 if (audioData.status && audioData.result?.downloadUrl) {
-await conn.sendMessage(m.chat, { audio: { url: audioData.result.downloadUrl }, mimetype: 'audio/mpeg' }, { quoted: m });
+await conn.sendMessage(m.chat, { audio: { url: audioData.result.downloadUrl }, mimetype: 'audio/mp4' }, { quoted: m });
 }} catch (e5) {
 try {
 let d2 = await fetch(`https://exonity.tech/api/ytdlp2-faster?apikey=adminsepuh&url=${yt_play[0].url}`);
