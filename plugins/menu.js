@@ -51,7 +51,8 @@ let handler = async (m, { conn }) => {
   ❀ .tt .tiktok _link de tiktok_ (vídeo)
 
 ┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
-> IA 
+> IAs
+
   ❀ .bot .Alya _character AI de Alya_
 
 ┈┈┈┈┈┈┈┈┈┈┈┈୨♡୧┈┈┈┈┈┈┈┈┈┈┈┈
