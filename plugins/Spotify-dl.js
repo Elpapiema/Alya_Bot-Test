@@ -1,4 +1,7 @@
 import fetch from 'node-fetch';
+import fs from 'fs';
+import { tmpdir } from 'os';
+import path from 'path';
 
 const handler = async (m, { text, conn, command }) => {
   if (!text) {
@@ -17,7 +20,22 @@ const handler = async (m, { text, conn, command }) => {
 
     if (json.status === 200 && json.data?.response) {
       const downloadUrl = json.data.response;
-      conn.reply(m.chat, `✅ Aquí está tu enlace de descarga:\n${downloadUrl}`, m);
+      const filePath = path.join(tmpdir(), `${Date.now()}.mp3`);
+
+      // Descargar el archivo de audio
+      const audioResponse = await fetch(downloadUrl);
+      const fileStream = fs.createWriteStream(filePath);
+      await new Promise((resolve, reject) => {
+        audioResponse.body.pipe(fileStream);
+        audioResponse.body.on('error', reject);
+        fileStream.on('finish', resolve);
+      });
+
+      // Enviar el archivo de audio
+      await conn.sendMessage(m.chat, { audio: fs.readFileSync(filePath), mimetype: 'audio/mp4' }, { quoted: m });
+
+      // Eliminar el archivo temporal
+      fs.unlinkSync(filePath);
     } else {
       conn.reply(m.chat, '❌ Hubo un problema al obtener el enlace de descarga. Intenta de nuevo más tarde.', m);
     }
