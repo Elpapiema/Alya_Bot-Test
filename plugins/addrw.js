@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 const handler = async (m, { text, usedPrefix, command }) => {
     const args = text.split(' ');
     if (args.length < 5) {
-        return m.reply(`Uso incorrecto del comando.\nFormato: ${usedPrefix}${command} <Nombre del personaje> <Edad> <Situación sentimental> <Origen> <Enlace de imagen>`);
+        return m.reply(`Uso incorrecto del comando.\nFormato: ${usedPrefix}${command} <Nombre del personaje> <Edad> <Situación sentimental> <Origen> <Enlace de imagen> \n Nota: el link debe estar en catbox.moe o en qu.ax si se usa qu.ax se debe configurar cono permanente`);
     }
 
     // Separar los argumentos
