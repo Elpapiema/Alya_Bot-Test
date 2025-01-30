@@ -37,7 +37,7 @@ const handler = async (m, { text, usedPrefix, command }) => {
     await conn.sendMessage(staffGroupId, { text: jsonMessage });
 
     // Confirmar al usuario
-    m.reply(`El personaje "${name}" ha sido añadido correctamente y enviado al grupo del staff.`);
+    m.reply(`El personaje "${name}" ha sido enviado al grupo del staff para su posterior adicion.`);
 };
 
 handler.command = ['addcharacter', 'addrw'];
