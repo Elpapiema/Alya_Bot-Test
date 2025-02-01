@@ -1,6 +1,6 @@
 import { WAMessageStubType } from '@whiskeysockets/baileys'; // Asegúrate de importar correctamente
 import fetch from 'node-fetch'; // Para obtener imágenes de perfil
-import uploadImage from './lib/uploadImage.js'; // Importar la función de carga de imágenes
+import uploadImage from '../lib/uploadImage.js'; // Importar la función de carga de imágenes
 
 export async function before(m, { conn, groupMetadata }) {
   // Verificar si el mensaje es un evento de grupo y si es de tipo bienvenida (27) o despedida (28, 32)
