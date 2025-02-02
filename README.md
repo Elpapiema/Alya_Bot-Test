@@ -3,10 +3,7 @@
 esta versión es solo de pruebas y puede ser inestable te recomiendo usar la versión estable
 
 
-### **`Colaboradores`**
-<a href="https://github.com/Elpapiema/AlyaBot_MD-Test/graphs/contributors">
-<img src="https://contrib.rocks/image?repo=Elpapiema/AlyaBot_MD-Test" />
-</a>
+
 
 ### **`Desarrollador`**
 <a href="https://github.com/Elpapiema">
