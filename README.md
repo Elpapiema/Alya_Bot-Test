@@ -4,8 +4,8 @@ esta versión es solo de pruebas y puede ser inestable te recomiendo usar la ver
 
 
 ### **`Colaboradores`**
-<a href="https://github.com/Elpapiema/Adiciones-para-AlyaBot-RaphtaliaBot-/graphs/contributors">
-<img src="https://contrib.rocks/image?repo=Elpapiema/Adiciones-para-AlyaBot-RaphtaliaBot-" />
+<a href="https://github.com/Elpapiema/AlyaBot_MD-Test/graphs/contributors">
+<img src="https://contrib.rocks/image?repo=Elpapiema/AlyaBot_MD-Test" />
 </a>
 
 ### **`Desarrollador`**
