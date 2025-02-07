@@ -14,23 +14,24 @@ const handler = async (m, { args }) => {
     }
 
     // Verificar que el comando tenga los parámetros necesarios (valor y máximo de usos)
-    if (args.length < 2) {
-        return m.reply('⚠️ Debes proporcionar el valor y el número máximo de usos.\nEjemplo: *.ctoken ABCD1234 50*');
+    if (args.length < 1) {
+        return m.reply('⚠️ Debes proporcionar el valor y el número máximo de usos.\nEjemplo: *.ctoken 200, 50*');
     }
 
-    const value = args[0].toUpperCase();
-    const maxUses = parseInt(args[1]);
+    // Dividir los argumentos por coma
+    const [value, maxUses] = args[0].split(',');
 
-    // Validar el número máximo de usos
-    if (isNaN(maxUses)) {
-        return m.reply('⚠️ El número máximo de usos debe ser un valor numérico.');
+    // Validar los parámetros
+    if (!value || isNaN(maxUses)) {
+        return m.reply('⚠️ El formato es incorrecto. Debes usar el formato: *.ctoken valor, máximo_uso*');
     }
 
-    const token = generateToken();  // Generar el token
-    const creationDate = new Date().toISOString();  // Obtener la fecha de creación
+    // Generar el token
+    const token = generateToken();
+    const creationDate = new Date().toISOString(); // Obtener la fecha de creación
 
-    // Enviar el token y la información al chat
-    return m.reply(`✅ Token generado: *${token}*\n🔹 Valor: ${value}\n🔸 Máximo de usos: ${maxUses}\n📅 Fecha de creación: ${creationDate}`);
+    // Responder con el token y la información
+    return m.reply(`✅ Token generado: *${token}*\n🔹 Valor: ${value.trim()}\n🔸 Máximo de usos: ${maxUses.trim()}\n📅 Fecha de creación: ${creationDate}`);
 };
 
 handler.command = ['ctoken'];  // Definir el comando
