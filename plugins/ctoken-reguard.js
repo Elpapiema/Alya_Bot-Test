@@ -15,7 +15,7 @@ const handler = async (m, { args }) => {
     }
 
     // Dividir los argumentos por coma
-    const [value, maxUses] = args[0].split(',');
+    const [value, maxUses] = args[0].split(',').map(item => item.trim());
 
     // Validar los parámetros
     if (!value || isNaN(maxUses)) {
@@ -27,7 +27,7 @@ const handler = async (m, { args }) => {
     const creationDate = new Date().toISOString(); // Obtener la fecha de creación
 
     // Responder con el token y la información
-    return m.reply(`✅ Token generado: *${token}*\n🔹 Valor: ${value.trim()}\n🔸 Máximo de usos: ${maxUses.trim()}\n📅 Fecha de creación: ${creationDate}`);
+    return m.reply(`✅ Token generado: *${token}*\n🔹 Valor: ${value}\n🔸 Máximo de usos: ${maxUses}\n📅 Fecha de creación: ${creationDate}`);
 };
 
 handler.command = ['ctoken'];  // Definir el comando
