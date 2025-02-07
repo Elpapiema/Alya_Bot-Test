@@ -8,10 +8,6 @@ const generateToken = () => {
 };
 
 const handler = async (m, { args }) => {
-    // Verificar que solo los owners puedan usar este comando
-    if (!global.owner.includes(m.sender)) {
-        return m.reply('⚠️ Este comando es solo para los propietarios del bot.');
-    }
 
     // Verificar que el comando tenga los parámetros necesarios (valor y máximo de usos)
     if (args.length < 1) {
