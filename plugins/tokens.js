@@ -1,16 +1,10 @@
-import handler from '../handler.js';
-import '../config.js'; // Asegura que global.owner esté disponible
-
-handler.command = ['gettoken'];
-
-handler.run = async (m, { conn }) => {
-    if (!global.owner.includes(m.sender)) {
-        return m.reply('❌ No tienes permiso para usar este comando.');
-    }
-
+const handler = async (m, { conn }) => {
     const token = generateToken(8);
     m.reply(`🔑 Token generado: *${token}*`);
 };
+
+handler.command = ['gettoken'];
+handler.rowner = true; // Solo los owners pueden usar este comando
 
 function generateToken(length) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
