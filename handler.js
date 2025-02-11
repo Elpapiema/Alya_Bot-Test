@@ -1470,9 +1470,7 @@ global.dfail = (type, m, conn, usedPrefix) => {
     if (msg) return conn.sendMessage(m.chat, { 
     text: msg, 
     contextInfo: { 
-        mentionedJid: null, 
-        forwardingScore: 1, 
-        isForwarded: true
+        mentionedJid: null
     } 
 }, { quoted: m })
 }
