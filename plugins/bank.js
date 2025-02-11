@@ -21,8 +21,13 @@ function getCurrency() {
     return personalizeData.global?.currency || personalizeData.default?.currency || 'monedas';
 }
 
-let handler = async (m, { text, sender }) => {
-    let userId = sender; // ID del usuario que ejecuta el comando
+let handler = async (m, { text }) => {
+    let userId = m.sender; // ID del usuario que ejecuta el comando
+    if (!userId) {
+        m.reply('❌ No se pudo obtener tu ID.');
+        return;
+    }
+
     let db = readJSON(dbPath);
     let currency = getCurrency();
 
