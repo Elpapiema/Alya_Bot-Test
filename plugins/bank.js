@@ -10,18 +10,23 @@ function readJSON(filePath) {
     return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 }
 
+// Función para escribir en JSON
+function writeJSON(filePath, data) {
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+}
+
 // Obtener la moneda configurada en personalize.json
 function getCurrency() {
     let personalizeData = readJSON(personalizePath);
-    return personalizeData.global?.currency || personalizeData.default?.currency || 'monedas'; // Usa "monedas" si no hay valores definidos
+    return personalizeData.global?.currency || personalizeData.default?.currency || 'monedas';
 }
 
 let handler = async (m, { text, sender }) => {
     let userId = sender; // ID del usuario que ejecuta el comando
     let db = readJSON(dbPath);
-    let currency = getCurrency(); // Obtener la moneda personalizada
+    let currency = getCurrency();
 
-    // Asegurar que el usuario tenga un balance en su cuenta
+    // Asegurar que la estructura de datos del usuario exista
     if (!db[userId]) db[userId] = { money: 0, bank: 0 };
 
     let userMoney = db[userId].money;
@@ -54,7 +59,7 @@ let handler = async (m, { text, sender }) => {
     // Realizar el depósito
     db[userId].money -= depositAmount;
     db[userId].bank += depositAmount;
-    fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
+    writeJSON(dbPath, db);
 
     m.reply(`✅ Has depositado ${depositAmount} ${currency} en el banco.\n\n💰 **${currency} restante:** ${db[userId].money}\n🏦 **Saldo en el banco:** ${db[userId].bank}`);
 };
