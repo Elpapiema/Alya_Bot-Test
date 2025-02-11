@@ -62,9 +62,10 @@ let handler = async (m, { text }) => {
     }
 
     // Realizar el depósito
-    db[userId].money -= depositAmount;
-    db[userId].bank += depositAmount;
-    writeJSON(dbPath, db);
+    db[userId].money = userMoney - depositAmount;
+    db[userId].bank = userBank + depositAmount; // Aquí aseguramos que el banco se actualice correctamente
+
+    writeJSON(dbPath, db); // Guardamos los cambios
 
     m.reply(`✅ Has depositado ${depositAmount} ${currency} en el banco.\n\n💰 **${currency} restante:** ${db[userId].money}\n🏦 **Saldo en el banco:** ${db[userId].bank}`);
 };
