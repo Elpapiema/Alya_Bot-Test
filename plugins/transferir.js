@@ -48,18 +48,17 @@ let handler = async (m, { conn, text }) => {
         db[targetId] = { money: 0, bank: 0 };
     }
 
-    // Realizar la transferencia
+    // Realizar la transferencia en el banco
     userData.bank -= amount; // Descontar del banco del remitente
     db[userId] = userData; // Actualizar los datos del remitente
 
     db[targetId].bank += amount; // Agregar al banco del destinatario
-    db[targetId].money += amount; // Agregar a su dinero en mano
     fs.writeFileSync(dbPath, JSON.stringify(db, null, 2)); // Guardar los cambios en db_users.json
 
     let currency = getCurrency(); // Obtener la moneda personalizada
 
     // Confirmar la transferencia
-    m.reply(`✅ Has transferido *${amount} ${currency}* al usuario @${targetId.split('@')[0]}.`);
+    m.reply(`✅ Has transferido *${amount} ${currency}* al usuario @${targetId.split('@')[0]} dentro de su banco.`);
 };
 
 // Definir el comando
