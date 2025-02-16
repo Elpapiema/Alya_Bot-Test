@@ -1,11 +1,11 @@
 export async function before(m) {
     const chat = global.db.data.chats[m.chat] || {};
 
-    // Verifica si m.plugin está definido antes de acceder a sus propiedades
-    if (m.plugin && this.plugins[m.plugin]?.tags?.includes('nsfw')) {
+    // Verifica si el plugin tiene un nombre y si comienza con "nsfw-"
+    if (m.plugin && m.plugin.startsWith('nsfw-')) {
         if (!chat.nsfw) {
             m.reply('⚠️ El contenido NSFW está desactivado en este chat.');
-            return !1; // Bloquea la ejecución del plugin
+            return !0; // Bloquea la ejecución del plugin
         }
     }
 }
