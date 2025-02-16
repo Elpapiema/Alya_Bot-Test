@@ -57,8 +57,9 @@ let handler = async (m, { conn, text }) => {
 
     let currency = getCurrency(); // Obtener la moneda personalizada
 
-    // Confirmar la transferencia
-    m.reply(`✅ Has transferido *${amount} ${currency}* al usuario @${targetId.split('@')[0]} dentro de su banco.`);
+    // Confirmar la transferencia mencionando al receptor
+    let receiverMention = `@${targetId.split('@')[0]}`;
+    m.reply(`✅ Has transferido *${amount} ${currency}* a ${receiverMention} dentro de su banco.`, null, { mentions: [targetId] });
 };
 
 // Definir el comando
