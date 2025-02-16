@@ -7,7 +7,7 @@ let handler = async (m, { conn, usedPrefix, command, args }) => {
     if (!setting) throw `⚠️ Especifica la configuración que deseas cambiar.\n\nUso: *${usedPrefix + command} <welcome/bye>*`;
 
     // Configuraciones permitidas
-    const validSettings = ['welcome', 'bye'];
+    const validSettings = ['welcome', 'bye', 'nsfw'];
     if (!validSettings.includes(setting)) {
         throw `⚠️ Configuración no válida.\n\nOpciones disponibles:\n- welcome\n- bye`;
     }
