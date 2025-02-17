@@ -18,26 +18,26 @@ let handler = async (m, { conn }) => {
 
         const menuMessage = `
 ┎───•✧•───⌬
-
-   ✦ Desarrollado por: 𝓔𝓶𝓶𝓪 (𝓥𝓲𝓸𝓵𝓮𝓽'𝓼 𝓥𝓮𝓻𝓼𝓲𝓸𝓷)
-
-   ✦ Versión actual: ${vs}
-
+┃
+┃   ✦ Desarrollado por: 𝓔𝓶𝓶𝓪 (𝓥𝓲𝓸𝓵𝓮𝓽'𝓼 𝓥𝓮𝓻𝓼𝓲𝓸𝓷)
+┃
+┃   ✦ Versión actual: ${vs}
+┃
 ┖───•✧•
 
    *Hola!* soy ${botName}, aquí tienes la lista de comandos
    ✦ *La Moneda actual es :* ${currency}
 
 ┎───•✧•───⌬
-> 𝙿𝚎𝚛𝚜𝚘𝚗𝚊𝚕𝚒𝚣𝚊𝚌𝚒𝚘𝚗   (ノ^o^)ノ  
-
- ❀ .setname 
- ❀ .setbanner
- ❀ .setmoneda
- ❀ .viewbanner
- ❀ .deletebanner
- ❀ .resetpreferences
-
+┃ 𝙿𝚎𝚛𝚜𝚘𝚗𝚊𝚕𝚒𝚣𝚊𝚌𝚒𝚘𝚗   (ノ^o^)ノ  
+┃
+┃ ❀ .setname 
+┃ ❀ .setbanner
+┃ ❀ .setmoneda
+┃ ❀ .viewbanner
+┃ ❀ .deletebanner
+┃ ❀ .resetpreferences
+┃
 ┖───•✧•
 ┎───•✧•───⌬
 > 𝚊𝚍𝚖𝚒𝚗𝚒𝚜𝚝𝚛𝚊𝚌𝚒𝚘𝚗   (ノ^o^)ノ 
