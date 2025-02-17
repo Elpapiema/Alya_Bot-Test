@@ -146,7 +146,7 @@ logger: pino({ level: 'silent' }),
 printQRInTerminal: opcion == '1' ? true : methodCodeQR ? true : false,
 mobile: MethodMobile, 
 //Cambia esto por el nombre de tu bot
-browser: opcion == '1' ? ['Alya_Bot', 'Edge', '20.0.04'] : methodCodeQR ? ['Alya-Bot', 'Edge', '20.0.04'] : ["Ubuntu", "Chrome", "20.0.04"],
+browser: opcion == '1' ? ['Alya_Bot', 'Edge', '20.0.04'] : methodCodeQR ? ['Alya-Bot', 'Edge', '20.0.04'] : ["Alya-Bot", "Edge", "20.0.04"],
 auth: {
 creds: state.creds,
 keys: makeCacheableSignalKeyStore(state.keys, Pino({ level: "fatal" }).child({ level: "fatal" })),
@@ -421,7 +421,7 @@ try {
 const module = (await import(`${global.__filename(dir)}?update=${Date.now()}`))
 global.plugins[filename] = module.default || module
 } catch (e) {
-conn.logger.error(`❌ Error requiere plugins: '${filename}\n${format(e)}'`);
+conn.logger.error(`❌ Error plugin requiere atencion : '${filename}\n${format(e)}'`);
 } finally {
 global.plugins = Object.fromEntries(Object.entries(global.plugins).sort(([a], [b]) => a.localeCompare(b)))
 }}}}
