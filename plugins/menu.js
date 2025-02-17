@@ -89,3 +89,9 @@ handler.tags = ['info'];
 handler.command = /^(menu)$/i;
 
 export default handler;
+
+/* estilos de menu
+
+┎───•✧•───⌬
+┃
+┖───•✧•  */
