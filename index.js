@@ -124,7 +124,7 @@ let isRunning = false
 * Start a js file
 * @param {String} file `path/to/file`
 */
-function start(file) {
+/*function start(file) {
 if (isRunning) return
 isRunning = true
 const args = [join(__dirname, file), ...process.argv.slice(2)]
