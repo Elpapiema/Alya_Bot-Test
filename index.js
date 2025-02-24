@@ -7,7 +7,7 @@ import { watchFile, unwatchFile } from 'fs'
 import cfonts from 'cfonts'
 import { createInterface } from 'readline'
 import yargs from 'yargs'
-import { startYTAPI } from './yt_api.mjs' // Importamos el servidor de descargas
+import { startYTAPI } from './yt_api.js' // Importamos el servidor de descargas
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const require = createRequire(__dirname)
