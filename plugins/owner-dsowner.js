@@ -1,4 +1,5 @@
-/* Codigo hecho por @Fabri115 y mejorado por BrunoSobrino */
+/* Codigo hecho por @Fabri115 y mejorado por BrunoSobrino 
+ Parchado por @Emma (Violet's Version)*/
 
 import { readdirSync, unlinkSync, existsSync, promises as fs, rmSync } from 'fs'
 import path from 'path'
@@ -30,7 +31,7 @@ if (filesDeleted === 0) {
 await conn.reply(m.chat, ` La carpeta esta vacía.`, m)
 } else {
 m.react(done)
-await conn.reply(m.chat, `Se purgaron ${filesDeleted} archivos de sesión, con exepcion de la sesion principal`, m)
+await conn.reply(m.chat, `Se purgaron ${filesDeleted} archivos de sesión`, m)
 conn.reply(m.chat, `*¡Kuze! ¿logras verme?*`, m)
 
 }
