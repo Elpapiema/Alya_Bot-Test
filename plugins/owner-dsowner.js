@@ -8,7 +8,7 @@ var handler = async (m, { conn, usedPrefix }) => {
 if (global.conn.user.jid !== conn.user.jid) {
 return conn.reply(m.chat, `Utiliza este comando directamente en el número principal del Bot.`, m)
 }
-await conn.reply(m.chat, `Iniciando proceso de eliminación de todos los archivos de sesión, excepto el archivo creds.json...`, m)
+await conn.reply(m.chat, `Iniciando proceso de purga de los archivos de sesión...`, m)
 m.react(rwait)
 
 let sessionPath = `./Alya-BotSession/`
@@ -30,8 +30,8 @@ if (filesDeleted === 0) {
 await conn.reply(m.chat, ` La carpeta esta vacía.`, m)
 } else {
 m.react(done)
-await conn.reply(m.chat, `Se eliminaron ${filesDeleted} archivos de sesión, excepto el archivo creds.json.`, m)
-conn.reply(m.chat, `*¡Hola! ¿logras verme?*`, m)
+await conn.reply(m.chat, `Se purgaron ${filesDeleted} archivos de sesión, con exepcion de la sesion principal`, m)
+conn.reply(m.chat, `*¡Kuze! ¿logras verme?*`, m)
 
 }
 } catch (err) {
@@ -42,7 +42,7 @@ await conn.reply(m.chat, `${msm} Ocurrió un fallo.`, m)
 }
 handler.help = ['dsowner']
 handler.tags = ['owner']
-handler.command = ['delai', 'dsowner', 'clearallsession']
+handler.command = ['delai', 'dsowner', 'clearallsession', 'purgar']
 handler.rowner = true;
 
 export default handler
