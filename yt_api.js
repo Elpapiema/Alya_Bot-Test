@@ -74,6 +74,6 @@ app.get('/download_video', (req, res) => {
 // Iniciar el servidor automáticamente
 export function startYTAPI() {
     return new Promise((resolve) => {
-        app.listen(3030, '0.0.0.0', () => resolve());
+        app.listen(5194, '0.0.0.0', () => resolve());
     });
 }
