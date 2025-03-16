@@ -17,69 +17,7 @@ let handler = async (m, { conn }) => {
         const randomVideoUrl = videos[Math.floor(Math.random() * videos.length)];
 
         const menuMessage = `
-/*┎───•✧•───⌬
-┃
-┃   ✦ Desarrollado por: 𝓔𝓶𝓶𝓪 (𝓥𝓲𝓸𝓵𝓮𝓽'𝓼 𝓥𝓮𝓻𝓼𝓲𝓸𝓷)
-┃
-┃   ✦ Versión actual: ${vs}
-┃
-┖───•✧•
 
-   *Hola!* soy ${botName}, aquí tienes la lista de comandos
-   ✦ *La Moneda actual es :* ${currency}
-
-┎───•✧•───⌬
-┃ 𝙿𝚎𝚛𝚜𝚘𝚗𝚊𝚕𝚒𝚣𝚊𝚌𝚒𝚘𝚗   (ノ^o^)ノ  
-┃
-┃ ❀ .setname 
-┃ ❀ .setbanner
-┃ ❀ .setmoneda
-┃ ❀ .viewbanner
-┃ ❀ .deletebanner
-┃ ❀ .resetpreferences
-┃
-┖───•✧•
-┎───•✧•───⌬
-> 𝚊𝚍𝚖𝚒𝚗𝚒𝚜𝚝𝚛𝚊𝚌𝚒𝚘𝚗   (ノ^o^)ノ 
-
-❀ .ban ➩ .kick _expulsa a los ususarios *Solo para Admins*_
- .getplugin
- .getpack
- .store
-┖───•✧•
-┎───•✧•───⌬
-> 𝚁𝚊𝚗𝚍𝚘𝚖   (ノ^o^)ノ  
-
- ❀ .rw ➩ .rollwaifu 
- ❀ .c ➩ .claim
- ❀ .harem
-   .addrw
-┖───•✧•
-┎───•✧•───⌬
-> 𝙳𝚎𝚜𝚌𝚊𝚛𝚐𝚊𝚜   (ノ^o^)ノ  
-
-  ❀ .play ➩ _nombre de la cancion ➩_ (audio)
-  ❀ .play2 ➩ _nombre de la cancion_ (video)
-  ❀ .tt ➩ .tiktok ➩ _link de tiktok_ (vídeo)
-  ❀ .sp .Spotify _link de Spotify_
-
-┖───•✧•
-┎───•✧•───⌬
-> 𝚁𝙿𝙶   (ノ^o^)ノ
-
- ❀ .w .work
- ❀ .slut
-   .robar
-   .deposit (cantidad)
-   .retirar (cantidad)
-   .transferir (cantidad) @usuario
-   .perfil
-
-
-> OWNER
-   .update
-   .dsowner .purgar
-┖───•✧•*/
 ╔═══════════════════🌙  
 ║   ❀•° ${botName} °•❀  
 ║   💜 𝑫𝒆𝒔𝒂𝒓𝒓𝒐𝒍𝒍𝒂𝒅𝒐 𝒑𝒐𝒓: ${dev}  
