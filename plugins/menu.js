@@ -77,7 +77,7 @@ let handler = async (m, { conn }) => {
 │ ✧ .dsowner ➩ .purgar 🗑️
 ╰── ⋆⋅🚀⋅⋆ ──╯
 
-
+> Hecho con mucho amor por ${dev}
 `;
 
         await conn.sendMessage(
