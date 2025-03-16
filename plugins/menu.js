@@ -68,7 +68,7 @@ let handler = async (m, { conn }) => {
 │ ✧ `.robar` 💰  
 │ ✧ `.deposit (cantidad)` 🏦  
 │ ✧ `.retirar (cantidad)` 🏧  
-│ ✧ `.transferir (cantidad) usuario` 🔁  
+│ ✧ `.transferir`2 (cantidad) usuarios 🔁  
 │ ✧ `.perfil` 🆔  
 ╰── ⋆⋅🚀⋅⋆ ──╯  
 
