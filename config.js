@@ -81,6 +81,7 @@ global.wm = 'AlyaBot'
 global.botname = 'AlyaBot'
 global.vs = '1.0.0'
 global.dev = 'Emma (Violets Version)'
+global.copy = '©' // No modificar
 
 //----------------------------[ NIVELES | RPG ]---------------------------------
 
