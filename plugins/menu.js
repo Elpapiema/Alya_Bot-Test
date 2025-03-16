@@ -43,7 +43,9 @@ let handler = async (m, { conn }) => {
 > 𝚊𝚍𝚖𝚒𝚗𝚒𝚜𝚝𝚛𝚊𝚌𝚒𝚘𝚗   (ノ^o^)ノ 
 
 ❀ .ban ➩ .kick _expulsa a los ususarios *Solo para Admins*_
-
+ .getplugin
+ .getpack
+ .store
 ┖───•✧•
 ┎───•✧•───⌬
 > 𝚁𝚊𝚗𝚍𝚘𝚖   (ノ^o^)ノ  
@@ -51,6 +53,7 @@ let handler = async (m, { conn }) => {
  ❀ .rw ➩ .rollwaifu 
  ❀ .c ➩ .claim
  ❀ .harem
+   .addrw
 ┖───•✧•
 ┎───•✧•───⌬
 > 𝙳𝚎𝚜𝚌𝚊𝚛𝚐𝚊𝚜   (ノ^o^)ノ  
@@ -66,7 +69,16 @@ let handler = async (m, { conn }) => {
 
  ❀ .w .work
  ❀ .slut
+   .robar
+   .deposit (cantidad)
+   .retirar (cantidad)
+   .transferir (cantidad) @usuario
+   .perfil
 
+
+> OWNER
+   .update
+   .dsowner .purgar
 ┖───•✧•
 `;
 
