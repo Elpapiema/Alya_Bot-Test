@@ -1,17 +1,3 @@
-/*⚠ PROHIBIDO EDITAR ⚠
-
-El codigo de este archivo esta totalmente hecho por:
-- Aiden_NotLogic >> https://github.com/ferhacks
-
-El codigo de este archivo fue parchado por:
-- ReyEndymion >> https://github.com/ReyEndymion
-- BrunoSobrino >> https://github.com/BrunoSobrino
-
-Contenido adaptado por:
-- GataNina-Li >> https://github.com/GataNina-Li
-- elrebelde21 >> https://github.com/elrebelde21
-*/ 
-
 const { useMultiFileAuthState, DisconnectReason, makeCacheableSignalKeyStore, fetchLatestBaileysVersion} = (await import(global.baileys));
 import qrcode from "qrcode"
 import NodeCache from "node-cache"
@@ -32,7 +18,7 @@ let crm3 = "SBpbmZvLWRvbmFyLmpz"
 let crm4 = "IF9hdXRvcmVzcG9uZGVyLmpzIGluZm8tYm90Lmpz"
 let drm1 = "CkphZGlib3QsIEhlY2hv"
 let drm2 = "IHBvciBAQWlkZW5fTm90TG9naWM"
-let rtx = `*🔰 Alya_Bot 🔰*\nㅤㅤㅤㅤ*Ser sub bot*\n\n*Con otro telefono que tengas o en la PC escanea este QR para convertirte en un sub bot*\n\n*1. Haga clic en los tres puntos en la esquina superior derecha*\n*2. Toca WhatsApp Web*\n*3. Escanee este codigo QR*\n*Este código QR expira en 45 segundos!*\n\n> *⚠️ No nos hacemos responsable del mal uso que se le pueda dar o si el numero se manda a soporte.. ustedes tienen el deber se seguir al pie de la letra los terminos y condiciones y privacidad (escribe eso y te los dará)*`
+let rtx = `*🔰 Alya_Bot-MD 🔰*\nㅤㅤㅤㅤ*Ser sub bot*\n\n*Con otro telefono que tengas o en la PC escanea este QR para convertirte en un sub bot*\n\n*1. Haga clic en los tres puntos en la esquina superior derecha*\n*2. Toca WhatsApp Web*\n*3. Escanee este codigo QR*\n*Este código QR expira en 45 segundos!*\n\n> *⚠️ No nos hacemos responsable del mal uso que se le pueda dar o si el numero se manda a soporte.. ustedes tienen el deber se seguir al pie de la letra los terminos y condiciones y privacidad (escribe eso y te los dará)*`
 let rtx2 = `🟢 *_NUEVA FUNCIÓN DE HACERTE UN SUB BOT_* 🟢
 
 *1️⃣ Diríjase en los tres puntos en la esquina superior derecha*
@@ -45,8 +31,6 @@ let rtx2 = `🟢 *_NUEVA FUNCIÓN DE HACERTE UN SUB BOT_* 🟢
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const gataJBOptions = {}
-const retryMap = new Map(); 
-const maxAttempts = 5;
 if (global.conns instanceof Array) console.log()
 else global.conns = []
 let handler = async (m, { conn, args, usedPrefix, command, isOwner }) => {
@@ -123,9 +107,9 @@ logger: pino({ level: 'silent' }),
 auth: { creds: state.creds, keys: makeCacheableSignalKeyStore(state.keys, pino({level: 'silent'})) },
 msgRetry,
 msgRetryCache,
-version: version,
+version: [2, 3000, 1015901307],
 syncFullHistory: true,
-browser: mcode ? ['Alya_Bot', 'Edge', '110.0.5585.95'] : ['Alya_Bot (Sub Bot)', 'Edge','2.0.0'],
+browser: mcode ? ['Alya_Bot-MD', 'Edge', '110.0.5585.95'] : ['Alya_Bot-MD (Sub Bot)', 'Edge','2.0.0'],
 defaultQueryTimeoutMs: undefined,
 getMessage: async (key) => {
 if (store) {
@@ -138,7 +122,6 @@ conversation: 'LoliBot-MD',
 let sock = makeWASocket(connectionOptions)
 sock.isInit = false
 let isInit = true
-let reconnectAttempts = 0;
 
 async function connectionUpdate(update) {
 const { connection, lastDisconnect, isNewLogin, qr } = update
@@ -184,17 +167,8 @@ global.conns.splice(i, 1)
 const reason = lastDisconnect?.error?.output?.statusCode || lastDisconnect?.error?.output?.payload?.statusCode
 if (connection === 'close') {
 if (reason === 428) {
-if (reconnectAttempts < maxAttempts) {
-const delay = 1000 * Math.pow(2, reconnectAttempts); 
-console.log(chalk.bold.magentaBright(`\n╭┄┄┄┄┄┄┄┄┄┄┄┄┄┄ • • • ┄┄┄┄┄┄┄┄┄┄┄┄┄┄⟡\n┆ La conexión (+${path.basename(pathGataJadiBot)}) fue cerrada inesperadamente. Intentando reconectar en ${delay / 1000} segundos... (Intento ${reconnectAttempts + 1}/${maxAttempts})\n╰┄┄┄┄┄┄┄┄┄┄┄┄┄┄ • • • ┄┄┄┄┄┄┄┄┄┄┄┄┄┄⟡`))
-await sleep(1000);
-reconnectAttempts++;
-await creloadHandler(true).catch(console.error);
-} else {
-console.log(chalk.redBright(`Sub-bot (+${path.basename(pathGataJadiBot)}) agotó intentos de reconexión. intentando más tardes...`));
-}            
-/*console.log(chalk.bold.magentaBright(`\n╭┄┄┄┄┄┄┄┄┄┄┄┄┄┄ • • • ┄┄┄┄┄┄┄┄┄┄┄┄┄┄⟡\n┆ La conexión (+${path.basename(pathGataJadiBot)}) fue cerrada inesperadamente. Intentando reconectar...\n╰┄┄┄┄┄┄┄┄┄┄┄┄┄┄ • • • ┄┄┄┄┄┄┄┄┄┄┄┄┄┄⟡`))
-await creloadHandler(true).catch(console.error)*/
+console.log(chalk.bold.magentaBright(`\n╭┄┄┄┄┄┄┄┄┄┄┄┄┄┄ • • • ┄┄┄┄┄┄┄┄┄┄┄┄┄┄⟡\n┆ La conexión (+${path.basename(pathGataJadiBot)}) fue cerrada inesperadamente. Intentando reconectar...\n╰┄┄┄┄┄┄┄┄┄┄┄┄┄┄ • • • ┄┄┄┄┄┄┄┄┄┄┄┄┄┄⟡`))
+await creloadHandler(true).catch(console.error)
 }
 if (reason === 408) {
 console.log(chalk.bold.magentaBright(`\n╭┄┄┄┄┄┄┄┄┄┄┄┄┄┄ • • • ┄┄┄┄┄┄┄┄┄┄┄┄┄┄⟡\n┆ La conexión (+${path.basename(pathGataJadiBot)}) se perdió o expiró. Razón: ${reason}. Intentando reconectar...\n╰┄┄┄┄┄┄┄┄┄┄┄┄┄┄ • • • ┄┄┄┄┄┄┄┄┄┄┄┄┄┄⟡`))
@@ -228,7 +202,6 @@ fs.rmdirSync(pathGataJadiBot, { recursive: true })
 
 if (global.db.data == null) loadDatabase()
 if (connection == `open`) {
-reconnectAttempts = 0;
 if (!global.db.data?.users) loadDatabase()
 let userName, userJid 
 userName = sock.authState.creds.me.name || 'Anónimo'
@@ -331,29 +304,6 @@ creloadHandler(false)
 })
 }
 
-export async function startSubBots() {
-const subBotDir = path.resolve("./jadibts");
-    if (!fs.existsSync(subBotDir)) return;
-    const subBotFolders = fs.readdirSync(subBotDir).filter(folder => 
-        fs.statSync(path.join(subBotDir, folder)).isDirectory()
-    );
-    for (const folder of subBotFolders) {
-        const pathGataJadiBot = path.join(subBotDir, folder);
-        const credsPath = path.join(pathGataJadiBot, "creds.json");
-        if (fs.existsSync(credsPath)) {
-            await gataJadiBot({
-                pathGataJadiBot,
-                m: null,
-                conn: global.conn,
-                args: [],
-                usedPrefix: '#',
-                command: 'jadibot',
-                fromCommand: false
-            });
-        }
-    }
-}
-
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 function sleep(ms) {
 return new Promise(resolve => setTimeout(resolve, ms));}
@@ -363,51 +313,25 @@ for (const channelId of Object.values(global.ch)) {
 await conn.newsletterFollow(channelId).catch(() => {})
 }}
 
-async function checkSubBots() {
-    const subBotDir = path.resolve("./jadibts");
-    if (!fs.existsSync(subBotDir)) return;
-    const subBotFolders = fs.readdirSync(subBotDir).filter(folder => 
-        fs.statSync(path.join(subBotDir, folder)).isDirectory()
-    );
-
-    for (const folder of subBotFolders) {
-        const pathGataJadiBot = path.join(subBotDir, folder);
-        const credsPath = path.join(pathGataJadiBot, "creds.json");
-        const subBot = global.conns.find(conn => 
-            conn.user?.jid?.includes(folder) || path.basename(pathGataJadiBot) === folder);
-
-        if (!fs.existsSync(credsPath)) continue;
-
-        if (!subBot || !subBot.user) {
-            console.log(chalk.bold.yellowBright(`Sub-bot (+${folder}) no conectado. Intentando activarlo...`));
-            const retries = retryMap.get(folder) || 0;
-            if (retries >= 5) {
-                console.log(chalk.redBright(`Sub-bot (+${folder}) alcanzó límite de reintentos. intentando más tardes`));
-               //fs.rmdirSync(pathGataJadiBot, { recursive: true });
-                retryMap.delete(folder);
-                continue;
-            }
-
-            try {
-                await gataJadiBot({
-                    pathGataJadiBot,
-                    m: null,
-                    conn: global.conn,
-                    args: [],
-                    usedPrefix: '#',
-                    command: 'jadibot',
-                    fromCommand: false
-                });
-                retryMap.delete(folder); // Resetear intentos si se conecta
-            } catch (e) {
-                console.error(chalk.redBright(`Error al activar sub-bot (+${folder}):`), e);
-                retryMap.set(folder, retries + 1);
-            }
-        }
+async function monitorSubBots() {
+for (let [index, sock] of global.conns.entries()) {
+    const subBotId = sock.user?.jid || `Sub-bot ${index}`;
+    if (!sock.ws || sock.ws.readyState !== ws.OPEN) {
+      console.log(chalk.bold.redBright(`[MONITOR] Sub-bot ${subBotId} desconectado. Intentando reconectar...`));
+      try {
+        await creloadHandler(true, sock);
+        console.log(chalk.bold.greenBright(`[MONITOR] Sub-bot ${subBotId} reconectado exitosamente.`));
+      } catch (error) {
+        console.error(chalk.bold.redBright(`[MONITOR] Error al reconectar sub-bot ${subBotId}:`), error);
+      }
+    } else {
+      console.log(chalk.bold.greenBright(`[MONITOR] Sub-bot ${subBotId} está activo.`));
     }
+  }
 }
 
-setInterval(checkSubBots, 60000); //1min
+setInterval(monitorSubBots, 300000); //5 min
+
 /*const {
   useMultiFileAuthState,
   DisconnectReason,

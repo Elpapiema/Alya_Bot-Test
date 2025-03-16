@@ -41,6 +41,7 @@ else return m.reply(`*Y la imagen? 🤔 Responde a una imagen para hacer el stic
 handler.help = ['sticker']
 handler.tags = ['sticker']
 handler.command = ['s', 'sticker'] 
+handler.register = true
 export default handler
 
 const isUrl = (text) => {
