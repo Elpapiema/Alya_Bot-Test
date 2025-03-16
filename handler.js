@@ -41,21 +41,200 @@ let user = global.db.data.users[m.sender]
 if (typeof user !== 'object')
 global.db.data.users[m.sender] = {}
 if (user) {
+if (!isNumber(user.exp)) user.exp = 0;
+if (user.exp < 0) user.exp = 0; 
+if (!isNumber(user.money)) user.money = 10;
+if (user.money < 0) user.money = 0; 
+if (!isNumber(user.limit)) user.limit = 8;
+if (user.limit < 0) user.limit = 0; 
+if (!('premium' in user)) user.premium = false;
+if (!('registered' in user)) user.registered = false;
+if (!user.registered) {
+if (!('name' in user)) user.name = m.name;
+if (!isNumber(user.age)) user.age = -1;
+if (!isNumber(user.premiumDate)) user.premiumDate = -1;
+if (!isNumber(user.regTime)) user.regTime = -1;
+}
+if (!isNumber(user.afk)) user.afk = -1;
+if (!('autolevelup' in user)) user.autolevelup = true;
+if (!('role' in user)) user.role = 'Novato';        
+if (!isNumber(user.level)) user.level = 0;
+if (!isNumber(user.antispam)) user.antispam = 0;
+if (!isNumber(user.banco)) user.banco = 0        
+if (!user.premium) user.premium = false;
+if (!user.warnPv) user.warnPv = false
+if (!user.premium) user.premiumTime = 0;
+if (!user.marry) user.marry = 0;
+if (!user.wait) user.wait = 0;
+if (!user.lastmiming) user.lastmiming = 0;
+if (!user.lastwork) user.lastwork = 0;
+if (!user.lastcofre) user.lastcofre = 0;
+if (!user.lastclaim) user.lastclaim = 0;
+if (!user.messageSpam) user.messageSpam = 0;
+if (!user.crime) user.crime = 0;
+if (!user.lastrob) user.lastrob = 0;
+if (!user.packname) user.packname = null
+if (!user.author) user.author = null
+if (!user.timeRy) user.timeRy = 0;
+if (!user.timevot) user.timevot = 0;
+if (!user.mensaje) user.mensaje = 0;
+if (!user.rtrofi) user.rtrofi = 'Bronce';
 } else
 global.db.data.users[m.sender] = {
-
+exp: 0,
+money: 10,
+limit: 8,
+registered: false,     
+premium: false,
+regTime: -1,        
+premiumTime: 0,     
+role: 'Novato',     
+autolevelup: true,       
+banned: false,
+afk: -1,
+afkReason: '',
+lastwork: 0,
+messageSpam: 0,
+lastclaim: 0,
+level: 0,
+wait: 0,
+age: -1,             
+marry: 0,
+bank: 0,
+BannedReason: '',
+Banneduser: false,          
+warnPv: false,
+packname: null,
+author: null,
+banco: 0,
+timeRy: 0,               
+lastmiming: 0,
+lastcofre: 0,
+crime: 0,
+lastrob: 0,
+timevot: 0,
+rtrofi: 'bronce',          
+mensaje: 0,
 }
 let chat = global.db.data.chats[m.chat]
 if (typeof chat !== 'object')
 global.db.data.chats[m.chat] = {}
 if (chat) {
+if (!('sAutorespond' in chat)) chat.sAutorespond = '' 
+if (!('isBanned' in chat)) chat.isBanned = false       
+if (!('welcome' in chat)) chat.welcome = true        
+if (!('detect' in chat)) chat.detect = true             
+if (!('sWelcome' in chat)) chat.sWelcome = ''        
+if (!('sBye' in chat)) chat.sBye = ''                    
+if (!('sPromote' in chat)) chat.sPromote = ''         
+if (!('sDemote' in chat)) chat.sDemote = '' 
+if (!('delete' in chat)) chat.delete = false            
+if (!('modohorny' in chat)) chat.modohorny = true   
+if (!('stickers' in chat)) chat.stickers = false         
+if (!('autosticker' in chat)) chat.autosticker = false   
+if (!('audios' in chat)) chat.audios = false           
+if (!('antiLink' in chat)) chat.antiLink = false     
+if (!('antiLink2' in chat)) chat.antiLink2 = false
+if (!('antiTiktok' in chat)) chat.antiTiktok = false
+if (!('antiYoutube' in chat)) chat.antiYoutube = false
+if (!('antiTelegram' in chat)) chat.antiTelegram = false
+if (!('antiFacebook' in chat)) chat.antiFacebook = false
+if (!('antiInstagram' in chat)) chat.antiInstagram = false
+if (!('antiTwitter' in chat)) chat.antiTwitter = false
+if (!('antiDiscord' in chat)) chat.antiDiscord = false
+if (!('antiThreads' in chat)) chat.antiThreads = false
+if (!('antiTwitch' in chat)) chat.antiTwitch = false
+if (!('antifake' in chat)) chat.antifake = false
+if (!('reaction' in chat)) chat.reaction = true       
+if (!('modoadmin' in chat)) chat.modoadmin = false 
+if (!('game' in chat)) chat.game = true
+if (!('game2' in chat)) chat.game2 = false
+if (!('simi' in chat)) chat.simi = false
+if (!('antiTraba' in chat)) chat.antiTraba = true 
+if (!('primaryBot' in chat)) chat.primaryBot = null
+if (!('autorespond' in chat)) chat.autorespond = true 
+if (!('autolevelup' in chat))  chat.autolevelup = true
+if (!isNumber(chat.expired)) chat.expired = 0
+if (!('horarioNsfw' in chat)) { 
+chat.horarioNsfw = {
+inicio: "00:00", 
+fin: "23:59"
+};
+}
 } else
 global.db.data.chats[m.chat] = {
+isBanned: false,
+welcome: true,
+detect: true,
+sWelcome: '',
+sBye: '',
+sPromote: '',
+sDemote: '', 
+sAutorespond: '', 
+delete: false,
+modohorny: true,
+stickers: false,
+autosticker: false,
+audios: false,
+antiLink: false,
+antiLink2: false,
+antiTiktok: false,
+antiYoutube: false,
+antiTelegram: false,
+antiFacebook: false,
+antiInstagram: false,
+antiTwitter: false,
+antiDiscord: false,
+antiThreads: false,
+antiTwitch: false,
+antifake: false,
+reaction: true,
+modoadmin: false,
+antitoxic: false,
+game: true, 
+game2: false, 
+simi: false,
+primaryBot: null,
+antiTraba: true,
+autorespond: true, 
+autolevelup: true,
+expired: 0,
+horarioNsfw: {
+inicio: "00:00", 
+fin: "23:59"
+}
 }
 var settings = global.db.data.settings[this.user.jid]
 if (typeof settings !== 'object') global.db.data.settings[this.user.jid] = {}
 if (settings) {
- 	}} catch (e) {
+if (!('self' in settings)) settings.self = false
+if (!('autoread' in settings)) settings.autoread = false
+if (!('autoread2' in settings)) settings.autoread2 = false
+if (!('restrict' in settings)) settings.restrict = true
+if (!('temporal' in settings)) settings.temporal = false
+if (!('antiPrivate' in settings)) settings.antiPrivate = false
+if (!('antiCall' in settings)) settings.antiCall = true
+if (!('antiSpam' in settings)) settings.antiSpam = true 
+if (!('modoia' in settings)) settings.modoia = false
+if (!('anticommand' in settings)) settings.anticommand = false	
+if (!('jadibotmd' in settings)) settings.jadibotmd = true
+if (!('prefix' in settings)) settings.prefix = opts['prefix'] || '*/i!#$%+£¢€¥^°=¶∆×÷π√✓©®&.\\-.@';
+if (!('status' in settings)) settings.status = 0
+} else global.db.data.settings[this.user.jid] = {
+self: false,
+autoread: false,
+autoread2: false,
+restrict: true,
+temporal: false,
+antiPrivate: false,
+antiCall: true,
+antiSpam: true,
+modoia: false, 
+anticommand: false, 	
+jadibotmd: true,
+prefix: opts['prefix'] || '*/i!#$%+£¢€¥^°=¶∆×÷π√✓©®&.\\-.@',
+status: 0
+}} catch (e) {
 console.error(e)
 }
 
@@ -406,7 +585,7 @@ if (media === 'texto') {
 this.sendMessage(id, {text: text, contextInfo: { forwardedNewsletterMessageInfo: { newsletterJid: '120363355261011910@newsletter', serverMessageId: '', newsletterName: 'LoliBot ✨' },forwardingScore: 9999999, isForwarded: true, mentionedJid: [user], externalAdReply: { showAdAttribution: true, renderLargerThumbnail: true, thumbnail: apii.data, title: [wm, ' ' + wm + '😊', '🌟'].getRandom(), containsAutoReply: true, mediaType: 1, sourceUrl: [nna, nna2, nnntt, yt].getRandom()}}}, { quoted: fkontak2 });
 }
 if (media === 'audio') {
-this.sendMessage(id, { audio: { url: vn }, contextInfo: { forwardedNewsletterMessageInfo: { newsletterJid: '120363355261011910@newsletter', serverMessageId: '', newsletterName: 'LoliBot ✨' }, forwardingScore: 9999999, isForwarded: true, mentionedJid: [user] }, ptt: true, mimetype: 'audio/mpeg', fileName: `error.mp3` }, { quoted: fkontak2 });
+this.sendMessage(id, { audio: { url: vn }, contextInfo: { forwardedNewsletterMessageInfo: { newsletterJid: '120363355261011910@newsletter', serverMessageId: '', newsletterName: 'LoliBot ✨' }, forwardingScore: 9999999, isForwarded: true, mentionedJid: [user], externalAdReply: { mediaType: 1, previewType: "PHOTO", thumbnail: apii.data, title: `乂 ＷＥＬＣＯＭＥ 乂`, body: [wm, ' ' + wm + '😊', '🌟'].getRandom(), showAdAttribution: true, renderLargerThumbnail: true, sourceUrl: [nna, nna2, nnntt, yt].getRandom()}}, ptt: true, mimetype: 'audio/mpeg', fileName: `error.mp3` }, { quoted: fkontak2 });
 }}}}            
 			    
 break
@@ -452,7 +631,7 @@ if (!isAnticall) return
 for (let nk of callUpdate) {
 if (nk.isGroup == false) {
 if (nk.status == "offer") {
-let callmsg = await this.reply(nk.from, `ʜᴏʟᴀ *@${nk.from.split('@')[0]}*, ʟᴀs ${nk.isVideo ? 'videollamadas' : 'llamadas'} ɴᴏ ᴇsᴛᴀɴ ᴘᴇʀᴍɪᴛɪᴅᴀs, sᴇʀᴀs ʙʟᴏǫᴜᴇᴀᴅᴏ.\n\nsɪ ᴀᴄᴄɪᴅᴇɴᴛᴀʟᴍᴇɴᴛᴇ ʟʟᴀᴍᴀsᴛᴇ ᴘᴏɴɢᴀsᴇ ᴇɴ ᴄᴏɴᴛᴀᴄᴛᴏ ᴄᴏɴ ᴍɪ ᴄʀᴇᴀᴅᴏʀ ᴘᴀʀᴀ ǫᴜᴇ ᴛᴇ ᴅᴇsʙʟᴏǫᴜᴇᴇ!\n\nɢʀᴜᴘᴏ ᴀsɪsᴛᴇɴᴄɪᴀ ғᴀᴄᴇʙᴏᴏᴋ:`, false, { mentions: [nk.from] })
+let callmsg = await this.reply(nk.from, `ʜᴏʟᴀ *@${nk.from.split('@')[0]}*, ʟᴀs ${nk.isVideo ? 'videollamadas' : 'llamadas'} ɴᴏ ᴇsᴛᴀɴ ᴘᴇʀᴍɪᴛɪᴅᴀs, sᴇʀᴀs ʙʟᴏǫᴜᴇᴀᴅᴏ.\n\nsɪ ᴀᴄᴄɪᴅᴇɴᴛᴀʟᴍᴇɴᴛᴇ ʟʟᴀᴍᴀsᴛᴇ ᴘᴏɴɢᴀsᴇ ᴇɴ ᴄᴏɴᴛᴀᴄᴛᴏ ᴄᴏɴ ᴍɪ ᴄʀᴇᴀᴅᴏʀ ᴘᴀʀᴀ ǫᴜᴇ ᴛᴇ ᴅᴇsʙʟᴏǫᴜᴇᴇ!\n\nɢʀᴜᴘᴏ ᴀsɪsᴛᴇɴᴄɪᴀ ғᴀᴄᴇʙᴏᴏᴋ: ${fb}`, false, { mentions: [nk.from] })
 let vcard = `BEGIN:VCARD\nVERSION:3.0\nN:;𝙇𝙤𝙡𝙞𝘽𝙤𝙩-𝙈𝘿 👑;;;\nFN:𝙇𝙤𝙡𝙞𝘽𝙤𝙩-𝙈𝘿\nORG:𝙇𝙤𝙡𝙞𝘽𝙤𝙩-𝙈𝘿 👑\nTITLE:\nitem1.TEL;waid=5214774444444:+52 477 444 4444\nitem1.X-ABLabel:𝙇𝙤𝙡𝙞𝘽𝙤𝙩-𝙈𝘿 👑\nX-WA-BIZ-DESCRIPTION:[❗] ᴇsᴄʀɪʙɪ sᴏʟᴏ ᴘᴏʀ ᴄᴏsᴀs ᴅᴇʟ ʙᴏᴛ.\nX-WA-BIZ-NAME:𝙇𝙤𝙡𝙞𝘽𝙤𝙩-𝙈𝘿 👑\nEND:VCARD`
 await this.sendMessage(nk.from, { contacts: { displayName: '𝙇𝙤𝙡𝙞𝘽𝙤𝙩-𝙈𝘿 👑', contacts: [{ vcard }] }}, {quoted: callmsg})
 await this.updateBlockStatus(nk.from, 'block')
@@ -487,13 +666,12 @@ botAdmin: '⚠️ haz admin al Bot "YO" para poder usar este comando.',
 unreg: '「NO ESTAS REGISTRADO」\n\nPA NO APARECES EN MI BASE DE DATOS ✋🥸🤚\n\nPara poder usarme escribe el siguente comando\n\nComando: #reg nombre.edad\nEjemplo: #reg elrebelde.21',
 restrict: '[ 🔐 ] Este comando esta desactivado por mi jefe'
 }[type]
-if (msg) return conn.sendMessage(m.chat, { 
+ if (msg) return conn.sendMessage(m.chat, { 
     text: msg, 
     contextInfo: { 
         mentionedJid: null
     } 
-}, { quoted: m })
-}
+}, { quoted: m })}
 
 const file = global.__filename(import.meta.url, true);
 watchFile(file, async () => {
