@@ -1,7 +1,10 @@
-node_modules
-database.json
-BotSession
+.npm/
+.git/
 package-lock.json
-harem.json
-Alya-BotSession
 yarn.lock
+database.json 
+node_modules/
+BotSession/
+jadibts/ 
+BackupSession/
+database/
