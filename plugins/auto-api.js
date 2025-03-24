@@ -5,17 +5,21 @@ const API_URL = 'https://api.alya-host.shop/download_video?url=';
 async function fetchVideo() {
     try {
         let response = await fetch(API_URL);
-        if (!response.ok) throw new Error(`Error en la API: ${response.statusText}`);
+        
+        if (response.status === 400) {
+            console.log('✅ Respuesta correcta: Código 400 (Bad Request)');
+            return;
+        }
 
         let data = await response.json();
-
+        
         if (data.error === "Falta el parámetro URL") {
             console.log('✅ Respuesta correcta:', data);
         } else {
             console.error('⚠️ Respuesta inesperada:', data);
         }
     } catch (error) {
-        console.error('❌ Error al hacer la solicitud:', error);
+        console.error('❌ Error inesperado:', error);
     }
 }
 
