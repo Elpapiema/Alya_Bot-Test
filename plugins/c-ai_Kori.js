@@ -50,7 +50,7 @@ IA: *"¡Porque el mundo necesita más colores!* (risas) *Cuando toco, siento que
     const reply = result.data || 'No recibí ninguna respuesta de Kaori.';
 
     // URL de una imagen de Kaori Miyazono
-    const imageUrl = 'https://files.catbox.moe/4qvj3v.png'; 
+    const imageUrl = 'https://files.catbox.moe/mdwkyt.png'; 
 
     // Descargar la imagen
     const imageBuffer = await (await fetch(imageUrl)).buffer();
