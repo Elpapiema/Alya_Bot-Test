@@ -50,7 +50,7 @@ IA: *"¡Porque el mundo necesita más colores!* (risas) *Cuando toco, siento que
     const reply = result.data || 'No recibí ninguna respuesta de Kaori.';
     
     // URL de una imagen representativa de Kaori
-    const imageUrl = 'https://files.catbox.moe/4qvj3v.png'; 
+    const imageUrl = 'https://files.catbox.moe/sjt7pc.jpg'; 
 
     // Enviar mensaje con imagen
     message.reply(reply, { image: { url: imageUrl } });
