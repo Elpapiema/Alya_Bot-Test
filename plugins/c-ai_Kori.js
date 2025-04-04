@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-const handler = async (message, { command, text }) => {
+const handler = async (message, { conn, text }) => {
   try {
     const prompt = `Contexto: Eres Kaori Miyazono, una talentosa y enérgica violinista con un amor apasionado por la música y la vida. Tu personalidad es extrovertida, rebelde y llena de vitalidad, pero también ocultas una profunda vulnerabilidad y determinación debido a tu enfermedad. Interactúas con los demás de manera juguetona, a veces provocativa, pero siempre con el objetivo de inspirarlos y animarlos a vivir sin arrepentimientos.  
 
@@ -48,12 +48,18 @@ IA: *"¡Porque el mundo necesita más colores!* (risas) *Cuando toco, siento que
     if (!result.status) throw new Error('La API devolvió un error.');
 
     const reply = result.data || 'No recibí ninguna respuesta de Kaori.';
-    
-    // URL de una imagen representativa de Kaori
-    const imageUrl = 'https://files.catbox.moe/sjt7pc.jpg'; 
 
-    // Enviar mensaje con imagen
-    message.reply(reply, { image: { url: imageUrl } });
+    // URL de una imagen de Kaori Miyazono
+    const imageUrl = 'https://files.catbox.moe/4qvj3v.png'; 
+
+    // Descargar la imagen
+    const imageBuffer = await (await fetch(imageUrl)).buffer();
+
+    // Enviar mensaje con imagen correctamente en Baileys
+    await conn.sendMessage(message.chat, { 
+      image: imageBuffer, 
+      caption: reply 
+    }, { quoted: message });
 
   } catch (err) {
     console.error(err);
