@@ -47,13 +47,14 @@ IA: *"¡Porque el mundo necesita más colores!* (risas) *Cuando toco, siento que
     const result = await response.json();
     if (!result.status) throw new Error('La API devolvió un error.');
 
-    const reply = result.data || 'No recibí ninguna respuesta de Alya.';
-    const imageUrl = 'https://files.catbox.moe/4qvj3v.png'; // URL de la imagen
+    const reply = result.data || 'No recibí ninguna respuesta de Kaori.';
+    
+    // URL de una imagen representativa de Kaori
+    const imageUrl = 'https://files.catbox.moe/4qvj3v.png'; 
 
-    message.reply({
-      text: reply,
-      image: { url: imageUrl }
-    });
+    // Enviar mensaje con imagen
+    message.reply(reply, { image: { url: imageUrl } });
+
   } catch (err) {
     console.error(err);
     message.reply(
