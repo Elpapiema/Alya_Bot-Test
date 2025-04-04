@@ -48,7 +48,12 @@ IA: *"¡Porque el mundo necesita más colores!* (risas) *Cuando toco, siento que
     if (!result.status) throw new Error('La API devolvió un error.');
 
     const reply = result.data || 'No recibí ninguna respuesta de Alya.';
-    message.reply(reply);
+    const imageUrl = 'https://files.catbox.moe/4qvj3v.png'; // URL de la imagen PNG
+
+    message.reply({
+      text: reply,
+      image: { url: imageUrl }
+    });
   } catch (err) {
     console.error(err);
     message.reply(
