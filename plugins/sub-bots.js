@@ -211,7 +211,7 @@ sock.isInit = true
 global.conns.push(sock)
 
 let user = global.db.data?.users[`${path.basename(pathGataJadiBot)}@s.whatsapp.net`]
-m?.chat ? await conn.sendMessage(m.chat, {text : args[0] ? `✅ Ya esta conectado!! Por favor espere se esta cargador los mensajes.....*` : `*Conectado exitosamente con WhatsApp ✅*\n\n*💻 Bot:* +${path.basename(pathGataJadiBot)}\n*👤 Dueño:*  ${userName}\n\n*Nota: Con la nueva función de auto-reinicio (Beta)*, Si el bot principal se reinicia o se desactiva, los sub-bots se reiniciarán automáticamente, asegurando que sigan activos sin interrupciones.\n\n> *Unirte a nuestro canal para informarte de todas la Actualizaciónes/novedades sobre el bot*\n${nna2}`}, { quoted: m }) : ''
+m?.chat ? await conn.sendMessage(m.chat, {text : args[0] ? `✅ Ya esta conectado!! Por favor espere se esta cargador los mensajes.....*` : `*Conectado exitosamente con WhatsApp ✅*\n\n*💻 Bot:* +${path.basename(pathGataJadiBot)}\n*👤 Dueño:*  ${userName}\n\n*Nota: Con la nueva función de auto-reinicio (Beta)*, Si el bot principal se reinicia o se desactiva, los sub-bots se reiniciarán automáticamente, asegurando que sigan activos sin interrupciones.\n\n> *Unirte a nuestro canal para informarte de todas la Actualizaciónes/novedades sobre el bot*`}, { quoted: m }) : ''
 let chtxt = `*Se detectó un nuevo Sub-Bot conectado 💻✨*
 
 *✨ Bot :* wa.me/${path.basename(pathGataJadiBot)}
