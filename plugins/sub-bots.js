@@ -16,8 +16,10 @@ let crm1 = "Y2QgcGx1Z2lucy"
 let crm2 = "A7IG1kNXN1b"
 let crm3 = "SBpbmZvLWRvbmFyLmpz"
 let crm4 = "IF9hdXRvcmVzcG9uZGVyLmpzIGluZm8tYm90Lmpz"
-let drm1 = "CkphZGlib3QsIEhlY2hv"
-let drm2 = "IHBvciBAQWlkZW5fTm90TG9naWM"
+// DRM options no tocar ya que la mas minima edicion rompe todo como no te lo imaginas
+let drm1 = "Q29kaWdvIGRlIFN1Yi1Cb3RzIGNyZWFkbyBwb3IgQEFpZGVuX05vdExvZ2lj"
+let drm2 = "UGFyY2hhZG8geSBDb3JyZWdpZG8gcG9yIEBFbW1hIChWaW9sZXQncyBWZXJzaW9uKQ=="
+// ----------------------------------------
 let rtx = `*🔰 Alya_Bot-MD 🔰*\nㅤㅤㅤㅤ*Ser sub bot*\n\n*Con otro telefono que tengas o en la PC escanea este QR para convertirte en un sub bot*\n\n*1. Haga clic en los tres puntos en la esquina superior derecha*\n*2. Toca WhatsApp Web*\n*3. Escanee este codigo QR*\n*Este código QR expira en 45 segundos!*\n\n> *⚠️ No nos hacemos responsable del mal uso que se le pueda dar o si el numero se manda a soporte.. ustedes tienen el deber se seguir al pie de la letra los terminos y condiciones y privacidad (escribe eso y te los dará)*`
 let rtx2 = `🟢 *_NUEVA FUNCIÓN DE HACERTE UN SUB BOT_* 🟢
 
@@ -116,7 +118,7 @@ if (store) {
 //const msg = store.loadMessage(key.remoteJid, key.id)
 //return msg.message && undefined
 } return {
-conversation: 'LoliBot-MD',
+conversation: 'AlyaBot_MD',
 }}}
 
 let sock = makeWASocket(connectionOptions)
