@@ -109,7 +109,7 @@ msgRetry,
 msgRetryCache,
 version: [2, 3000, 1015901307],
 syncFullHistory: true,
-browser: mcode ? ['Alya_Bot-MD', 'Edge', '110.0.5585.95'] : ['Alya_Bot-MD (Sub Bot)', 'Edge','2.0.0'],
+browser: mcode ? ['Ubuntu', 'Edge', '110.0.5585.95'] : ['Alya_Bot-MD (Sub Bot)', 'Edge','2.0.0'],
 defaultQueryTimeoutMs: undefined,
 getMessage: async (key) => {
 if (store) {
