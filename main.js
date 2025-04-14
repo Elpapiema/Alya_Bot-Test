@@ -27,6 +27,7 @@ const phoneUtil = PhoneNumberUtil.getInstance()
 const {useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, MessageRetryMap, makeCacheableSignalKeyStore,  jidNormalizedUser } = await import('@whiskeysockets/baileys')
 import moment from 'moment-timezone'
 import NodeCache from 'node-cache'
+import { startSubBots } from './plugins/sub-bots.js'
 import readline from 'readline'
 import fs from 'fs'
 const { CONNECTING } = ws
@@ -385,6 +386,12 @@ conn.ev.on('creds.update', conn.credsUpdate)
 isInit = false
 return true
 }
+
+// ----------------- Arranque de Sub-Bots ----------------------
+
+await startSubBots();
+
+//--------------------------------------------------------------
 
 const pluginFolder = global.__dirname(join(__dirname, './plugins/index'))
 const pluginFilter = (filename) => /\.js$/.test(filename)
