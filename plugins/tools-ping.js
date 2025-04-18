@@ -4,7 +4,7 @@ let handler = async (m, { conn }) => {
   const end = Date.now();
   const ping = end - start;
 
-  await m.reply(`> 🏓 Pong: ${ping} ms`);
+  await m.reply(`> 🏓 Ping: ${ping} ms`);
 };
 
 handler.help = ['ping', 'p'];
