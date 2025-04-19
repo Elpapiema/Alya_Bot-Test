@@ -1,5 +1,3 @@
-
-
 import fetch from 'node-fetch'
 
 let handler = async (m, { args, command, conn }) => {
@@ -12,7 +10,7 @@ let handler = async (m, { args, command, conn }) => {
   if (!json.status || !json.data || !json.data.length) throw '*No se pudo obtener el video.*'
 
   let video = json.data[0].url
-  await conn.sendFile(m.chat, video, 'facebook.mp4', '*Aquí tienes tu video de Facebook*', m)
+  await conn.sendFile(m.chat, video, 'facebook.mp4', '✅ *Aquí tienes tu video de Facebook*', m)
 }
 
 handler.help = ['facebook', 'fb'].map(v => v + ' <enlace>')
