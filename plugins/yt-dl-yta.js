@@ -79,7 +79,7 @@ const handler = async (m, { conn, text, command }) => {
             {
                 audio: { url: audioUrl },
                 mimetype: 'audio/mp4',
-                ptt: false, // Cambia a `true` si deseas enviar como nota de voz
+                ptt: true, // Cambia a `true` si deseas enviar como nota de voz
             },
             { quoted: m }
         );
