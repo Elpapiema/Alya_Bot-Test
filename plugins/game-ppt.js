@@ -1,4 +1,77 @@
 import fs from 'fs';
+
+const dbPath = './db_users.json';
+const emojiMap = {
+  piedra: '🪨',
+  papel: '📄',
+  tijera: '✂️'
+};
+
+const handler = async (m, { conn }) => {
+  if (!global.pptGames) return;
+  const gameId = Object.keys(global.pptGames).find(id => {
+    const g = global.pptGames[id];
+    return g.status === 'waiting' && (m.sender === g.player1 || m.sender === g.player2);
+  });
+
+  if (!gameId) return;
+
+  const game = global.pptGames[gameId];
+  const choice = m.text.toLowerCase();
+
+  if (!['piedra', 'papel', 'tijera'].includes(choice)) return;
+
+  game.choices[m.sender] = choice;
+
+  if (Object.keys(game.choices).length < 2) return;
+
+  game.status = 'done';
+
+  const { player1, player2, group, reward, penalty } = game;
+  const c1 = game.choices[player1];
+  const c2 = game.choices[player2];
+
+  if (!fs.existsSync(dbPath)) fs.writeFileSync(dbPath, JSON.stringify({}));
+  const db = JSON.parse(fs.readFileSync(dbPath));
+
+  let result;
+  if (c1 === c2) {
+    result = '🤝 ¡Empate!';
+  } else if (
+    (c1 === 'piedra' && c2 === 'tijera') ||
+    (c1 === 'papel' && c2 === 'piedra') ||
+    (c1 === 'tijera' && c2 === 'papel')
+  ) {
+    result = `🎉 ¡${await conn.getName(player1)} gana! +${reward}`;
+    db[player1] = db[player1] || { money: 0, bank: 0 };
+    db[player1].money += reward;
+    db[player2] = db[player2] || { money: 0, bank: 0 };
+    db[player2].money = Math.max(0, db[player2].money - penalty);
+  } else {
+    result = `🎉 ¡${await conn.getName(player2)} gana! +${reward}`;
+    db[player2] = db[player2] || { money: 0, bank: 0 };
+    db[player2].money += reward;
+    db[player1] = db[player1] || { money: 0, bank: 0 };
+    db[player1].money = Math.max(0, db[player1].money - penalty);
+  }
+
+  fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
+
+  await conn.sendMessage(group, {
+    text: `🎮 *Resultados del juego:*\n\n👤 ${await conn.getName(player1)}: ${emojiMap[c1]} (${c1})\n👤 ${await conn.getName(player2)}: ${emojiMap[c2]} (${c2})\n\n${result}`,
+    mentions: [player1, player2]
+  });
+
+  delete global.pptGames[gameId];
+};
+
+handler.customPrefix = true;
+handler.command = new RegExp('.*', 'i');
+
+export default handler;
+
+
+/*import fs from 'fs';
 import path from 'path';
 
 const ecoPath = './eco_config.json';
@@ -109,7 +182,7 @@ handler.tags = ['game'];
 handler.help = ['ppt @usuario'];
 handler.group = true;
 
-export default handler;
+export default handler;*/
 
 
 /*import fs from 'fs';
