@@ -134,7 +134,7 @@ handler.before = async (m, { conn }) => {
 handler.command = /^ppt$/i;
 handler.tags = ['game'];
 handler.help = ['ppt @usuario'];
-handler.group = true;
+handler.group = false;
 
 export default handler;
 
