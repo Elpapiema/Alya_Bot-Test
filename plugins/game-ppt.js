@@ -70,7 +70,7 @@ let handler = async (m, { conn, args }) => {
 };
 
 handler.before = async (m, { conn }) => {
-  if (!m.text?.toLowerCase().startsWith('#ppt')) return;
+  if (!m.text?.toLowerCase().startsWith('ppt')) return;
   if (!global.pptGames) return;
 
   const input = m.text.slice(4).trim().toLowerCase();
