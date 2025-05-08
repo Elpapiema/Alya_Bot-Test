@@ -126,13 +126,13 @@ handler.before = async (m, { conn }) => {
     (c1 === 'papel' && c2 === 'piedra') ||
     (c1 === 'tijera' && c2 === 'papel')
   ) {
-    result = `🎉 ¡${await conn.getName(player1)} gana! +${reward}`;
+    result = `🎉 ¡${await conn.getName(player1)} gana! +${reward} ${currency}`;
     db[player1] = db[player1] || { money: 0, bank: 0 };
     db[player1].money += reward;
     db[player2] = db[player2] || { money: 0, bank: 0 };
     db[player2].money = Math.max(0, db[player2].money - penalty);
   } else {
-    result = `🎉 ¡${await conn.getName(player2)} gana! +${reward}`;
+    result = `🎉 ¡${await conn.getName(player2)} gana! +${reward} ${currency}`;
     db[player2] = db[player2] || { money: 0, bank: 0 };
     db[player2].money += reward;
     db[player1] = db[player1] || { money: 0, bank: 0 };
