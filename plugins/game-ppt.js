@@ -75,6 +75,7 @@ let handler = async (m, { conn, args }) => {
 
   const personalization = getPersonalization();
   const botName = personalization?.botName || 'El bot';
+  const currency = personalization?.currency || 'yenes';
 
   await conn.sendMessage(m.sender, { text: `*${botName}* te desafía a un juego. Responde con \`#ppt piedra\`, \`#ppt papel\` o \`#ppt tijera\`. También puedes usar 🪨 📄 ✂️` });
   await conn.sendMessage(mentioned, { text: `Has sido desafiado por *${botName}*. Responde con \`#ppt piedra\`, \`#ppt papel\` o \`#ppt tijera\`. También puedes usar 🪨 📄 ✂️` });
