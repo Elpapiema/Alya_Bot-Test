@@ -38,7 +38,7 @@ let handler = async (m, { text }) => {
     if (!imgUrls.length) throw 'No se pudieron obtener imágenes. Asegúrate de que el link sea válido y en modo presentación.';
 
     for (let url of imgUrls) {
-        await conn.sendFile(m.chat, url, 'slide.jpg', `/* Imagen descargada desde TikTok */`, m);
+        await conn.sendFile(m.chat, url, 'slide.jpg', ``, m);
     }
 };
 
