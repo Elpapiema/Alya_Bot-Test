@@ -54,3 +54,5 @@ handler.command = ['reactch', 'rch']
 handler.tags = ['tools']
 handler.help = ['reactch <link>,<texto>,<número de fuente>']
 handler.owner = true
+
+export default handler
