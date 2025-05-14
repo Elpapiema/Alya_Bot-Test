@@ -2,7 +2,7 @@ import { promises as fs } from 'fs';
 import fetch from 'node-fetch';
 
 // Ruta del archivo characters.json (remoto en GitHub)
-const charactersUrl = 'https://raw.githubusercontent.com/Elpapiema/Adiciones-para-AlyaBot-RaphtaliaBot-/refs/heads/main/image_json/characters.json';
+const charactersUrl = 'https://raw.githubusercontent.com/Elpapiema/Adiciones-para-AlyaBot-RaphtaliaBot-/refs/heads/main/image_json/rw-test.json';
 
 // Función para cargar el archivo characters.json desde GitHub
 async function loadCharacters() {
@@ -27,6 +27,7 @@ let handler = async (m, { conn }) => {
 🎂 *Edad*: ${randomCharacter.age}
 💖 *Estado Sentimental*: ${randomCharacter.relationship}
 📚 *Origen*: ${randomCharacter.source}
+💵 *Costo*: ${randomCharacter.buy}
         `;
 
         // Enviar el mensaje con la información del personaje y la imagen
