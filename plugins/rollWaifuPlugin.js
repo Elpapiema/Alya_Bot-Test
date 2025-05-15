@@ -20,7 +20,7 @@ async function loadCharacters() {
 let handler = async (m, { conn }) => {
     try {
         // Cargar moneda o algo asi xd 
-        const data = JSON.parse(await fs.readFileSync(filePath));
+        const data = JSON.parse(await fs.readFile(filePath));
         const globalConfig = data.global;
         const defaultConfig = data.default;
         // Definicion de lo de arriba xd
