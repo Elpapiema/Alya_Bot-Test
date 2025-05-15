@@ -1,5 +1,4 @@
 import { promises as fs } from 'fs';
-import fs from 'fs';
 import fetch from 'node-fetch';
 
 // Ruta del archivo characters.json (remoto en GitHub)
