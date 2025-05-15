@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 
 // Ruta del archivo characters.json (remoto en GitHub)
 const charactersUrl = 'https://raw.githubusercontent.com/Elpapiema/Adiciones-para-AlyaBot-RaphtaliaBot-/refs/heads/main/image_json/rw-test.json';
-const filePath = './perzonalize.json';
+const filePath = './personalize.json';
 
 // Función para cargar el archivo characters.json desde GitHub
 async function loadCharacters() {
