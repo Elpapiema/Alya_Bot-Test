@@ -8,7 +8,7 @@ const handler = async (m, { text, usedPrefix, command }) => {
     }
 
     // Asignar valores
-    const [name, age, relationship, source, img] = args;
+    const [name, age, relationship, source, img, buy] = args;
 
     // Validar la URL de la imagen
     if (!img.startsWith('http')) {
@@ -21,7 +21,8 @@ const handler = async (m, { text, usedPrefix, command }) => {
         age: parseInt(age),
         relationship,
         source,
-        img
+        img,
+        buy
     };
 
     // ID del grupo del staff
