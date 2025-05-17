@@ -88,6 +88,7 @@ import { promises as fs } from 'fs';
 
 const haremFilePath = './harem.json';
 const usersDbPath = './db_users.json';
+const perzonaliPath = './personalize.json'
 
 async function loadJSON(path, defaultValue = {}) {
     try {
@@ -113,6 +114,12 @@ async function saveJSON(path, data) {
 
 let handler = async (m, { conn }) => {
     try {
+        const dataP = JSON.parse(await fs.readFile(perzonaliPath));
+        // Data Money -------------------------
+        const globalConfig = dataP.global;
+        const defaultConfig = dataP.default;
+        const currency = globalConfig.currency || defaultConfig.currency;
+        //------------------------------
         let character;
 
         if (m.quoted && m.quoted.sender === conn.user.jid) {
@@ -139,8 +146,8 @@ let handler = async (m, { conn }) => {
         const userBank = usersDb[m.sender].bank || 0;
         const cost = parseInt(character.buy) || 0;
 
-        if (userMoney + userBank < cost) {
-            await conn.reply(m.chat, `No tienes suficiente dinero para reclamar a ${character.name}. Necesitas ${cost} en total.`, m);
+        if (userMoney + userBank < cost, currency) {
+            await conn.reply(m.chat, `No tienes suficiente dinero para reclamar a ${character.name}. Necesitas ${cost} ${currency} en total.`, m);
             return;
         }
 
@@ -165,7 +172,7 @@ let handler = async (m, { conn }) => {
         await saveJSON(haremFilePath, harem);
         await saveJSON(usersDbPath, usersDb);
 
-        await conn.reply(m.chat, `Has reclamado a ${character.name} con éxito. Se descontaron ${cost}.\nSaldo actual:\n• Dinero: ${usersDb[m.sender].money}\n• Banco: ${usersDb[m.sender].bank}`, m);
+        await conn.reply(m.chat, `Has reclamado a ${character.name} con éxito. Se descontaron ${cost} ${currency}.\nSaldo actual:\n• Dinero: ${usersDb[m.sender].money} ${currency} \n• Banco: ${usersDb[m.sender].bank} ${currency}`, m);
 
     } catch (error) {
         await conn.reply(m.chat, `Error al reclamar el personaje: ${error.message}`, m);
