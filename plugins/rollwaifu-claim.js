@@ -146,7 +146,7 @@ let handler = async (m, { conn }) => {
         const userBank = usersDb[m.sender].bank || 0;
         const cost = parseInt(character.buy) || 0;
 
-        if (userMoney + userBank < cost, currency) {
+        if (userMoney + userBank < cost) {
             await conn.reply(m.chat, `No tienes suficiente dinero para reclamar a ${character.name}. Necesitas ${cost} ${currency} en total.`, m);
             return;
         }
