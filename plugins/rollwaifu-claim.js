@@ -1,4 +1,4 @@
-import { promises as fs } from 'fs';
+/*import { promises as fs } from 'fs';
 
 // Ruta del archivo harem.json en la raíz del repositorio
 const haremFilePath = './harem.json';
@@ -80,5 +80,100 @@ let handler = async (m, { conn }) => {
 handler.help = ['claim'];
 handler.tags = ['anime'];
 handler.command = /^(claim|c|reclamar)$/i; // Comandos "claim", "c" y "reclamar"
+
+export default handler;*/
+
+
+import { promises as fs } from 'fs';
+
+const haremFilePath = './harem.json';
+const usersDbPath = './db_users.json';
+
+async function loadJSON(path, defaultValue = {}) {
+    try {
+        const data = await fs.readFile(path, 'utf-8');
+        return JSON.parse(data);
+    } catch (error) {
+        if (error.code === 'ENOENT') {
+            await fs.writeFile(path, JSON.stringify(defaultValue, null, 2));
+            return defaultValue;
+        } else {
+            throw new Error(`Error al cargar el archivo ${path}`);
+        }
+    }
+}
+
+async function saveJSON(path, data) {
+    try {
+        await fs.writeFile(path, JSON.stringify(data, null, 2), 'utf-8');
+    } catch (error) {
+        throw new Error(`Error al guardar el archivo ${path}`);
+    }
+}
+
+let handler = async (m, { conn }) => {
+    try {
+        let character;
+
+        if (m.quoted && m.quoted.sender === conn.user.jid) {
+            const quotedMessageId = m.quoted.id;
+            if (!global.lastCharacter || !global.lastCharacter[quotedMessageId]) {
+                await conn.reply(m.chat, 'El mensaje al que estás respondiendo no contiene un personaje válido para reclamar.', m);
+                return;
+            }
+            character = global.lastCharacter[quotedMessageId];
+        } else {
+            await conn.reply(m.chat, 'Debes responder a un mensaje con un personaje para reclamarlo.', m);
+            return;
+        }
+
+        const harem = await loadJSON(haremFilePath);
+        const usersDb = await loadJSON(usersDbPath);
+
+        // Inicializar economía para el usuario si no existe
+        if (!usersDb[m.sender]) {
+            usersDb[m.sender] = { money: 0, bank: 0 };
+        }
+
+        const userMoney = usersDb[m.sender].money || 0;
+        const userBank = usersDb[m.sender].bank || 0;
+        const cost = parseInt(character.buy) || 0;
+
+        if (userMoney + userBank < cost) {
+            await conn.reply(m.chat, `No tienes suficiente dinero para reclamar a ${character.name}. Necesitas ${cost} en total.`, m);
+            return;
+        }
+
+        // Descontar dinero
+        if (userMoney >= cost) {
+            usersDb[m.sender].money -= cost;
+        } else {
+            const remaining = cost - userMoney;
+            usersDb[m.sender].money = 0;
+            usersDb[m.sender].bank -= remaining;
+        }
+
+        if (!harem[m.sender]) harem[m.sender] = [];
+
+        if (harem[m.sender].some(c => c.name === character.name)) {
+            await conn.reply(m.chat, `Ya has reclamado a ${character.name}.`, m);
+            return;
+        }
+
+        harem[m.sender].push(character);
+
+        await saveJSON(haremFilePath, harem);
+        await saveJSON(usersDbPath, usersDb);
+
+        await conn.reply(m.chat, `Has reclamado a ${character.name} con éxito. Se descontaron ${cost}.\nSaldo actual:\n• Dinero: ${usersDb[m.sender].money}\n• Banco: ${usersDb[m.sender].bank}`, m);
+
+    } catch (error) {
+        await conn.reply(m.chat, `Error al reclamar el personaje: ${error.message}`, m);
+    }
+};
+
+handler.help = ['claim'];
+handler.tags = ['anime'];
+handler.command = /^(claim|c|reclamar)$/i;
 
 export default handler;
