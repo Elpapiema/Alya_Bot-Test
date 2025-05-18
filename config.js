@@ -83,6 +83,11 @@ global.vs = '1.0.0'
 global.dev = 'Emma (Violets Version)'
 global.copy = '©' // No modificar
 
+// ---------------[ APIs V2 ]---------------
+global.panda = 'G7eRpMaa'
+global.panda2 = 'G32254GLM09MN89Maa'
+//------------------------------------------
+
 //----------------------------[ NIVELES | RPG ]---------------------------------
 
 global.multiplier = 850 // Cuanto más alto, más difícil subir de nivel

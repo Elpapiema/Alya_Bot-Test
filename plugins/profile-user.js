@@ -41,14 +41,14 @@ let handler = async (m, { conn }) => {
     try {
         profilePicUrl = await conn.profilePictureUrl(userId, 'image');
     } catch (e) {
-        profilePicUrl = 'https://i.imgur.com/Y2Z55QF.png'; // Imagen por defecto si no tiene foto
+        profilePicUrl = 'https://files.catbox.moe/vpqhom.webp'; // Imagen por defecto si no tiene foto
     }
 
     // Crear el mensaje
     let message = `🌟 *Perfil de Usuario* 🌟\n\n`
         + `👤 *Usuario:* @${userId.split('@')[0]}\n`
-        + `💰 *${currency} en mano:* ${userMoney}\n`
-        + `🏦 *Banco:* ${userBank}\n`
+        + `💰 *Dinero en mano:* ${userMoney} ${currency} \n`
+        + `🏦 *Banco:* ${userBank} ${currency} \n`
         + `💞 *Personajes en harem:* ${haremCount}`;
 
     // Enviar la foto con el mensaje
@@ -60,6 +60,6 @@ let handler = async (m, { conn }) => {
 };
 
 // Definir el comando
-handler.command = /^(perfil|profile)$/i;
+handler.command = ['profile', 'perfil'];
 
 export default handler;

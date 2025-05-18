@@ -5,8 +5,8 @@ let handler = async (m, { text }) => {
     if (!text) throw 'Por favor, ingresa el enlace del video de TikTok (modo presentación).';
 
     const urls = [
-        `https://dlpanda.com/id?url=${encodeURIComponent(text)}&token=G7eRpMaa`,
-        `https://dlpanda.com/id?url=${encodeURIComponent(text)}&token51=G32254GLM09MN89Maa`
+        `https://dlpanda.com/id?url=${encodeURIComponent(text)}&token=${panda}`,
+        `https://dlpanda.com/id?url=${encodeURIComponent(text)}&token51=${panda2}`,
     ];
 
     const userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36';

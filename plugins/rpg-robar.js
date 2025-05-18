@@ -53,7 +53,7 @@ let handler = async (m, { conn, text }) => {
         let targetData = db[targetId];
 
         if (targetData.money <= 0) {
-            m.reply(`❌ ${target} no tiene dinero en mano para robar.`);
+            m.reply(`❌ ${target} no tiene dinero en mano suficiente para que valga la pena robar.`);
             return;
         }
 
