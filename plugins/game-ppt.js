@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 
-const ecoPath = './eco_config.json';
-const dbPath = './db_users.json';
-const personalizePath = './personalize.json';
+const ecoPath = './database/ppt_config.json';
+const dbPath = './database/db_users.json';
+const personalizePath = './database/personalize.json';
 
 const textoAEmoji = {
   piedra: '🪨',
@@ -38,7 +38,7 @@ let handler = async (m, { conn, args }) => {
 
   if (!fs.existsSync(ecoPath)) {
     fs.writeFileSync(ecoPath, JSON.stringify({
-      ppt: { reward: 100, penalty: 50 }
+      ppt: { reward: 1000, penalty: 200 }
     }, null, 2));
   }
 

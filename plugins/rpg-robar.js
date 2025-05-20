@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import fetch from 'node-fetch';
 
-const dbPath = path.join(process.cwd(), 'db_users.json');
+const dbPath = path.join(process.cwd(), 'database', 'db_users.json');
 const eventsUrl = 'https://raw.githubusercontent.com/Elpapiema/Adiciones-para-AlyaBot-RaphtaliaBot-/refs/heads/main/Random/rob-events.json'; // Reemplaza con la URL real
 
 // Función para leer JSON local
