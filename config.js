@@ -79,7 +79,7 @@ global.author = 'Emma (Violets Version)'
 
 global.wm = 'AlyaBot' 
 global.botname = 'AlyaBot'
-global.vs = '1.0.0'
+global.vs = '1.0.0 Beta'
 global.dev = 'Emma (Violets Version)'
 global.copy = '©' // No modificar
 
