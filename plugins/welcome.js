@@ -155,7 +155,7 @@ export async function before(m, { conn, groupMetadata }) {
       mentions: [m.sender, m.messageStubParameters[0]] // Menciona al usuario
     });
   }
-  else if (m.mensageStubType == 28 ) { // Evento de expulsión del grupo
+  else if (m.messageStubType == 28 ) { // Evento de expulsión del grupo
     let textBan = `
 ┏━━━━━❖━━━✦━━━❖━━━━━┓
 ┃ 💅 𝑬𝑿𝑷𝑼𝑳𝑺𝑨𝑫𝑶 💥
