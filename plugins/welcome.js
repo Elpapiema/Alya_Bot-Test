@@ -1,4 +1,4 @@
-import { WAMessageStubType } from '@whiskeysockets/baileys'; // Asegúrate de importar correctamente
+/*import { WAMessageStubType } from '@whiskeysockets/baileys'; // Asegúrate de importar correctamente
 import fetch from 'node-fetch'; // Para obtener imágenes de perfil
 import uploadImage from '../lib/uploadImage.js'; // Importar la función de carga de imágenes
 
@@ -83,10 +83,10 @@ ${descs}
       mentions: [m.sender, m.messageStubParameters[0]] // Menciona al usuario
     });
   }
-}
+}*/
 
 
-/*import { WAMessageStubType } from '@whiskeysockets/baileys'; // Asegúrate de importar correctamente
+import { WAMessageStubType } from '@whiskeysockets/baileys'; // Asegúrate de importar correctamente
 import fetch from 'node-fetch'; // Para obtener imágenes de perfil
 
 export async function before(m, { conn, groupMetadata }) {
@@ -158,4 +158,4 @@ ${descs}
       mentions: [m.sender, m.messageStubParameters[0]] // Menciona al usuario
     });
   }
-}*/
+}
