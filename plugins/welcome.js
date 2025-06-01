@@ -107,32 +107,25 @@ export async function before(m, { conn, groupMetadata }) {
   // Mensaje de bienvenida personalizado
   if (m.messageStubType == 27) { // Evento de entrada al grupo
     let textWel = `
-┏━━━━━━━━━━━━
-┃──〘 *BIENVENIDO/A* 〙──
-┃━━━━━━━━━━━━
-┃ *Hola ${usuario} 👋 Bienvenido/a a*
-┃ *_${subject} ✨_*
-┃
-┃=> *_En este grupo podrás_*
-┃ *_encontrar:_*
-┠⊷ *Amistades 🫂*
-┠⊷ *Desmadre 💃🕺*
-┠⊷ *Relajo 💅*
-┠⊷ *Un Bot Sexy 🤖*
-┃
-┃=> *_Puedes solicitar mi lista de_*
-┃ *_comandos con:_*
-┠⊷ *#menu*
-┃
-┃=> *_Aquí tienes la descripción_*
-┃ *_del grupo, léela!!_*
-┃
-${descs}
-┃
-┃ *_🥳 Disfruta de tu_*
-┃ *_estadía en el grupo 🥳_*
-┃
-┗━━━━━━━━━━━`;
+┏━━━━━❖━━━✦━━━❖━━━━━┓
+┃ 💠 𝑩𝑰𝑬𝑵𝑽𝑬𝑵𝑰𝑫𝑶/𝑨 💠
+┗━━━━━❖━━━✦━━━❖━━━━━┛
+
+🌸 Hola ${usuario}~
+✨ Bienvenido/a a *『${subject}』*
+
+🫶 Aquí solo hay:
+– Amistades lindas  
+– Caos bonito  
+– Un bot adorable... *o sea, yo~ 💁‍♀️*
+
+💬 Escribe *#menu* si quieres ver lo que sé hacer~
+
+📌 *Lee la descripción del grupo, ¿vale?*
+> *${descs}*
+
+🎀 Disfruta tu estancia, o te jalo las orejas 😘
+`;
 
     await conn.sendMessage(m.chat, {
       image: img, // Envía la foto de perfil del usuario
@@ -142,20 +135,44 @@ ${descs}
   }
 
   // Mensaje de despedida personalizado
-  else if (m.messageStubType == 28 || m.messageStubType == 32) { // Evento de salida del grupo
+  else if (m.messageStubType == 28 ) { // Evento de salida del grupo
     let textBye = `
-┏━━━━━━━━━━━━
-┃──〘 *ADIOS* 〙───
-┃━━━━━━━━━━━━
-┃ *_☠ Se fue ${usuario}_*
-┃ *_Que dios lo bendiga️_*
-┃ *_Y lo atropelle un tren 😇_*
-┗━━━━━━━━━━`;
+┏━━━━━❖━━━✦━━━❖━━━━━┓
+┃ 💔 𝑨𝑫𝑰𝑶́𝑺... 𝒐 𝒏𝒐 💔
+┗━━━━━❖━━━✦━━━❖━━━━━┛
+
+😢 Se nos fue ${usuario}...
+
+🕊️ Que el destino lo cuide...  
+🚆 O que lo atropelle un tren, quién sabe 😇
+
+✨ El grupo brillará menos sin ti... pero solo un poquito~
+`;
 
     await conn.sendMessage(m.chat, {
       image: img, // Envía la foto de perfil del usuario
       caption: textBye,
       mentions: [m.sender, m.messageStubParameters[0]] // Menciona al usuario
     });
+  }
+  else if (m.mensageStubType ==32) { // Evento de expulsión del grupo
+    let textBan = `
+┏━━━━━❖━━━✦━━━❖━━━━━┓
+┃ 💅 𝑬𝑿𝑷𝑼𝑳𝑺𝑨𝑫𝑶 💥
+┗━━━━━❖━━━✦━━━❖━━━━━┛
+
+${usuario} fue *expulsado/a del grupo* 🧹
+
+🥀 Que le vaya bonito...  
+🚪 Y que no vuelva, gracias~
+
+✨ Menos drama, más paz ☕
+`;
+    await conn.sendMessage(m.chat, {
+      image: img, // Envía la foto de perfil del usuario
+      caption: textBan,
+      mentions: [m.sender, m.messageStubParameters[0]] // Menciona al usuario
+    });
+
   }
 }
