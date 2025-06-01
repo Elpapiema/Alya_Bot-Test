@@ -94,7 +94,7 @@ export async function before(m, { conn, groupMetadata }) {
   if (!m.messageStubType || !m.isGroup) return;
 
   // Obtener la foto de perfil del usuario
-  let pp = await conn.profilePictureUrl(m.messageStubParameters[0], 'image').catch(_ => 'https://telegra.ph/file/2a1d71ab744b55b28f1ae.jpg');
+  let pp = await conn.profilePictureUrl(m.messageStubParameters[0], 'image').catch(_ => 'https://files.catbox.moe/xegxay.jpg');
   let img = await (await fetch(pp)).buffer();
 
   // Obtener el nombre del usuario
