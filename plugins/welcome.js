@@ -135,7 +135,7 @@ export async function before(m, { conn, groupMetadata }) {
   }
 
   // Mensaje de despedida personalizado
-  else if (m.messageStubType == 28 ) { // Evento de salida del grupo
+  else if (m.messageStubType == 32 ) { // Evento de salida del grupo
     let textBye = `
 ┏━━━━━❖━━━✦━━━❖━━━━━┓
 ┃ 💔 𝑨𝑫𝑰𝑶́𝑺... 𝒐 𝒏𝒐 💔
@@ -155,7 +155,7 @@ export async function before(m, { conn, groupMetadata }) {
       mentions: [m.sender, m.messageStubParameters[0]] // Menciona al usuario
     });
   }
-  else if (m.mensageStubType ==32) { // Evento de expulsión del grupo
+  else if (m.mensageStubType == 28 ) { // Evento de expulsión del grupo
     let textBan = `
 ┏━━━━━❖━━━✦━━━❖━━━━━┓
 ┃ 💅 𝑬𝑿𝑷𝑼𝑳𝑺𝑨𝑫𝑶 💥
