@@ -113,7 +113,17 @@ let usedPrefix
 const groupMetadata = (m.isGroup ? ((conn.chats[m.chat] || {}).metadata || await this.groupMetadata(m.chat).catch(_ => null)) : {}) || {}
 const participants = (m.isGroup ? groupMetadata.participants : []) || []
 const user = (m.isGroup ? participants.find(u => conn.decodeJid(u.id) === m.sender) : {}) || {} // User Data
-const bot = (m.isGroup ? participants.find(u => conn.decodeJid(u.id) == this.user.jid) : {}) || {} // Your Data
+const botNumber = this.user?.jid || ''
+const botJidVariants = [
+  botNumber,
+  botNumber.replace(/@s\.whatsapp\.net$/, '@lid'),
+  botNumber.replace(/@lid$/, '@s.whatsapp.net')
+]
+
+const bot = (m.isGroup
+  ? participants.find(u => botJidVariants.includes(conn.decodeJid(u.id)))
+  : {}) || {}
+//const bot = (m.isGroup ? participants.find(u => conn.decodeJid(u.id) == this.user.jid) : {}) || {} // Your Data
 const isRAdmin = user?.admin == 'superadmin' || false
 const isAdmin = isRAdmin || user?.admin == 'admin' || false // Is User Admin?
 const isBotAdmin = bot?.admin || false // Are you Admin?
