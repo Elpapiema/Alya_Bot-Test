@@ -107,6 +107,6 @@ const handler = async (m, { conn, text, participants, quoted, isAdmin }) => {
 handler.command = /^(kick|ban)$/i;
 handler.group = true;
 handler.admin = true; // Solo admins pueden usarlo
-handler.botAdmin = true; // El bot debe ser admin
+handler.botAdmin = false; // El bot debe ser admin
 
 export default handler;
