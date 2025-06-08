@@ -113,10 +113,14 @@ let usedPrefix
 const groupMetadata = (m.isGroup ? ((conn.chats[m.chat] || {}).metadata || await this.groupMetadata(m.chat).catch(_ => null)) : {}) || {}
 const participants = (m.isGroup ? groupMetadata.participants : []) || []
 const user = (m.isGroup ? participants.find(u => conn.decodeJid(u.id) === m.sender) : {}) || {} // User Data
-const botJid = conn.decodeJid(this.user.jid) // te da algo como 5212441357601@s.whatsapp.net
+// Obtener el jid real del bot
+const botJid = conn.decodeJid(this.user?.id || this.user?.jid || '')
 
 const bot = (m.isGroup
-  ? participants.find(u => conn.decodeJid(u.id) === botJid)
+  ? participants.find(u => {
+      const participantJid = conn.decodeJid(u.id || '')
+      return participantJid === botJid
+    })
   : {}) || {}
 
 /*const botNumber = this.user?.jid || ''
@@ -132,7 +136,8 @@ const bot = (m.isGroup
 //const bot = (m.isGroup ? participants.find(u => conn.decodeJid(u.id) == this.user.jid) : {}) || {} // Your Data
 const isRAdmin = user?.admin == 'superadmin' || false
 const isAdmin = isRAdmin || user?.admin == 'admin' || false // Is User Admin?
-const isBotAdmin = bot?.admin || false // Are you Admin?
+const isBotAdmin = bot?.admin === 'admin' || bot?.admin === 'superadmin'
+ //const isBotAdmin = bot?.admin || false // Are you Admin?
 
         const ___dirname = path.join(path.dirname(fileURLToPath(import.meta.url)), './plugins')
         for (let name in global.plugins) {
