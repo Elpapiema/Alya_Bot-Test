@@ -113,10 +113,10 @@ let usedPrefix
 const groupMetadata = (m.isGroup ? ((conn.chats[m.chat] || {}).metadata || await this.groupMetadata(m.chat).catch(_ => null)) : {}) || {}
 const participants = (m.isGroup ? groupMetadata.participants : []) || []
 const user = (m.isGroup ? participants.find(u => conn.decodeJid(u.id) === m.sender) : {}) || {} // User Data
-const botNumber = this.user?.jid?.split('@')[0] || ''
+const botJid = conn.decodeJid(this.user.jid) // te da algo como 5212441357601@s.whatsapp.net
 
 const bot = (m.isGroup
-  ? participants.find(u => conn.decodeJid(u.id)?.split('@')[0] === botNumber)
+  ? participants.find(u => conn.decodeJid(u.id) === botJid)
   : {}) || {}
 
 /*const botNumber = this.user?.jid || ''
