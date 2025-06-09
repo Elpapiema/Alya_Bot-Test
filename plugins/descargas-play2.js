@@ -8,7 +8,7 @@ function decryptBase64(str) {
 }
 
 let handler = async (m, { text, conn, command }) => {
-  if (!text) return m.reply('🔍 Ingresa el nombre del video. Ejemplo: *.play2 me porto bonito*');
+  if (!text) return m.reply('🔍 Ingresa el nombre del video. Ejemplo: *.play2 Usewa Ado*');
 
   try {
     const searchAPI = decryptBase64(ENCRYPTED_SEARCH_API);
@@ -33,7 +33,7 @@ let handler = async (m, { text, conn, command }) => {
 ⏱️ *Duración:* ${duration}s
 👀 *Vistas:* ${video.views.toLocaleString()}
 🔗 *URL:* ${videoUrl}
-_Enviando video un momento soy lenta >_<..._
+_Enviando video un momento soy lenta (˶˃ ᵕ ˂˶)..._
 `.trim();
 
     await conn.sendMessage(m.chat, { image: { url: thumb }, caption: msgInfo }, { quoted: m });
@@ -55,9 +55,8 @@ _Enviando video un momento soy lenta >_<..._
   }
 };
 
-handler.command = ['play2'];
+handler.command = ['play2','mp4','ytmp4','playmp4'];
 handler.help = ['play2 <video>'];
 handler.tags = ['downloader'];
-handler.register = true;
 
 export default handler;
