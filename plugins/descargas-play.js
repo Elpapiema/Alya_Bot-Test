@@ -1,4 +1,72 @@
-import { youtubedl, youtubedlv2 } from '@bochilteam/scraper'
+import fetch from 'node-fetch';
+
+// Las URLs están codificadas en base64
+const ENCRYPTED_SEARCH_API = 'aHR0cDovLzE3My4yMDguMjAwLjIyNzozMjY5L3NlYXJjaF95b3V0dWJlP3F1ZXJ5PQ==';
+const ENCRYPTED_DOWNLOAD_API = 'aHR0cDovLzE3My4yMDguMjAwLjIyNzozMjY5L2Rvd25sb2FkX2F1ZGlvP3VybD0=';
+
+// Función para desencriptar
+function decryptBase64(str) {
+  return Buffer.from(str, 'base64').toString();
+}
+
+let handler = async (m, { text, conn, command }) => {
+  if (!text) return m.reply('🔍 Ingresa el nombre de una canción. Ej: *.play me porto bonito*');
+
+  try {
+    const searchAPI = decryptBase64(ENCRYPTED_SEARCH_API);
+    const downloadAPI = decryptBase64(ENCRYPTED_DOWNLOAD_API);
+
+    const searchRes = await fetch(`${searchAPI}${encodeURIComponent(text)}`);
+    const searchJson = await searchRes.json();
+
+    if (!searchJson.results || !searchJson.results.length) {
+      return m.reply('⚠️ No se encontraron resultados.');
+    }
+
+    const video = searchJson.results[0];
+    const thumb = video.thumbnails.find(t => t.width === 720)?.url || video.thumbnails[0]?.url;
+    const videoTitle = video.title;
+    const videoUrl = video.url;
+    const duration = Math.floor(video.duration);
+
+    const msgInfo = `
+🎵 *Título:* ${videoTitle}
+📺 *Canal:* ${video.channel}
+⏱️ *Duración:* ${duration}s
+👀 *Vistas:* ${video.views.toLocaleString()}
+🔗 *URL:* ${videoUrl}
+_Enviando audio..._
+`.trim();
+
+    await conn.sendMessage(m.chat, { image: { url: thumb }, caption: msgInfo }, { quoted: m });
+
+    const downloadRes = await fetch(`${downloadAPI}${encodeURIComponent(videoUrl)}`);
+    const downloadJson = await downloadRes.json();
+
+    if (!downloadJson.file_url) return m.reply('❌ No se pudo descargar el audio.');
+
+    await conn.sendMessage(m.chat, {
+      audio: { url: downloadJson.file_url },
+      mimetype: 'audio/mp4',
+      fileName: `${downloadJson.title}.mp3`
+    }, { quoted: m });
+
+  } catch (e) {
+    console.error(e);
+    m.reply('❌ Error al procesar tu solicitud.');
+  }
+};
+
+handler.command = ['play'];
+handler.help = ['play <canción>'];
+handler.tags = ['downloader'];
+handler.register = true;
+
+export default handler;
+
+
+
+/*import { youtubedl, youtubedlv2 } from '@bochilteam/scraper'
 import fetch from 'node-fetch'
 import yts from 'yt-search'
 import ytdl from 'ytdl-core'
@@ -275,6 +343,7 @@ await conn.sendMessage(m.chat, { document: { url: audiop }, fileName: `${yt_play
 await m.react('❌');
 console.log(e2);
 }}}}
+//----------------------
 
 /*if (command == 'play4') {
 if (!text) return conn.reply(m.chat, `*🤔Que esta buscado? 🤔*\n*Ingrese el nombre del la canción*\n\n*Ejemplo:*\n#play emilia 420`, m, {contextInfo: {externalAdReply :{ mediaUrl: null, mediaType: 1, description: null, title: wm, body: '', previewType: 0, thumbnail: img.getRandom(), sourceUrl: redes.getRandom()}}})
@@ -283,7 +352,8 @@ const texto1 = `📌 *Título* : ${yt_play[0].title}\n📆 *Publicado:* ${yt_pla
 
 await conn.sendButton(m.chat, texto1, botname, yt_play[0].thumbnail, [['Audio', `${usedPrefix}ytmp3 ${yt_play[0].url}`], ['video', `${usedPrefix}ytmp4 ${yt_play[0].url}`], ['Mas resultados', `${usedPrefix}yts ${text}`]], null, null, m)
 }*/
-}
+//---------------------
+/*}
 handler.help = ['play', 'play2', 'play3', 'play4', 'playdoc'];
 handler.tags = ['downloader'];
 handler.command = ['play', 'play2', 'play3', 'play4', 'audio', 'video', 'playdoc', 'playdoc2']
@@ -381,4 +451,4 @@ if (data.status === 'ok') {
   } else {
     throw new Error("No se pudo obtener la descarga desde 9Convert");
   }
-}
+}*/
