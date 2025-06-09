@@ -35,7 +35,7 @@ let handler = async (m, { text, conn, command }) => {
 ⏱️ *Duración:* ${duration}s
 👀 *Vistas:* ${video.views.toLocaleString()}
 🔗 *URL:* ${videoUrl}
-_Enviando audio..._
+_Enviando audio un momento soy lenta >_<..._
 `.trim();
 
     await conn.sendMessage(m.chat, { image: { url: thumb }, caption: msgInfo }, { quoted: m });
