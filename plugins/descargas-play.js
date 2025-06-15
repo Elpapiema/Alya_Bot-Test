@@ -42,26 +42,24 @@ let handler = async (m, { text, conn, command }) => {
     const videoUrl = video.url;
     const duration = Math.floor(video.duration);
 
-    const { json: downloadJson, serverName: downloadServer } = await tryFetchJSON(DOWNLOAD_APIS, videoUrl);
-
     const msgInfo = `
 🎵 *Título:* ${videoTitle}
 📺 *Canal:* ${video.channel}
 ⏱️ *Duración:* ${duration}s
 👀 *Vistas:* ${video.views.toLocaleString()}
 🔗 *URL:* ${videoUrl}
-💠 *Descarga procesada por:* ${downloadServer || 'Desconocido'}
+💠 *Búsqueda procesada por:* ${searchServer || 'Desconocido'}
 _Enviando audio un momento soy lenta (˶˃ ᵕ ˂˶)..._
 `.trim();
 
-    // Enviar mensaje con datos del video inmediatamente
     await conn.sendMessage(m.chat, { image: { url: thumb }, caption: msgInfo }, { quoted: m });
+
+    const { json: downloadJson } = await tryFetchJSON(DOWNLOAD_APIS, videoUrl);
 
     if (!downloadJson || !downloadJson.file_url) {
       return m.reply('❌ No se pudo descargar el audio.');
     }
 
-    // Enviar audio de forma separada
     await conn.sendMessage(m.chat, {
       audio: { url: downloadJson.file_url },
       mimetype: 'audio/mp4',
@@ -79,6 +77,7 @@ handler.help = ['play <canción>'];
 handler.tags = ['downloader'];
 
 export default handler;
+
 
 
 
