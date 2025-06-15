@@ -1,25 +1,38 @@
 import fetch from 'node-fetch';
 
-// Las URLs están codificadas en base64
-const ENCRYPTED_SEARCH_API = 'aHR0cDovLzE3My4yMDguMjAwLjIyNzozMjY5L3NlYXJjaF95b3V0dWJlP3F1ZXJ5PQ==';
-const ENCRYPTED_DOWNLOAD_API = 'aHR0cDovLzE3My4yMDguMjAwLjIyNzozMjY5L2Rvd25sb2FkX2F1ZGlvP3VybD0=';
+const SEARCH_APIS = [
+  { name: 'Servidor Masha', url: 'http://api.alyabot.xyz:3269/search_youtube?query=' },
+  { name: 'Servidor Alya', url: 'http://api2.alyabot.xyz:5216/search_youtube?query=' },
+  { name: 'Servidor Masachika', url: 'https://api3.alyabot.xyz/search_youtube?query=' }
+];
 
-// Función para desencriptar
-function decryptBase64(str) {
-  return Buffer.from(str, 'base64').toString();
+const DOWNLOAD_APIS = [
+  { name: 'Servidor Masha', url: 'http://api.alyabot.xyz:3269/download_audio?url=' },
+  { name: 'Servidor Alya', url: 'http://api2.alyabot.xyz:5216/download_audio?url=' },
+  { name: 'Servidor Masachika', url: 'https://api3.alyabot.xyz/download_audio?url=' }
+];
+
+async function tryFetchJSON(servers, query) {
+  for (let server of servers) {
+    try {
+      const res = await fetch(server.url + encodeURIComponent(query));
+      if (!res.ok) continue;
+      const json = await res.json();
+      if (json && Object.keys(json).length) return { json, serverName: server.name };
+    } catch {
+      continue;
+    }
+  }
+  return { json: null, serverName: null };
 }
 
 let handler = async (m, { text, conn, command }) => {
   if (!text) return m.reply('🔍 Ingresa el nombre de una canción. Ej: *.play Aishite Ado*');
 
   try {
-    const searchAPI = decryptBase64(ENCRYPTED_SEARCH_API);
-    const downloadAPI = decryptBase64(ENCRYPTED_DOWNLOAD_API);
+    const { json: searchJson, serverName: searchServer } = await tryFetchJSON(SEARCH_APIS, text);
 
-    const searchRes = await fetch(`${searchAPI}${encodeURIComponent(text)}`);
-    const searchJson = await searchRes.json();
-
-    if (!searchJson.results || !searchJson.results.length) {
+    if (!searchJson || !searchJson.results || !searchJson.results.length) {
       return m.reply('⚠️ No se encontraron resultados.');
     }
 
@@ -29,21 +42,23 @@ let handler = async (m, { text, conn, command }) => {
     const videoUrl = video.url;
     const duration = Math.floor(video.duration);
 
+    const { json: downloadJson, serverName: downloadServer } = await tryFetchJSON(DOWNLOAD_APIS, videoUrl);
+
+    if (!downloadJson || !downloadJson.file_url) {
+      return m.reply('❌ No se pudo descargar el audio.');
+    }
+
     const msgInfo = `
 🎵 *Título:* ${videoTitle}
 📺 *Canal:* ${video.channel}
 ⏱️ *Duración:* ${duration}s
 👀 *Vistas:* ${video.views.toLocaleString()}
 🔗 *URL:* ${videoUrl}
+💠 *Descarga procesada por:* ${downloadServer}
 _Enviando audio un momento soy lenta (˶˃ ᵕ ˂˶)..._
 `.trim();
 
     await conn.sendMessage(m.chat, { image: { url: thumb }, caption: msgInfo }, { quoted: m });
-
-    const downloadRes = await fetch(`${downloadAPI}${encodeURIComponent(videoUrl)}`);
-    const downloadJson = await downloadRes.json();
-
-    if (!downloadJson.file_url) return m.reply('❌ No se pudo descargar el audio.');
 
     await conn.sendMessage(m.chat, {
       audio: { url: downloadJson.file_url },
@@ -57,11 +72,12 @@ _Enviando audio un momento soy lenta (˶˃ ᵕ ˂˶)..._
   }
 };
 
-handler.command = ['play','mp3','ytmp3','playmp3'];
+handler.command = ['play', 'mp3', 'ytmp3', 'playmp3'];
 handler.help = ['play <canción>'];
 handler.tags = ['downloader'];
 
 export default handler;
+
 
 
 
