@@ -20,8 +20,9 @@ let handler = async (m, { conn, command }) => {
 }
 
 // Plugin automático (sin comando explícito)
-handler.customPrefix = /^/
+/*handler.customPrefix = /^/
 handler.command = new RegExp // Captura todo
-handler.before = true // Se ejecuta antes que el plugin principal
+handler.before = true // Se ejecuta antes que el plugin principal*/
+handler();
 
 export default handler
