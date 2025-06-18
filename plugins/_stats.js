@@ -1,28 +1,32 @@
-let handler = async (m, { conn, command }) => {
-  if (!m || !m.text) return
-  if (!m.isCommand) return // Solo para comandos
+function handler() {}
 
-  try {
-    // Siempre envía señal de "escribiendo"
-    await conn.sendPresenceUpdate('composing', m.chat)
+handler.before = async function (m, { conn, usedPrefix }) {
+    if (!m || !m.text || !m.isCommand) return
 
-    // Solo para comandos específicos: play y play2
-    const cmd = command?.toLowerCase()
-    if (cmd === 'play' || cmd === 'play2') {
-      setTimeout(() => {
-        conn.sendPresenceUpdate('recording', m.chat)
-      }, 1000)
+    try {
+        const body = m.text.trim()
+        const prefix = usedPrefix
+        const commandRaw = body.slice(prefix.length).split(' ')[0].toLowerCase()
+
+        // Siempre enviar señal de "escribiendo"
+        await conn.sendPresenceUpdate('composing', m.chat)
+
+        // Enviar "grabando audio" solo para comandos play y play2
+        if (['play', 'play2'].includes(commandRaw)) {
+            setTimeout(() => {
+                conn.sendPresenceUpdate('recording', m.chat)
+            }, 1000)
+        }
+
+    } catch (error) {
+        console.error(`❌ Error en el plugin de presencia automática: ${error.message}`)
     }
-
-  } catch (e) {
-    console.error('[❌ Error en presencia automática]', e)
-  }
 }
 
-// Plugin automático (sin comando explícito)
-/*handler.customPrefix = /^/
-handler.command = new RegExp // Captura todo
-handler.before = true // Se ejecuta antes que el plugin principal*/
-handler();
+// Configuración del plugin
+handler.customPrefix = /^/         // Acepta todos los prefijos
+handler.command = new RegExp       // Captura todos los comandos
+handler.before = handler.before    // Se ejecuta antes de los comandos principales
+handler.disabled = false           // Habilitado por defecto
 
 export default handler
