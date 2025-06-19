@@ -24,7 +24,7 @@ let handler = async (m, { conn, command, isAdmin, isOwner, isGroup }) => {
 };
 
 handler.command = /^(on|off)$/i;
-//handler.group = true;
+handler.group = true;
 //handler.private = true;
 handler.tags = ['owner'];
 handler.help = ['on', 'off'];
