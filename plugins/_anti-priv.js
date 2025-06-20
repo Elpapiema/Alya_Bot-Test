@@ -1,10 +1,15 @@
 import fs from 'fs'
 
-// Rutas
 const WARN_PATH = './database/warns.json'
 const SETTINGS_PATH = './settings.json'
 
-// Cargar advertencias
+// Leer configuración
+function loadSettings() {
+  if (!fs.existsSync(SETTINGS_PATH)) return { global: {} }
+  return JSON.parse(fs.readFileSync(SETTINGS_PATH))
+}
+
+// Leer advertencias
 function loadWarns() {
   if (!fs.existsSync(WARN_PATH)) fs.writeFileSync(WARN_PATH, '{}')
   return JSON.parse(fs.readFileSync(WARN_PATH))
@@ -15,25 +20,20 @@ function saveWarns(data) {
   fs.writeFileSync(WARN_PATH, JSON.stringify(data, null, 2))
 }
 
-// Cargar configuración
-function loadSettings() {
-  if (!fs.existsSync(SETTINGS_PATH)) return { global: {} }
-  return JSON.parse(fs.readFileSync(SETTINGS_PATH))
-}
-
-const handler = async (m, { conn, isOwner }) => {
+export async function before(m, { conn, isOwner }) {
   const settings = loadSettings()
   const antiprivado = settings?.global?.antiprivado
 
-  if (!antiprivado) return // función desactivada
-  if (m.isGroup) return // ignorar en grupos
-  if (isOwner) return // permitir a dueños
+  // Verificaciones
+  if (!antiprivado) return
+  if (m.isGroup) return
+  if (isOwner) return
 
   const warns = loadWarns()
   const id = m.sender
-
   warns[id] = (warns[id] || 0) + 1
 
+  // Responder según advertencia
   if (warns[id] >= 3) {
     await conn.sendMessage(id, {
       text: '🚫 Has sido bloqueado por contactar al bot en privado sin autorización.'
@@ -47,8 +47,3 @@ const handler = async (m, { conn, isOwner }) => {
 
   saveWarns(warns)
 }
-
-handler.before = true // interceptar antes que otros
-handler.private = true // solo en chats privados
-
-export default handler
