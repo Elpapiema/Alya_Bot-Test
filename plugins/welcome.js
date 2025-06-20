@@ -213,7 +213,7 @@ export async function before(m, { conn, groupMetadata }) {
   let descs = groupMetadata.desc || "*Descripción predeterminada del grupo*";
 
   // Bienvenida
-  if (m.messageStubType === WAMessageStubType.ADD) {
+  if (m.messageStubType == 27) { // Evento de entrada al grupo
     let textWel = `
 ┏━━━━━❖━━━✦━━━❖━━━━━┓
 ┃ 💠 𝑩𝑰𝑬𝑵𝑽𝑬𝑵𝑰𝑫𝑶/𝑨 💠
@@ -242,7 +242,7 @@ export async function before(m, { conn, groupMetadata }) {
   }
 
   // Despedida
-  else if (m.messageStubType === WAMessageStubType.LEAVE) {
+  else if (m.messageStubType == 32 ) { // Evento de salida del grupo
     let textBye = `
 ┏━━━━━❖━━━✦━━━❖━━━━━┓
 ┃ 💔 𝑨𝑫𝑰𝑶́𝑺... 𝒐 𝒏𝒐 💔
@@ -263,7 +263,7 @@ export async function before(m, { conn, groupMetadata }) {
   }
 
   // Expulsión
-  else if (m.messageStubType === WAMessageStubType.REMOVE) {
+  else if (m.messageStubType == 28 ) { // Evento de expulsión del grupo
     let textBan = `
 ┏━━━━━❖━━━✦━━━❖━━━━━┓
 ┃ 💅 𝑬𝑿𝑷𝑼𝑳𝑺𝑨𝑫𝑶 💥
