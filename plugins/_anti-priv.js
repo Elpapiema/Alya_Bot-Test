@@ -20,20 +20,34 @@ function saveWarns(data) {
   fs.writeFileSync(WARN_PATH, JSON.stringify(data, null, 2))
 }
 
+// Palabras y emojis permitidos
+const palabras = ['piedra', 'papel', 'tijera']
+const emojis = ['🪨', '📄', '✂️']
+
 export async function before(m, { conn, isOwner }) {
   const settings = loadSettings()
   const antiprivado = settings?.global?.antiprivado
 
-  // Verificaciones
   if (!antiprivado) return
   if (m.isGroup) return
   if (isOwner) return
 
+  const texto = (m.text || '').toLowerCase().replace(/\s+/g, ' ').trim()
+
+  // Casos permitidos:
+  const esSoloPpt = texto === 'ppt'
+  const esSoloJugada = palabras.includes(texto) || emojis.includes(texto)
+  const esComboValido = texto.startsWith('ppt ') && (
+    palabras.includes(texto.slice(4)) || emojis.includes(texto.slice(4))
+  )
+
+  if (esSoloPpt || esSoloJugada || esComboValido) return // No advertir
+
+  // Sistema de advertencia
   const warns = loadWarns()
   const id = m.sender
   warns[id] = (warns[id] || 0) + 1
 
-  // Responder según advertencia
   if (warns[id] >= 3) {
     await conn.sendMessage(id, {
       text: '🚫 Has sido bloqueado por contactar al bot en privado sin autorización.'
