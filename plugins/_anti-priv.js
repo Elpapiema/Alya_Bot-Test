@@ -1,5 +1,6 @@
 import fs from 'fs'
 
+// Rutas
 const WARN_PATH = './database/warns.json'
 const SETTINGS_PATH = './settings.json'
 
@@ -20,14 +21,13 @@ function loadSettings() {
   return JSON.parse(fs.readFileSync(SETTINGS_PATH))
 }
 
-const handler = async (m, { conn, isOwner, isCommand }) => {
+const handler = async (m, { conn, isOwner }) => {
   const settings = loadSettings()
   const antiprivado = settings?.global?.antiprivado
 
-  if (!antiprivado) return // función desactivada globalmente
-  if (m.isGroup) return // solo aplica en privados
-  if (isOwner) return // dueños pueden usar comandos en privado
-  if (!isCommand) return // ignorar mensajes que no son comandos
+  if (!antiprivado) return // función desactivada
+  if (m.isGroup) return // ignorar en grupos
+  if (isOwner) return // permitir a dueños
 
   const warns = loadWarns()
   const id = m.sender
@@ -36,20 +36,19 @@ const handler = async (m, { conn, isOwner, isCommand }) => {
 
   if (warns[id] >= 3) {
     await conn.sendMessage(id, {
-      text: '⛔ Has sido bloqueado por usar comandos en privado sin permiso.'
+      text: '🚫 Has sido bloqueado por contactar al bot en privado sin autorización.'
     })
     await conn.updateBlockStatus(id, 'block')
   } else {
     await conn.sendMessage(id, {
-      text: `⚠️ No está permitido usar comandos en privado. Advertencia ${warns[id]} de 3.\nEvita ser bloqueado.`
+      text: `⚠️ No puedes contactar al bot en privado.\nAdvertencia ${warns[id]} de 3.`
     })
   }
 
   saveWarns(warns)
 }
 
-handler.customPrefix = /^./ // interceptar comandos
-handler.before = true // ejecutarse antes de otros plugins
-handler.group = false // aplicar solo en privados
+handler.before = true // interceptar antes que otros
+handler.private = true // solo en chats privados
 
 export default handler
