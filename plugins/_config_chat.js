@@ -2,57 +2,54 @@ import fs from 'fs';
 
 const settingsPath = './settings.json';
 
-let handler = async (m, { conn, usedPrefix, command, args, isOwner, isGroup }) => {
-    const setting = args[0]?.toLowerCase();
-    if (!setting) {
-        throw `⚠️ Especifica la configuración que deseas cambiar.\n\nUso: *${usedPrefix + command} <welcome/bye/nsfw/arabkick/antiprivado>*`;
+let handler = async (m, { conn, isOwner, isAdmin, isGroup }) => {
+    if (!isOwner && !isAdmin) {
+        throw '❌ Este comando solo puede ser usado por *administradores* del grupo o *owners*.';
     }
 
-    const validSettings = ['welcome', 'bye', 'nsfw', 'arabkick', 'antiprivado'];
-    const globalOnly = ['antiprivado'];
-
-    if (!validSettings.includes(setting)) {
-        throw `⚠️ Configuración no válida.\n\nOpciones disponibles:\n- welcome\n- bye\n- nsfw\n- arabkick\n- antiprivado`;
-    }
-
-    const action = command === 'on'; // true = activar, false = desactivar
-
-    // Cargar settings
+    // Cargar configuración
     let settings = {};
     if (fs.existsSync(settingsPath)) {
         settings = JSON.parse(fs.readFileSync(settingsPath));
     }
 
-    // Determinar si es global o por grupo
-    let scope = '';
-    if (globalOnly.includes(setting)) {
-        if (!isOwner) throw `❌ La configuración *${setting}* solo puede ser cambiada por el owner.`;
-        scope = 'global';
-        if (!settings.global) settings.global = {};
-        settings.global[setting] = action;
-    } else if (isGroup) {
-        // En grupo, se aplica a settings.groups[chatId]
-        if (!settings.groups) settings.groups = {};
-        if (!settings.groups[m.chat]) settings.groups[m.chat] = {};
-        settings.groups[m.chat][setting] = action;
-        scope = `el grupo *${m.chat}*`;
-    } else if (isOwner && !isGroup) {
-        // En privado, pero el owner: configuración global
-        if (!settings.global) settings.global = {};
-        settings.global[setting] = action;
-        scope = 'globalmente';
-    } else {
-        throw `❌ Solo el *owner* puede aplicar configuraciones globales desde un chat privado.`;
+    const groupId = m.chat;
+    const globalConfig = settings.global || {};
+    const groupConfig = (settings.groups && settings.groups[groupId]) || {};
+
+    // Construir respuesta
+    let response = '';
+
+    if (isOwner) {
+        response += '🌐 *Configuraciones Globales:*\n';
+        if (Object.keys(globalConfig).length === 0) {
+            response += '_No hay configuraciones globales definidas._\n';
+        } else {
+            for (let key in globalConfig) {
+                response += `- ${key}: ${globalConfig[key] ? '✅ Activado' : '❌ Desactivado'}\n`;
+            }
+        }
+        response += '\n';
     }
 
-    // Guardar cambios
-    fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2));
-    m.reply(`✅ La configuración *${setting}* ha sido ${action ? 'activada' : 'desactivada'} correctamente ${scope}.`);
+    if (isGroup && (isOwner || isAdmin)) {
+        response += `👥 *Configuraciones del Grupo:* (${groupId})\n`;
+        if (Object.keys(groupConfig).length === 0) {
+            response += '_No hay configuraciones para este grupo._\n';
+        } else {
+            for (let key in groupConfig) {
+                response += `- ${key}: ${groupConfig[key] ? '✅ Activado' : '❌ Desactivado'}\n`;
+            }
+        }
+    }
+
+    m.reply(response.trim());
 };
 
-handler.help = ['on <config>', 'off <config>'];
+handler.help = ['settings'];
 handler.tags = ['group', 'config'];
-handler.command = ['on', 'off'];
+handler.command = ['settings'];
 handler.admin = true;
 
 export default handler;
+
