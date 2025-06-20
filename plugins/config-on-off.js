@@ -34,7 +34,7 @@ handler.help = ['on <setting>', 'off <setting>'];
 handler.tags = ['group', 'config'];
 handler.command = ['on', 'off'];
 handler.admin = true;
-handler.group = true;
+//handler.group = true;
 
 export default handler;
 
