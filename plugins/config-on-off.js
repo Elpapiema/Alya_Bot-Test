@@ -8,41 +8,64 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isGroup }) =
         throw `⚠️ Especifica la configuración que deseas cambiar.\n\nUso: *${usedPrefix + command} <welcome/bye/nsfw/arabkick/antiprivado>*`;
     }
 
-    const validSettings = ['welcome', 'nsfw', 'arabkick'];
+    const validSettings = ['welcome', 'bye', 'nsfw', 'arabkick'];
     const globalOnly = ['antiprivado'];
 
-    if (!validSettings.includes(setting)) {
+    if (!validSettings.includes(setting) && !globalOnly.includes(setting)) {
         throw `⚠️ Configuración no válida.\n\nOpciones disponibles:\n- welcome\n- bye\n- nsfw\n- arabkick\n- antiprivado`;
     }
 
-    const action = command === 'on'; // true = activar, false = desactivar
+    const action = command === 'on';
 
-    // Cargar settings
+    // Cargar o inicializar configuración
     let settings = {};
     if (fs.existsSync(settingsPath)) {
         settings = JSON.parse(fs.readFileSync(settingsPath));
+    } else {
+        settings = {
+            global: {
+                welcome: true
+            },
+            groups: {}
+        };
     }
 
-    // Determinar si es global o por grupo
     let scope = '';
-    if (globalOnly.includes(setting)) {
-        if (!isOwner) throw `❌ La configuración *${setting}* solo puede ser cambiada por el owner.`;
-        scope = 'global';
-        if (!settings.global) settings.global = {};
-        settings.global[setting] = action;
-    } else if (isGroup) {
-        // En grupo, se aplica a settings.groups[chatId]
-        if (!settings.groups) settings.groups = {};
-        if (!settings.groups[m.chat]) settings.groups[m.chat] = {};
-        settings.groups[m.chat][setting] = action;
-        scope = `el grupo *${m.chat}*`;
-    } else if (isOwner && !isGroup) {
-        // En privado, pero el owner: configuración global
+
+    // Owner en privado → configuración global
+    if (isOwner && !isGroup) {
         if (!settings.global) settings.global = {};
         settings.global[setting] = action;
         scope = 'globalmente';
-    } else {
-        throw `❌ Solo el *owner* puede aplicar configuraciones globales desde un chat privado.`;
+    }
+
+    // Grupo → verificar si es admin (puede ser owner también)
+    else if (isGroup) {
+        const groupMetadata = await conn.groupMetadata(m.chat);
+        const participants = groupMetadata.participants || [];
+        const adminIds = participants
+            .filter(p => ['admin', 'superadmin'].includes(p.admin))
+            .map(p => p.id);
+
+        const isGroupAdmin = adminIds.includes(m.sender);
+
+        if (!isGroupAdmin) {
+            throw '❌ Solo los *administradores* del grupo pueden cambiar la configuración de grupo.';
+        }
+
+        if (globalOnly.includes(setting)) {
+            throw `❌ La configuración *${setting}* solo puede ser cambiada por el owner en privado.`;
+        }
+
+        if (!settings.groups) settings.groups = {};
+        if (!settings.groups[m.chat]) settings.groups[m.chat] = {};
+        settings.groups[m.chat][setting] = action;
+        scope = `en el grupo *${m.chat}*`;
+    }
+
+    // No permitido
+    else {
+        throw '❌ Solo los administradores del grupo o el owner (en privado) pueden usar este comando.';
     }
 
     // Guardar cambios
@@ -53,7 +76,6 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isGroup }) =
 handler.help = ['on <config>', 'off <config>'];
 handler.tags = ['group', 'config'];
 handler.command = ['on', 'off'];
-handler.admin = true;
 
 export default handler;
 

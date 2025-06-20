@@ -180,7 +180,7 @@ ${usuario} fue *expulsado/a del grupo* 🧹
 
 //------------------------------------------------------------------
 
-import { WAMessageStubType } from '@whiskeysockets/baileys';
+/*import { WAMessageStubType } from '@whiskeysockets/baileys';
 import fetch from 'node-fetch';
 import fs from 'fs';
 
@@ -282,4 +282,100 @@ ${usuario} fue *expulsado/a del grupo* 🧹
       mentions: [m.sender, m.messageStubParameters[0]]
     });
   }
+}*/
+
+//-----------------------------------------------
+
+import { WAMessageStubType } from '@whiskeysockets/baileys';
+import fetch from 'node-fetch';
+import fs from 'fs';
+
+const settingsPath = './settings.json';
+
+// Cargar configuración
+let settings = {};
+if (fs.existsSync(settingsPath)) {
+  settings = JSON.parse(fs.readFileSync(settingsPath));
+}
+
+export async function before(m, { conn, groupMetadata }) {
+  if (!m.messageStubType || !m.isGroup) return;
+
+  const chatId = m.chat;
+  const groupConfig = settings.groups?.[chatId];
+  const globalConfig = settings.global || {};
+
+  const isWelcomeActive = groupConfig?.hasOwnProperty('welcome')
+    ? groupConfig.welcome
+    : globalConfig.welcome;
+
+  if (!isWelcomeActive) return;
+
+  const usuario = `@${m.messageStubParameters[0].split('@')[0]}`;
+  const subject = groupMetadata.subject;
+  const descs = groupMetadata.desc || "*Descripción predeterminada del grupo*";
+
+  const pp = await conn.profilePictureUrl(m.messageStubParameters[0], 'image').catch(() =>
+    'https://files.catbox.moe/xegxay.jpg'
+  );
+  const img = await (await fetch(pp)).buffer();
+
+  let text = '';
+
+  if (m.messageStubType == 27) {
+    text = `
+┏━━━━━❖━━━✦━━━❖━━━━━┓
+┃ 💠 𝑩𝑰𝑬𝑵𝑽𝑬𝑵𝑰𝑫𝑶/𝑨 💠
+┗━━━━━❖━━━✦━━━❖━━━━━┛
+
+🌸 Hola ${usuario}~
+✨ Bienvenido/a a *『${subject}』*
+
+🫶 Aquí solo hay:
+– Amistades lindas  
+– Caos bonito  
+– Un bot adorable... *o sea, yo~ 💁‍♀️*
+
+💬 Escribe *#menu* si quieres ver lo que sé hacer~
+
+📌 *Lee la descripción del grupo, ¿vale?*
+> *${descs}*
+
+🎀 Disfruta tu estancia, o te jalo las orejas 😘
+    `;
+  } else if (m.messageStubType == 32) {
+    text = `
+┏━━━━━❖━━━✦━━━❖━━━━━┓
+┃ 💔 𝑨𝑫𝑰𝑶́𝑺... 𝒐 𝒏𝒐 💔
+┗━━━━━❖━━━✦━━━❖━━━━━┛
+
+😢 Se nos fue ${usuario}...
+
+🕊️ Que el destino lo cuide...  
+🚆 O que lo atropelle un tren, quién sabe 😇
+
+✨ El grupo brillará menos sin ti... pero solo un poquito~
+    `;
+  } else if (m.messageStubType == 28) {
+    text = `
+┏━━━━━❖━━━✦━━━❖━━━━━┓
+┃ 💅 𝑬𝑿𝑷𝑼𝑳𝑺𝑨𝑫𝑶 💥
+┗━━━━━❖━━━✦━━━❖━━━━━┛
+
+${usuario} fue *expulsado/a del grupo* 🧹
+
+🥀 Que le vaya bonito...  
+🚪 Y que no vuelva, gracias~
+
+✨ Menos drama, más paz ☕
+    `;
+  } else {
+    return;
+  }
+
+  await conn.sendMessage(m.chat, {
+    image: img,
+    caption: text,
+    mentions: [m.messageStubParameters[0]]
+  });
 }
