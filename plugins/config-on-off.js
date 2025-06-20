@@ -8,7 +8,7 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isGroup }) =
         throw `⚠️ Especifica la configuración que deseas cambiar.\n\nUso: *${usedPrefix + command} <welcome/bye/nsfw/arabkick/antiprivado>*`;
     }
 
-    const validSettings = ['welcome', 'bye', 'nsfw', 'arabkick', 'antiprivado'];
+    const validSettings = ['welcome', 'nsfw', 'arabkick'];
     const globalOnly = ['antiprivado'];
 
     if (!validSettings.includes(setting)) {
