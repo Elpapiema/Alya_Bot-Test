@@ -286,7 +286,7 @@ export async function before(m, { conn, groupMetadata }) {
   const chatId = m.chat;
 
   // Leer configuración en tiempo real
-  const settingsPath = './settings.json';
+  const settingsPath = './database/settings.json';
   let settings = {};
   if (fs.existsSync(settingsPath)) {
     try {
