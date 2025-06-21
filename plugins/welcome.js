@@ -183,7 +183,7 @@ ${usuario} fue *expulsado/a del grupo* 🧹
 import fetch from 'node-fetch';
 import fs from 'fs';
 
-const settingsPath = './settings.json';
+const settingsPath = './database/settings.json';
 let settings = {};
 if (fs.existsSync(settingsPath)) {
   settings = JSON.parse(fs.readFileSync(settingsPath));
