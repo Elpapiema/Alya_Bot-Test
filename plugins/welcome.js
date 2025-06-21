@@ -280,13 +280,16 @@ ${usuario} fue *expulsado/a del grupo* 🧹
 import fetch from 'node-fetch';
 import fs from 'fs';
 
+const settingsPath = './database/settings.json';
+// Almacenamos los estados previos por grupo
+const welcomeStatusCache = {};
+
 export async function before(m, { conn, groupMetadata }) {
   if (!m.messageStubType || !m.isGroup) return;
 
   const chatId = m.chat;
 
   // Leer configuración en tiempo real
-  const settingsPath = './database/settings.json';
   let settings = {};
   if (fs.existsSync(settingsPath)) {
     try {
@@ -297,11 +300,23 @@ export async function before(m, { conn, groupMetadata }) {
     }
   }
 
-  // Verificar si 'welcome' está activado para el grupo
+  // Obtener estado actual de "welcome" (grupo > global > false)
   const groupConfig = settings.groups?.[chatId];
-  const isWelcomeEnabled = groupConfig?.welcome ?? settings.global?.welcome ?? false;
+  const currentWelcome = groupConfig?.welcome ?? settings.global?.welcome ?? false;
 
-  if (!isWelcomeEnabled) return;
+  // Verificar cambios respecto al estado anterior
+  const prevWelcome = welcomeStatusCache[chatId];
+  if (prevWelcome !== currentWelcome) {
+    welcomeStatusCache[chatId] = currentWelcome;
+    if (currentWelcome) {
+      console.log(`✅ Bienvenida activada para el grupo ${chatId}`);
+    } else {
+      console.log(`❌ Bienvenida desactivada para el grupo ${chatId}`);
+    }
+  }
+
+  // Si está desactivado, no seguir
+  if (!currentWelcome) return;
 
   const userJid = m.messageStubParameters?.[0];
   if (!userJid) return;
