@@ -180,11 +180,9 @@ ${usuario} fue *expulsado/a del grupo* 🧹
 
 //------------------------------------------------------------------
 
-/*import { WAMessageStubType } from '@whiskeysockets/baileys';
 import fetch from 'node-fetch';
 import fs from 'fs';
 
-// Cargar configuración desde settings.json
 const settingsPath = './settings.json';
 let settings = {};
 if (fs.existsSync(settingsPath)) {
@@ -195,135 +193,25 @@ export async function before(m, { conn, groupMetadata }) {
   if (!m.messageStubType || !m.isGroup) return;
 
   const chatId = m.chat;
-  const isWelcomeGlobal = settings?.global?.welcome;
-  const isWelcomeGroup = settings?.groups?.[chatId]?.welcome;
 
-  // Si no está activado ni global ni por grupo, salir
-  if (!isWelcomeGlobal && !isWelcomeGroup) return;
-
-  // Obtener la foto de perfil del usuario
-  let pp = await conn.profilePictureUrl(m.messageStubParameters[0], 'image').catch(_ => 'https://files.catbox.moe/xegxay.jpg');
-  let img = await (await fetch(pp)).buffer();
-
-  // Obtener el nombre del usuario
-  let usuario = `@${m.messageStubParameters[0].split('@')[0]}`;
-
-  // Obtener metadatos del grupo
-  let subject = groupMetadata.subject;
-  let descs = groupMetadata.desc || "*Descripción predeterminada del grupo*";
-
-  // Bienvenida
-  if (m.messageStubType == 27) { // Evento de entrada al grupo
-    let textWel = `
-┏━━━━━❖━━━✦━━━❖━━━━━┓
-┃ 💠 𝑩𝑰𝑬𝑵𝑽𝑬𝑵𝑰𝑫𝑶/𝑨 💠
-┗━━━━━❖━━━✦━━━❖━━━━━┛
-
-🌸 Hola ${usuario}~
-✨ Bienvenido/a a *『${subject}』*
-
-🫶 Aquí solo hay:
-– Amistades lindas  
-– Caos bonito  
-– Un bot adorable... *o sea, yo~ 💁‍♀️*
-
-💬 Escribe *#menu* si quieres ver lo que sé hacer~
-
-📌 *Lee la descripción del grupo, ¿vale?*
-> *${descs}*
-
-🎀 Disfruta tu estancia, o te jalo las orejas 😘
-    `;
-    await conn.sendMessage(m.chat, {
-      image: img,
-      caption: textWel,
-      mentions: [m.sender, m.messageStubParameters[0]]
-    });
-  }
-
-  // Despedida
-  else if (m.messageStubType == 32 ) { // Evento de salida del grupo
-    let textBye = `
-┏━━━━━❖━━━✦━━━❖━━━━━┓
-┃ 💔 𝑨𝑫𝑰𝑶́𝑺... 𝒐 𝒏𝒐 💔
-┗━━━━━❖━━━✦━━━❖━━━━━┛
-
-😢 Se nos fue ${usuario}...
-
-🕊️ Que el destino lo cuide...  
-🚆 O que lo atropelle un tren, quién sabe 😇
-
-✨ El grupo brillará menos sin ti... pero solo un poquito~
-    `;
-    await conn.sendMessage(m.chat, {
-      image: img,
-      caption: textBye,
-      mentions: [m.sender, m.messageStubParameters[0]]
-    });
-  }
-
-  // Expulsión
-  else if (m.messageStubType == 28 ) { // Evento de expulsión del grupo
-    let textBan = `
-┏━━━━━❖━━━✦━━━❖━━━━━┓
-┃ 💅 𝑬𝑿𝑷𝑼𝑳𝑺𝑨𝑫𝑶 💥
-┗━━━━━❖━━━✦━━━❖━━━━━┛
-
-${usuario} fue *expulsado/a del grupo* 🧹
-
-🥀 Que le vaya bonito...  
-🚪 Y que no vuelva, gracias~
-
-✨ Menos drama, más paz ☕
-    `;
-    await conn.sendMessage(m.chat, {
-      image: img,
-      caption: textBan,
-      mentions: [m.sender, m.messageStubParameters[0]]
-    });
-  }
-}*/
-
-//-----------------------------------------------
-
-import { WAMessageStubType } from '@whiskeysockets/baileys';
-import fetch from 'node-fetch';
-import fs from 'fs';
-
-const settingsPath = './settings.json';
-
-// Cargar configuración
-let settings = {};
-if (fs.existsSync(settingsPath)) {
-  settings = JSON.parse(fs.readFileSync(settingsPath));
-}
-
-export async function before(m, { conn, groupMetadata }) {
-  if (!m.messageStubType || !m.isGroup) return;
-
-  const chatId = m.chat;
+  // Verificar configuración `welcome`
   const groupConfig = settings.groups?.[chatId];
-  const globalConfig = settings.global || {};
+  const isWelcomeEnabled = groupConfig?.welcome ?? settings.global?.welcome ?? false;
 
-  const isWelcomeActive = groupConfig?.hasOwnProperty('welcome')
-    ? groupConfig.welcome
-    : globalConfig.welcome;
+  if (!isWelcomeEnabled) return;
 
-  if (!isWelcomeActive) return;
+  const userJid = m.messageStubParameters?.[0];
+  if (!userJid) return;
 
-  const usuario = `@${m.messageStubParameters[0].split('@')[0]}`;
+  const usuario = `@${userJid.split('@')[0]}`;
+  const pp = await conn.profilePictureUrl(userJid, 'image').catch(() => 'https://files.catbox.moe/xegxay.jpg');
+  const img = await (await fetch(pp)).buffer();
+
   const subject = groupMetadata.subject;
   const descs = groupMetadata.desc || "*Descripción predeterminada del grupo*";
 
-  const pp = await conn.profilePictureUrl(m.messageStubParameters[0], 'image').catch(() =>
-    'https://files.catbox.moe/xegxay.jpg'
-  );
-  const img = await (await fetch(pp)).buffer();
-
-  let text = '';
-
-  if (m.messageStubType == 27) {
-    text = `
+  if (m.messageStubType === 27) {
+    const textWel = `
 ┏━━━━━❖━━━✦━━━❖━━━━━┓
 ┃ 💠 𝑩𝑰𝑬𝑵𝑽𝑬𝑵𝑰𝑫𝑶/𝑨 💠
 ┗━━━━━❖━━━✦━━━❖━━━━━┛
@@ -342,9 +230,15 @@ export async function before(m, { conn, groupMetadata }) {
 > *${descs}*
 
 🎀 Disfruta tu estancia, o te jalo las orejas 😘
-    `;
-  } else if (m.messageStubType == 32) {
-    text = `
+`;
+    await conn.sendMessage(chatId, {
+      image: img,
+      caption: textWel,
+      mentions: [userJid]
+    });
+
+  } else if (m.messageStubType === 32) {
+    const textBye = `
 ┏━━━━━❖━━━✦━━━❖━━━━━┓
 ┃ 💔 𝑨𝑫𝑰𝑶́𝑺... 𝒐 𝒏𝒐 💔
 ┗━━━━━❖━━━✦━━━❖━━━━━┛
@@ -355,9 +249,15 @@ export async function before(m, { conn, groupMetadata }) {
 🚆 O que lo atropelle un tren, quién sabe 😇
 
 ✨ El grupo brillará menos sin ti... pero solo un poquito~
-    `;
-  } else if (m.messageStubType == 28) {
-    text = `
+`;
+    await conn.sendMessage(chatId, {
+      image: img,
+      caption: textBye,
+      mentions: [userJid]
+    });
+
+  } else if (m.messageStubType === 28) {
+    const textBan = `
 ┏━━━━━❖━━━✦━━━❖━━━━━┓
 ┃ 💅 𝑬𝑿𝑷𝑼𝑳𝑺𝑨𝑫𝑶 💥
 ┗━━━━━❖━━━✦━━━❖━━━━━┛
@@ -368,14 +268,11 @@ ${usuario} fue *expulsado/a del grupo* 🧹
 🚪 Y que no vuelva, gracias~
 
 ✨ Menos drama, más paz ☕
-    `;
-  } else {
-    return;
+`;
+    await conn.sendMessage(chatId, {
+      image: img,
+      caption: textBan,
+      mentions: [userJid]
+    });
   }
-
-  await conn.sendMessage(m.chat, {
-    image: img,
-    caption: text,
-    mentions: [m.messageStubParameters[0]]
-  });
 }
