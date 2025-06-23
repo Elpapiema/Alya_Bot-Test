@@ -17,7 +17,7 @@ let handler = async (m, { conn }) => {
         const randomVideoUrl = videos[Math.floor(Math.random() * videos.length)];
 
         const menuMessage = `
-╭──〕${botName}〕
+╭──〕${botName} 〕
 ├̟̇❀ 𝑫𝒆𝒔𝒂𝒓𝒓𝒐𝒍𝒍𝒂𝒅𝒐 𝑷𝒐𝒓 : 
 ├̟̇❀ ${dev}
 ├̟̇❀ 𝑽𝒆𝒓𝒔𝒊𝒐́𝒏 : ${vs}
