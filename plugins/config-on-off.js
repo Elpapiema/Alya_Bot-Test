@@ -17,15 +17,14 @@ if (fs.existsSync(settingsPath)) {
   };
 }
 
-const handler = async (m, { conn, args, isAdmin, isBotAdmin }) => {
+const handler = async (m, { conn, args, isAdmin, isBotAdmin, command }) => {
   if (!m.isGroup) return m.reply('Este comando solo funciona en grupos.');
   if (!isAdmin) return m.reply('Solo los administradores pueden usar este comando.');
 
-  const command = m.command; // 'on' o 'off'
   const option = (args[0] || '').toLowerCase();
 
   if (!['welcome', 'nsfw'].includes(option)) {
-    return m.reply(`Opción no válida.\nOpciones disponibles: welcome, nsfw`);
+    return m.reply(`❌ Opción no válida.\n\nOpciones disponibles: *welcome*, *nsfw*`);
   }
 
   const value = command === 'on';
@@ -50,6 +49,7 @@ handler.group = true;
 handler.admin = true;
 
 export default handler;
+
 
 
 
