@@ -1,7 +1,7 @@
 import fs from 'fs'
 
 const WARN_PATH = './database/warns.json'
-const SETTINGS_PATH = './settings.json'
+const SETTINGS_PATH = './databse/settings.json'
 
 // Leer configuración
 function loadSettings() {

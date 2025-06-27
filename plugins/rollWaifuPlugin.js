@@ -2,7 +2,7 @@ import { promises as fs } from 'fs';
 import fetch from 'node-fetch';
 
 // Ruta del archivo characters.json (remoto en GitHub)
-const charactersUrl = 'https://raw.githubusercontent.com/Elpapiema/Adiciones-para-AlyaBot-RaphtaliaBot-/refs/heads/main/image_json/rw-test.json';
+const charactersUrl = 'https://raw.githubusercontent.com/Elpapiema/CharHub-Store/refs/heads/main/image_json/rw-test.json';
 const filePath = './database/personalize.json';
 
 // Función para cargar el archivo characters.json desde GitHub

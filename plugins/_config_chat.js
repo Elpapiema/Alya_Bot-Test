@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-const settingsPath = './settings.json';
+const settingsPath = './database/settings.json';
 
 let handler = async (m, { conn, isOwner, isAdmin, isGroup }) => {
     if (!isOwner && !isAdmin) {
