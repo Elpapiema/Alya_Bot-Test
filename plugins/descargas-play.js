@@ -62,14 +62,14 @@ let handler = async (m, { text, conn, command }) => {
     const { json: downloadJson } = await tryFetchJSON(DOWNLOAD_APIS, videoUrl);
 
     if (!downloadJson || !downloadJson.download_url) {
-      return m.reply('❌ No se pudo descargar el audio.');
-    }
+  return m.reply('❌ No se pudo descargar el audio.');
+}
 
-    await conn.sendMessage(m.chat, {
-      audio: { url: downloadJson.download_url },
-      mimetype: 'audio/mpeg',
-      fileName: `audio.mp3`
-    }, { quoted: m });
+await conn.sendMessage(m.chat, {
+  audio: { url: downloadJson.download_url },
+  mimetype: 'audio/mp4',
+  fileName: `audio.mp3`
+}, { quoted: m });
 
   } catch (e) {
     console.error(e);
