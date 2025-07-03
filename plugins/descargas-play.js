@@ -65,11 +65,18 @@ let handler = async (m, { text, conn, command }) => {
   return m.reply('❌ No se pudo descargar el audio.');
 }
 
+const file = await conn.getFile(downloadJson.download_url);
 await conn.sendMessage(m.chat, {
+  audio: { url: file.data },
+  mimetype: 'audio/mpeg',
+  fileName: `audio.mp3`
+}, { quoted: m });
+
+/*await conn.sendMessage(m.chat, {
   audio: { url: downloadJson.download_url },
   mimetype: 'audio/mp4',
   fileName: `audio.mp3`
-}, { quoted: m });
+}, { quoted: m });*/
 
   } catch (e) {
     console.error(e);
