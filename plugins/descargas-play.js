@@ -68,7 +68,7 @@ let handler = async (m, { text, conn, command }) => {
     await conn.sendMessage(m.chat, {
       audio: { url: downloadJson.download_url },
       mimetype: 'audio/mpeg',
-      fileName: `${downloadJson.title}.mp3`
+      fileName: `audio.mp3`
     }, { quoted: m });
 
   } catch (e) {
