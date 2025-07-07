@@ -7,9 +7,9 @@ const SEARCH_APIS = [
 ];
 
 const DOWNLOAD_APIS = [
-  { name: 'Servidor Masha', url: 'http://api.alyabot.xyz:3269/download_audio?url=' },
-  { name: 'Servidor Alya', url: 'http://api2.alyabot.xyz:5216/download_audio?url=' },
-  { name: 'Servidor Masachika', url: 'https://api3.alyabot.xyz/download_audio?url=' }
+  { name: 'Servidor Masha', url: 'http://api.alyabot.xyz:3269/download_audioV2?url=' },
+  { name: 'Servidor Alya', url: 'http://api2.alyabot.xyz:5216/download_audioV2?url=' },
+  { name: 'Servidor Masachika', url: 'https://api3.alyabot.xyz/download_audioV2?url=' }
 ];
 
 async function tryFetchJSON(servers, query) {
@@ -61,14 +61,14 @@ let handler = async (m, { text, conn, command }) => {
 
     const { json: downloadJson } = await tryFetchJSON(DOWNLOAD_APIS, videoUrl);
 
-    if (!downloadJson || !downloadJson.download_url) {
+    if (!downloadJson || !downloadJson.file_url) {
   return m.reply('❌ No se pudo descargar el audio.');
 }
 
 await conn.sendMessage(m.chat, {
-  audio: { url: downloadJson.download_url },
+  audio: { url: downloadJson.file_url },
   mimetype: 'audio/mp4',
-  fileName: `audio.mp3`
+  fileName: `${downloadJson.title}.mp3`
 }, { quoted: m });
 
   } catch (e) {
