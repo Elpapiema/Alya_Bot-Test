@@ -24,7 +24,7 @@ const handler = async (m, { conn, args, isAdmin, isBotAdmin, command }) => {
   const option = (args[0] || '').toLowerCase();
 
   if (!['welcome', 'nsfw'].includes(option)) {
-    return m.reply(`❌ Opción no válida.\n\nOpciones disponibles: *welcome*, *nsfw*`);
+    return m.reply(`Opciones disponibles: *welcome*, *nsfw*`);
   }
 
   const value = command === 'on';

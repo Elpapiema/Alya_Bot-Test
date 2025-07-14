@@ -85,8 +85,11 @@ global.dev = 'Emma (Violets Version)'
 global.copy = '©' // No modificar
 
 // ---------------[ APIs V2 ]---------------
-global.panda = 'G7eRpMaa'
-global.panda2 = 'G32254GLM09MN89Maa'
+
+global.alya1 = 'http://api.alyabot.xyz:3269'
+global.alya2 = 'http://api2.alyabot.xyz:5216'
+global.alya3 = 'https://api3.alyabot.xyz'
+
 //------------------------------------------
 
 //----------------------------[ NIVELES | RPG ]---------------------------------

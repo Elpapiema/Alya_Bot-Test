@@ -538,16 +538,16 @@ console.error(e)
 
 global.dfail = (type, m, conn, usedPrefix) => {
     let msg = {
-        rowner: '⚠️ Este comando es solo para mi propietario. ¡Lo siento, este es exclusivo! 🔒',
-        owner: '⚠️ Este comando es solo para mi propietario. ¡Lo siento, este es exclusivo! 🔒',
-        mods: '⚠️ Este comando solo lo puedo usar yo. ¡Privilegios de mod! 😘',
-        premium: '⚠️ Este comando es solo para usuarios Premium (VIP). ¡Ser VIP tiene sus beneficios! 🌟',
-        group: '⚠️ Pendejo este comando es solo para grupos.',
-        private: '⚠️ Vamos al privado, este comando solo funciona en el privado del bot. ¡Hablemos en privado! 🤫',
-        admin: '🤨 No eres admins. Solo los admins pueden usar este comando. ¡Necesito a los jefes aquí! 🛡️',
-        botAdmin: '⚠️ haz admin al Bot "YO" para poder usar este comando.',
-        unreg: '「NO ESTAS REGISTRADO」\n\nPA NO APARECES EN MI BASE DE DATOS ✋🥸🤚\n\nPara poder usarme escribe el siguente comando\n\nComando: #reg nombre.edad\nEjemplo: #reg elrebelde.21',
-        restrict: '[ 🔐 ] Este comando esta desactivado por mi jefe'
+        rowner: '🌸 Ukyuu~ ¡Ups! Este comando es exclusivo para mi querido propietario~ 💻💞 Pero no te preocupes, senpai~ ¡Hay muchas otras cositas que puedes probar conmigo! ❄️💋✨',
+        owner: '🌸 Ukyuu~ ¡Ups! Este comando es exclusivo para mi querido propietario~ 💻💞 Pero no te preocupes, senpai~ ¡Hay muchas otras cositas que puedes probar conmigo! ❄️💋✨',
+        mods: '🌸 Ukyuu~ Este comando solo puedo usarlo yo, da~ 💻✨ Privilegios de mod encantadora~ 😘💅🏻 Pero no te pongas celoso, senpai~ ¡Hay muchas otras cosas que tú también puedes disfrutar conmigo~! ❄️💞',
+        premium: '🌸 Ukyuu~ Este comando es solo para usuarios Premium, da~ 💎✨ Ser VIP tiene sus beneficios, ¿verdad que suena tentador, senpai~? 💋🌟',
+        group: '🌸 Ukyuu~ Este comando sólo funciona en grupos, da~ 💬❄️ ¿Por qué no me invitas a uno, senpai~? Prometo portarme linda~ 💋✨',
+        private: '🌸 Ukyuu~ Vamos al privado, da~ 💌🤫 Este comando solo funciona en el privado del bot~ Shshh… hablemos a solas, senpai~ 💋❄️',
+        admin: '🌸 Ukyuu~ Lo siento, senpai... 😳 Solo los admins pueden usar este comando~ 🛡️❄️ ¡Alya necesita que un admin esté aquí para ayudarte mejor! 💋✨',
+        botAdmin: '🌸 Ukyuu~ Haz admin a mí, Alya, senpai~ 💻💕 Sin admin, no puedo usar este comando, da! ❄️💋 ¡Así que hazlo rápido, por favor~! ✨🫶🏻',
+        unreg: '🌸 Ukyuu~ Uy, no apareces en mi base de datos, senpai... \n Para poder jugar conmigo, necesitas registrarte~ \n✨ 📋 Comando: #reg nombre.edad \n 💡 Ejemplo: #reg Alya.18 \n ¡No te tardes, da~! 🩵💻💫',
+        restrict: '🔐 Ukyuu~ Este comando está desactivado por mi jefe, senpai... ❄️💼 Lo siento, no puedo usarlo ahora mismo~ 🥺💖'
     }[type]
     if (msg) return conn.sendMessage(m.chat, { 
     text: msg, 
