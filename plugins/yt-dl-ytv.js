@@ -6,9 +6,9 @@ const handler = async (m, { conn, text, command }) => {
   }
 
   const servers = [
-    { name: 'srv Masha', baseUrl: alya1 },
-    { name: 'srv Alya', baseUrl: alya2 },
-    { name: 'srv Masachika', baseUrl: alya3 },
+    { name: 'Servidor Masha', baseUrl: alya1 },
+    { name: 'Servidor Alya', baseUrl: alya2 },
+    { name: 'Servidor Masachika', baseUrl: alya3 },
   ];
 
   // Función para intentar descargar video en servidores en orden aleatorio
