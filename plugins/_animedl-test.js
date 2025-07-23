@@ -31,13 +31,15 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
       return m.reply('🚫 El archivo es demasiado grande (máximo 300MB)');
     }
 
-    await conn.loadingMsg(m.chat, '🌸 𝘿𝙀𝙎𝘾𝘼𝙍𝙂𝘼𝙉𝘿𝙊 𝘼𝙉𝙄𝙈𝙀 🌸\n\n⏳ Espere un momento, descargando desde MEGA...', `✅ Enviando archivo`, [
+    await m.reply('⏳ Descargando episodio, por favor espera...');
+
+/*await conn.loadingMsg(m.chat, '🌸 𝘿𝙀𝙎𝘾𝘼𝙍𝙂𝘼𝙉𝘿𝙊 𝘼𝙉𝙄𝙈𝙀 🌸\n\n⏳ Espere un momento, descargando desde MEGA...', `✅ Enviando archivo`, [
       "▰▱▱▱▱ ᴄᴀʀɢᴀɴᴅᴏ...",
       "▰▰▱▱▱ ᴄᴀʀɢᴀɴᴅᴏ...",
       "▰▰▰▱▱ ᴄᴀʀɢᴀɴᴅᴏ...",
       "▰▰▰▰▱ ᴄᴀʀɢᴀɴᴅᴏ...",
       "▰▰▰▰▰ ᴄᴀʀɢᴀɴᴅᴏ..."
-    ], m);
+    ], m);*/
 
     const caption = `🎬 *𝘼𝙉𝙄𝙈𝙀 𝙁𝙇𝙑 - 𝘿𝙀𝙎𝘾𝘼𝙍𝙂𝘼*\n\n📁 ɴᴏᴍʙʀᴇ: ${file.name}\n📦 ᴛᴀᴍᴀÑᴏ: ${formatBytes(file.size)}`;
 
