@@ -44,16 +44,18 @@ let handler = async (m, { text, conn, command }) => {
 
     const msgInfo = `
 ╭─⃝🌸⃝─⃝❀⃝─〔 彡 AlyaBot 彡 〕─⃝❀⃝─⃝🌸⃝─╮
+│
 │  (๑>◡<๑)✨ ¡Aquí tienes tu cancioncita~!
 │━━━━━━━━━━━━━━━━━━━━━━━
-│💿 𝒯í𝓉𝓊𝓁𝑜: ${videoTitle} 🌸
-│
-│⏱️ 𝒟𝓊𝓇𝒶𝒸𝒾ó𝓃: ${duration}s
-│👀 𝒱𝒾𝓈𝓉𝒶𝓈: ${video.views.toLocaleString()}
-│🎤 𝒜𝓊𝓉𝑜𝓇: ${video.channel}
-│🔗 𝒠𝓃𝓁𝒶𝒸𝑒: ${videoUrl}
-│📡 𝒮𝑒𝓇𝓋𝒾𝒹𝑜𝓇: ${searchServer || 'Desconocido'}-nyan~ 🐾
+│💿 𝒯тιтυℓσ: ${videoTitle} 🌸
+│⏱️ Dυɾαƈισɳ: ${duration}s
+│👀 νιѕтαѕ: ${video.views.toLocaleString()}
+│🎤 Aυƚσɾ: ${video.channel}
+│🔗 ℓιηк: ${videoUrl}
+│📡 รε૨ѵε૨: ${searchServer || 'Desconocido'}-nyan~ 🐾
 ╰─⃝🌸⃝─〔  Enviando con amor 〕─⃝🌸⃝─╯
+
+> Hecho con amor por ${dev}
 `.trim();
 
     /*const msgInfo = `
