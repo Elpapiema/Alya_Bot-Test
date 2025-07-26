@@ -2,13 +2,13 @@ import fetch from 'node-fetch';
 
 const SEARCH_APIS = [
   { name: 'Servidor Masha', url: 'http://api.alyabot.xyz:3269/search_youtube?query=' },
-  { name: 'Servidor Alya', url: 'http://api2.alyabot.xyz:5216/search_youtube?query=' },
+  { name: 'Servidor Alya', url: 'http://api2.alyabot.xyz:2004/search_youtube?query=' },
   { name: 'Servidor Masachika', url: 'https://api3.alyabot.xyz/search_youtube?query=' }
 ];
 
 const DOWNLOAD_APIS = [
   { name: 'Servidor Masha', url: 'http://api.alyabot.xyz:3269/download_video?url=' },
-  { name: 'Servidor Alya', url: 'http://api2.alyabot.xyz:5216/download_video?url=' },
+  { name: 'Servidor Alya', url: 'http://api2.alyabot.xyz:2004/download_video?url=' },
   { name: 'Servidor Masachika', url: 'https://api3.alyabot.xyz/download_video?url=' }
 ];
 
@@ -43,28 +43,29 @@ let handler = async (m, { text, conn, command }) => {
     const duration = Math.floor(video.duration);
 
     const msgInfo = `
-╭─ׅ─ׅ┈ ─๋︩︪─☪︎︎︎̸⃘̸࣭ٜ࣪࣪࣪۬◌⃘۪֟፝֯۫۫︎⃪𐇽۫۬🎧⃘⃪۪֟፝֯۫۫۫۬◌⃘࣭ٜ࣪࣪࣪۬☪︎︎︎︎̸─ׅ─ׅ┈ ─๋︩︪─╮    
-│  〔彡🄰ʟɪsᴀ  彡 ʙ ᴏ ᴛ〕
-│˚̩̩̥͙°̩̥〔 𝘿 𝙚 𝙨 𝙘 𝙖 𝙧 𝙜 𝙖 𝙨 𝙋𝙡𝙖𝙮 〕°̩̥˚̩̩̥͙°̩̥ ·͙*̩̩͙
-┃
-├̟̇˚₊·͟͟͟͟͟͟͞͞͞͞͞͞➳₊• 🎼 𝑻𝒊𝒕𝒖𝒍𝒐: ${videoTitle}
-├̟̇˚₊·͟͟͟͟͟͟͞͞͞͞͞͞➳₊• ⏱️ 𝑫𝒖𝒓𝒂𝒄𝒊𝒐́𝒏: ${duration}s
-├̟̇˚₊·͟͟͟͟͟͟͞͞͞͞͞͞➳₊• 👁️ 𝑽𝒊𝒔𝒕𝒂𝒔: ${video.views.toLocaleString()}
-├̟̇˚₊·͟͟͟͟͟͟͞͞͞͞͞͞➳₊• 👤 𝑨𝒖𝒕𝒐𝒓: ${video.channel}
-├̟̇˚₊·͟͟͟͟͟͟͞͞͞͞͞͞➳₊• 🔗 𝑳𝒊𝒏𝒌 : ${videoUrl}
-├̟̇˚₊·͟͟͟͟͟͟͞͞͞͞͞͞➳₊• 💠 𝑺𝒆𝒓𝒗𝒆𝒓: ${searchServer || 'Desconocido'}
+╭─⃝🌸⃝─⃝❀⃝─〔 彡 AlyaBot 彡 〕─⃝❀⃝─⃝🌸⃝─╮
 │
-╰─〔𝙀𝙣𝙫𝙞𝙖𝙣𝙙𝙤▰▰▱▱〕
+│  (๑>◡<๑)✨ ¡Aquí tienes tu Video~!
+│━━━━━━━━━━━━━━━━━━━━━━━
+│💿 𝒯тιтυℓσ: ${videoTitle} 🌸
+│⏱️ Dυɾαƈισɳ: ${duration}s
+│👀 νιѕтαѕ: ${video.views.toLocaleString()}
+│🎤 Aυƚσɾ: ${video.channel}
+│🔗 ℓιηк: ${videoUrl}
+│📡 รε૨ѵε૨: ${searchServer || 'Desconocido'}-nyan~ 🐾
+╰─⃝🌸⃝─〔  Enviando con amor 〕─⃝🌸⃝─╯
+
+> Hecho con amor por ${dev}
 `.trim();
 
     await conn.sendMessage(m.chat, { image: { url: thumb }, caption: msgInfo }, { quoted: m });
 
     const { json: downloadJson } = await tryFetchJSON(DOWNLOAD_APIS, videoUrl);
 
-    if (!downloadJson || !downloadJson.download_url) return m.reply('❌ No se pudo descargar el video.');
+    if (!downloadJson || !downloadJson.file_url) return m.reply('❌ No se pudo descargar el video.');
 
     await conn.sendMessage(m.chat, {
-      video: { url: downloadJson.download_url },
+      video: { url: downloadJson.file_url },
       mimetype: 'video/mp4',
       fileName: `video.mp4`
     }, { quoted: m });
