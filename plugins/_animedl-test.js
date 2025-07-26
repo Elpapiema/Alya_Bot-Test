@@ -41,7 +41,17 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
       "▰▰▰▰▰ ᴄᴀʀɢᴀɴᴅᴏ..."
     ], m);*/
 
-    const caption = `🎬 *𝘼𝙉𝙄𝙈𝙀 𝙁𝙇𝙑 - 𝘿𝙀𝙎𝘾𝘼𝙍𝙂𝘼*\n\n📁 ɴᴏᴍʙʀᴇ: ${file.name}\n📦 ᴛᴀᴍᴀÑᴏ: ${formatBytes(file.size)}`;
+    const caption = `
+╭─⃝🍥⃝─⃝✿⃝ 〔 彡 AlyaBot 彡 〕✿⃝─⃝🍥⃝─╮
+│  (๑˃ᴗ˂)ﻭ💿 ¡Tu anime está listo!
+│━━━━━━━━━━━━━━━━━━━━━━━
+│🎬 𝒫𝓁𝒶𝓉𝒻𝑜𝓇𝓂𝒶: AnimeFLV 🌐✨
+│📁 𝒩𝑜𝓂𝒷𝓇𝑒: ${animeId} Ep. ${episode}
+│📦 𝒯𝒶𝓂𝒶ñ𝑜: ${formatBytes(file.size)}
+│
+│💕 Disfruta tu dosis de anime, ¡pero no te duermas tarde, eh~? 💤💗
+╰─⃝🍥⃝─〔 AlyaBot Anime DL 〕─⃝🍥⃝─╯
+`;
 
     const dataBuffer = await file.downloadBuffer();
     const fileExtension = path.extname(file.name).toLowerCase();
