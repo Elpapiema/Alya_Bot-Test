@@ -17,7 +17,7 @@ let handler = async (m, { args, usedPrefix, command }) => {
   let lastError = '';
 
   for (let server of shuffledServers) {
-    const endpoint = `${server.url}/Tiktok_video?url=${encodeURIComponent(args[0])}`;
+    const endpoint = `${server.url}/Tiktok_videodl?url=${encodeURIComponent(args[0])}`;
     try {
       await conn.sendMessage(m.chat, { text: `📡 Usando *${server.name}*...\n⏳ Procesando tu video...` }, { quoted: m });
 
