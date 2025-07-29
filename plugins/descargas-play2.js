@@ -2,13 +2,13 @@ import fetch from 'node-fetch';
 
 const SEARCH_APIS = [
   { name: 'Servidor Masha', url: 'http://api.alyabot.xyz:3269/search_youtube?query=' },
-  { name: 'Servidor Alya', url: 'http://api2.alyabot.xyz:2004/search_youtube?query=' },
+  { name: 'Servidor Alya', url: 'http://api2.alyabot.xyz:3108/search_youtube?query=' },
   { name: 'Servidor Masachika', url: 'https://api3.alyabot.xyz/search_youtube?query=' }
 ];
 
 const DOWNLOAD_APIS = [
   { name: 'Servidor Masha', url: 'http://api.alyabot.xyz:3269/download_videoV2?url=' },
-  { name: 'Servidor Alya', url: 'http://api2.alyabot.xyz:2004/download_videoV2?url=' },
+  { name: 'Servidor Alya', url: 'http://api2.alyabot.xyz:3108/download_videoV2?url=' },
   { name: 'Servidor Masachika', url: 'https://api3.alyabot.xyz/download_videoV2?url=' }
 ];
 
@@ -46,6 +46,7 @@ let handler = async (m, { text, conn, command }) => {
 ╭─⃝🌸⃝─⃝❀⃝─〔 彡 AlyaBot 彡 〕─⃝❀⃝─⃝🌸⃝─╮
 │
 │  (๑>◡<๑)✨ ¡Aquí tienes tu Video~!
+│
 │━━━━━━━━━━━━━━━━━━━━━━━
 │💿 𝒯тιтυℓσ: ${videoTitle} 🌸
 │⏱️ Dυɾαƈισɳ: ${duration}s
