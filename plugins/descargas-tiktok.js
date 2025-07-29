@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 let handler = async (m, { args, usedPrefix, command }) => {
   if (!args[0]) {
-    throw `✧ Ejemplo: ${usedPrefix}${command} https://www.tiktok.com/@usuario/video/1234567890`;
+    throw `Ups Parece que olvidaste darme el elnace de tiktok \n \n Ejemplo:  de uso ${usedPrefix}${command} https://www.tiktok.com/@usuario/video/1234567890`;
   }
 
   const servers = [
