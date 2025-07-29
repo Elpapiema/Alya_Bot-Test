@@ -19,7 +19,7 @@ let handler = async (m, { args, usedPrefix, command }) => {
   for (let server of shuffledServers) {
     const endpoint = `${server.url}/Tiktok_videodl?url=${encodeURIComponent(args[0])}`;
     try {
-      await conn.sendMessage(m.chat, { text: `📡 Usando *${server.name}*...\n⏳ Procesando tu video...` }, { quoted: m });
+      //await conn.sendMessage(m.chat, { text: `📡 Usando *${server.name}*...\n⏳ Procesando tu video...` }, { quoted: m });
 
       const res = await fetch(endpoint);
       if (!res.ok) throw `⚠️ Respuesta inválida del servidor (${res.status})`;
@@ -27,7 +27,7 @@ let handler = async (m, { args, usedPrefix, command }) => {
       const json = await res.json();
       if (!json.video_url) throw `⚠️ El servidor no devolvió un video válido`;
 
-      await conn.sendFile(m.chat, json.video_url, 'tiktok.mp4', `✅ *Descarga exitosa*\n🎬 Aquí tienes tu video de TikTok\n\n💫 Servidor: *${server.name}*`, m);
+      await conn.sendFile(m.chat, json.video_url, 'tiktok.mp4', `✅ *Descarga exitosa*\n🎬 Aquí tienes tu video de TikTok\n\n💫 Procesado por: *${server.name}*`, m);
       success = true;
       break; // Éxito, salimos del ciclo
     } catch (err) {
