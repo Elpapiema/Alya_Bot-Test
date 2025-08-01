@@ -122,9 +122,9 @@ const handler = async (m, { conn, text, participants, quoted, isAdmin, isBotAdmi
     }
 
     // Verificar si el bot es admin
-    if (!isBotAdmin) {
+    /*if (!isBotAdmin) {
         return m.reply('❌ Necesito ser Admin para que puedas usar este comando.');
-    }
+    }*/
 
     // Obtener el usuario objetivo
     let target;
