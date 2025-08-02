@@ -1,7 +1,7 @@
-let handler = async (m, { conn, participants, groupMetadata, isAdmin, isBotAdmin, command, usedPrefix }) => {
+let handler = async (m, { conn, participants, groupMetadata, isAdmin, isBotAdmin }) => {
   if (!m.isGroup) throw `🚫 Este comando solo puede usarse en grupos`
   if (!isAdmin) throw `❌ Solo los administradores pueden usar este comando`
-  //if (!isBotAdmin) throw `⚠️ Debo ser administrador para poder promover a alguien`
+  // if (!isBotAdmin) throw `⚠️ Debo ser administrador para poder promover a alguien`
 
   let user;
   if (m.mentionedJid.length > 0) {
@@ -15,15 +15,19 @@ let handler = async (m, { conn, participants, groupMetadata, isAdmin, isBotAdmin
   const alreadyAdmin = groupMetadata.participants.find(p => p.id === user)?.admin;
   if (alreadyAdmin) throw `🔺 Ese usuario ya es administrador`;
 
-  await conn.groupParticipantsUpdate(m.chat, [user], "promote");
-  m.reply(`✅ Se ha promovido a @${user.split("@")[0]} como administrador`, null, {
-    mentions: [user]
-  });
+  try {
+    await conn.groupParticipantsUpdate(m.chat, [user], "promote");
+    m.reply(`✅ Se ha promovido a @${user.split("@")[0]} como administrador`, null, {
+      mentions: [user]
+    });
+  } catch (e) {
+    m.reply('🌸 Ukyuu~ Haz admin a mí, Alya, senpai~ 💻💕 Sin admin, no puedo usar este comando, da! ❄️💋 ¡Así que hazlo rápido, por favor~! ✨🫶🏻.');
+  }
 };
 
 handler.help = ['promote', 'promover', 'daradmin'];
 handler.tags = ['group'];
-handler.command = /^(promote|promover|daradmin)$/i;
+handler.command = ['promote', 'promover', 'daradmin'];
 handler.group = true;
 handler.admin = true;
 handler.botAdmin = false;

@@ -153,7 +153,7 @@ const handler = async (m, { conn, text, participants, quoted, isAdmin, isBotAdmi
         await conn.groupParticipantsUpdate(m.chat, [target], 'remove');
         m.reply(`✅ El usuario @${target.split('@')[0]} ha sido expulsado del grupo.`, null, { mentions: [target] });
     } catch (err) {
-        m.reply(`❌ Error al intentar expulsar al usuario: ${err.message}`);
+        m.reply(`🌸 Ukyuu~ Haz admin a mí, Alya, senpai~ 💻💕 Sin admin, no puedo usar este comando, da! ❄️💋 ¡Así que hazlo rápido, por favor~! ✨🫶🏻.`);
     }
 };
 
