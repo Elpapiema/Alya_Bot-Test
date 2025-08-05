@@ -87,9 +87,9 @@ export default handler;
 import fetch from 'node-fetch';
 
 const SERVERS = [
-  { name: 'Servidor Masha', baseUrl: 'http://api.alyabot.xyz:3269' },
-  { name: 'Servidor Alya', baseUrl: 'http://api2.alyabot.xyz:3108' },
-  { name: 'Servidor Masachika', baseUrl: 'https://api3.alyabot.xyz' }
+  { name: 'Servidor Masha', baseUrl: alya1 },
+  { name: 'Servidor Alya', baseUrl: alya2 },
+  { name: 'Servidor Masachika', baseUrl: alya3 }
 ];
 
 // Función para mezclar servidores
