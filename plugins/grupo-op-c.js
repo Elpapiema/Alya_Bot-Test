@@ -1,7 +1,7 @@
 
 let handler = async (m, { conn, text, command }) => {
   if (!m.isGroup) throw '❌ Este comando solo funciona en grupos'
-  if (!m.isAdmin) throw '⚠️ Solo los administradores pueden usar este comando'
+//  if (!m.isAdmin) throw '⚠️ Solo los administradores pueden usar este comando'
   if (!text) throw `✨ Uso:\n\n*${command} abrir*\n*${command} cerrar*\n\nAlias: o / c`
 
   let option = text.toLowerCase()
