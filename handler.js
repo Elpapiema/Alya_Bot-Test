@@ -134,8 +134,8 @@ const bot = (m.isGroup
   ? participants.find(u => botJidVariants.includes(conn.decodeJid(u.id)))
   : {}) || {}*/
 //const bot = (m.isGroup ? participants.find(u => conn.decodeJid(u.id) == this.user.jid) : {}) || {} // Your Data
-const isRAdmin = user?.admin == 'superadmin' || false
-const isAdmin = isRAdmin || user?.admin == 'admin' || false // Is User Admin?
+const isRAdmin = m.isAdmin //user?.admin == 'superadmin' || false
+const isAdmin =  m.isAdmin //isRAdmin || user?.admin == 'admin' || false // Is User Admin?
 const isBotAdmin = bot?.admin === 'admin' || bot?.admin === 'superadmin'
  //const isBotAdmin = bot?.admin || false // Are you Admin?
 
