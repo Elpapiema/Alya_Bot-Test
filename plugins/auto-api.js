@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-const API_URL = 'https://api.alya-host.shop/download_video?url=';
+const API_URL = 'https://smasachika.alyabot.xyz/download_video?url=';
 
 async function fetchVideo() {
     try {
