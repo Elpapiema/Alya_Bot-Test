@@ -109,8 +109,51 @@ if (m.isBaileys || isBaileysFail && m?.sender === this?.this?.user?.jid) {
 m.exp += Math.ceil(Math.random() * 10)
 let usedPrefix
 //let _user = global.db.data && global.db.data.users && global.db.data.users[m.sender]
-        
-const groupMetadata = (m.isGroup ? ((conn.chats[m.chat] || {}).metadata || await this.groupMetadata(m.chat).catch(_ => null)) : {}) || {}
+   
+// Obtener metadatos del grupo
+const groupMetadata = (
+  m.isGroup
+    ? ((conn.chats[m.chat] || {}).metadata || await this.groupMetadata(m.chat).catch(_ => null))
+    : {}
+) || {}
+
+const participants = (m.isGroup ? groupMetadata.participants : []) || []
+
+// Datos del usuario
+const user = (
+  m.isGroup
+    ? participants.find(u => conn.decodeJid(u.id) === m.sender)
+    : {}
+) || {}
+
+// Obtener el JID real del bot
+const rawBotJid = this.user?.id || this.user?.jid || ''
+const botJid = conn.decodeJid(rawBotJid)
+
+// Variantes que WhatsApp usa
+const botJidVariants = [
+  botJid,
+  botJid.replace(/@s\.whatsapp\.net$/, '@lid'),
+  botJid.replace(/@lid$/, '@s.whatsapp.net')
+]
+
+// Obtener datos del bot dentro del grupo
+const bot = (
+  m.isGroup
+    ? participants.find(u => botJidVariants.includes(conn.decodeJid(u.id)))
+    : {}
+) || {}
+
+// Detectar admins reales
+const isAdmin =
+  m.isGroup &&
+  (user?.admin === 'admin' || user?.admin === 'superadmin')
+
+const isBotAdmin =
+  m.isGroup &&
+  (bot?.admin === 'admin' || bot?.admin === 'superadmin')
+
+/*const groupMetadata = (m.isGroup ? ((conn.chats[m.chat] || {}).metadata || await this.groupMetadata(m.chat).catch(_ => null)) : {}) || {}
 const participants = (m.isGroup ? groupMetadata.participants : []) || []
 const user = (m.isGroup ? participants.find(u => conn.decodeJid(u.id) === m.sender) : {}) || {} // User Data
 // Obtener el jid real del bot
@@ -132,11 +175,11 @@ const botJidVariants = [
 
 const bot = (m.isGroup
   ? participants.find(u => botJidVariants.includes(conn.decodeJid(u.id)))
-  : {}) || {}*/
+  : {}) || {}
 //const bot = (m.isGroup ? participants.find(u => conn.decodeJid(u.id) == this.user.jid) : {}) || {} // Your Data
 const isRAdmin = user?.admin == 'superadmin' || false
 const isAdmin =  isRAdmin || user?.admin == 'admin' || false // Is User Admin?
-const isBotAdmin = bot?.admin === 'admin' || bot?.admin === 'superadmin'
+const isBotAdmin = bot?.admin === 'admin' || bot?.admin === 'superadmin'*/
  //const isBotAdmin = bot?.admin || false // Are you Admin?
 
         const ___dirname = path.join(path.dirname(fileURLToPath(import.meta.url)), './plugins')
