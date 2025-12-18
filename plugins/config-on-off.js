@@ -12,7 +12,7 @@ if (fs.existsSync(settingsPath)) {
       welcome: true,
       nsfw: false,
       antiprivado: true,
-      modoAdmin: false
+      modoadmin: false
     },
     groups: {}
   };
@@ -24,8 +24,8 @@ const handler = async (m, { conn, args, isAdmin, isBotAdmin, command }) => {
 
   const option = (args[0] || '').toLowerCase();
 
-  if (!['welcome', 'nsfw', 'modoAdmin'].includes(option)) {
-    return m.reply(`Opciones disponibles: *welcome*, *nsfw*, *modoAdmin*`);
+  if (!['welcome', 'nsfw', 'modoadmin'].includes(option)) {
+    return m.reply(`Opciones disponibles: *welcome*, *nsfw*, *modoadmin*`);
   }
 
   const value = command === 'on';

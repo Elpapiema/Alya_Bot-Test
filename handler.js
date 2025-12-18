@@ -17,19 +17,19 @@ function getModoAdmin(chatId) {
 
     // si no es grupo → no aplica
     if (!chatId?.endsWith('@g.us')) {
-      return settings.global?.modoAdmin ?? false
+      return settings.global?.modoadmin ?? false
     }
 
     // grupo con override
-    if (settings.groups?.[chatId]?.modoAdmin !== undefined) {
-      return settings.groups[chatId].modoAdmin
+    if (settings.groups?.[chatId]?.modoadmin !== undefined) {
+      return settings.groups[chatId].modoadmin
     }
 
     // fallback global
-    return settings.global?.modoAdmin ?? false
+    return settings.global?.modoadmin ?? false
 
   } catch (e) {
-    console.error('[SETTINGS] Error leyendo modoAdmin:', e)
+    console.error('[SETTINGS] Error leyendo modoadmin:', e)
     return false
   }
 }

@@ -12,7 +12,7 @@ if (fs.existsSync(settingsPath)) {
       welcome: true,
       nsfw: false,
       antiprivado: true,
-      modoAdmin: false
+      modoadmin: false
     },
     groups: {}
   };
