@@ -24,7 +24,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     const megaServer = servers[0].find(server => server.server === 'mega');
     if (!megaServer || !megaServer.code) throw new Error('⚠️ No se encontró el enlace de MEGA');
 
-    const file = File.fromURL(megaServer.url);
+    const file = File.fromURL(megaServer.code);
     await file.loadAttributes();
 
     if (file.size >= 300 * 1024 * 1024) {
