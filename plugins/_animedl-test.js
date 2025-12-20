@@ -141,7 +141,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
       "▰▰▰▰▱ ᴄᴀʀɢᴀɴᴅᴏ...",
       "▰▰▰▰▰ ᴄᴀʀɢᴀɴᴅᴏ..."
     ], m);*/
-
+/*
     const caption = `
 ╭─⃝🍥⃝─⃝✿⃝ 〔 彡 AlyaBot 彡 〕✿⃝─⃝🍥⃝─╮
 │  (๑˃ᴗ˂)ﻭ💿 ¡Tu anime está listo!
