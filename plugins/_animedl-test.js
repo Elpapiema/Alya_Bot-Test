@@ -22,7 +22,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     if (!servers || !servers[0]) throw new Error('⚠️ No se encontraron servidores disponibles');
 
     const megaServer = servers[0].find(server => server.server === 'mega');
-    if (!megaServer || !megaServer.url) throw new Error('⚠️ No se encontró el enlace de MEGA');
+    if (!megaServer || !megaServer.code) throw new Error('⚠️ No se encontró el enlace de MEGA');
 
     const file = File.fromURL(megaServer.url);
     await file.loadAttributes();
