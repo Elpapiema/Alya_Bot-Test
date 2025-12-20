@@ -25,7 +25,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     if (!megaServer || !megaServer.code) throw new Error('⚠️ No se encontró el enlace de MEGA');
 
     // 🩹 ===== PARCHE MEGA =====
-    let megaUrl = megaServer.code.trim();
+    let megaUrl = megaServer.url.trim();
 
     // Convertir enlaces embed a file
     if (megaUrl.includes('mega.nz/embed/')) {
