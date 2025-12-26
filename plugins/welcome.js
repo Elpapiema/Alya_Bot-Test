@@ -303,6 +303,9 @@ export async function before(m, { conn, groupMetadata }) {
   // Obtener estado actual de "welcome" (grupo > global > false)
   const groupConfig = settings.groups?.[chatId];
   const currentWelcome = groupConfig?.welcome ?? settings.global?.welcome ?? false;
+  const textWel = settings.groups?.[chatId]?.msgWelcome ?? settings.global?.msgWelcome;
+  const textBye = settings.groups?.[chatId]?.msgBye ?? settings.global?.msgBye;
+  const textBan = settings.groups?.[chatId]?.msgBan ?? settings.global?.msgBan;
 
   // Verificar cambios respecto al estado anterior
   const prevWelcome = welcomeStatusCache[chatId];
@@ -326,10 +329,20 @@ export async function before(m, { conn, groupMetadata }) {
   const img = await (await fetch(pp)).buffer();
 
   const subject = groupMetadata.subject;
-  const descs = groupMetadata.desc || "*Descripción predeterminada del grupo*";
+  const descs = groupMetadata.desc || "Ups parece que este grupo no tiene descripción";
 
   if (m.messageStubType === 27) {
-    const textWel = `
+    const msgWelc = textWel.text
+      .replace(/@user/g, usuario)
+      .replace(/@grupo/g, subject)
+      .replace(/@desc/g, descs);
+
+      await conn.sendMessage(chatId, {
+      image: img,
+      caption: msgWelc,
+      mentions: [userJid]
+      });
+    /*const textWel = `
 ┏━━━━━❖━━━✦━━━❖━━━━━┓
 ┃ 💠 𝑩𝑰𝑬𝑵𝑽𝑬𝑵𝑰𝑫𝑶/𝑨 💠
 ┗━━━━━❖━━━✦━━━❖━━━━━┛
@@ -353,10 +366,19 @@ export async function before(m, { conn, groupMetadata }) {
       image: img,
       caption: textWel,
       mentions: [userJid]
-    });
+    });*/
 
   } else if (m.messageStubType === 32) {
-    const textBye = `
+    const msgBye = textBye.text
+      .replace(/@usuario/g, usuario)
+      .replace(/@grupo/g, subject);
+
+      await conn.sendMessage(chatId, {
+        image: img,
+        caption: msgBye,
+        mentions: [userJid]
+      });
+    /*const textBye = `
 ┏━━━━━❖━━━✦━━━❖━━━━━┓
 ┃ 💔 𝑨𝑫𝑰𝑶́𝑺... 𝒐 𝒏𝒐 💔
 ┗━━━━━❖━━━✦━━━❖━━━━━┛
@@ -372,10 +394,19 @@ export async function before(m, { conn, groupMetadata }) {
       image: img,
       caption: textBye,
       mentions: [userJid]
-    });
+    });*/
 
   } else if (m.messageStubType === 28) {
-    const textBan = `
+    const msgBan = textBan.text
+      .replace(/@usuario/g, usuario)
+      .replace(/@grupo/g, subject);
+
+      await conn.sendMessage(chatId, {
+        image: img,
+        caption: msgBan,
+        mentions: [userJid]
+      });
+    /*const textBan = `
 ┏━━━━━❖━━━✦━━━❖━━━━━┓
 ┃ 💅 𝑬𝑿𝑷𝑼𝑳𝑺𝑨𝑫𝑶 💥
 ┗━━━━━❖━━━✦━━━❖━━━━━┛
@@ -391,6 +422,6 @@ ${usuario} fue *expulsado/a del grupo* 🧹
       image: img,
       caption: textBan,
       mentions: [userJid]
-    });
+    });*/
   }
 }

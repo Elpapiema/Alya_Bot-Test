@@ -12,7 +12,10 @@ if (fs.existsSync(settingsPath)) {
       welcome: true,
       nsfw: false,
       antiprivado: true,
-      modoadmin: false
+      modoadmin: false,
+      msgWelcome: '🌸 Hola @usuario~\n\nBienvenido/a a *『@grupo』* ✨  \nMe alegra tenerte por aquí.\n\n💬 Escribe *#menu* para ver lo que puedo hacer.\n\n📌 *Lee la descripción del grupo, ¿sí?*  \n> *@desc*\n\n🎀 Disfruta tu estancia… o te jalo las orejas 😘',
+      msgBye: '👋 Adiós, @usuario~\n\nGracias por haber estado en *『@grupo』*.  \nTe deseamos lo mejor por allá.\n\n🎀 Las puertas quedan abiertas…  \npero no te olvides de nosotros 😘',
+      msgBan: '🔨 @usuario fue expulsado/a\n\nEn *『@grupo』* hay reglas,  \ny no cumplirlas tiene consecuencias.\n\n🎀 Sin rencores…  \npero aquí se cuida el orden 😌'
     },
     groups: {}
   };
