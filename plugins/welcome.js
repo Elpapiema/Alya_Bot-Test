@@ -332,7 +332,7 @@ export async function before(m, { conn, groupMetadata }) {
   const descs = groupMetadata.desc || "Ups parece que este grupo no tiene descripción";
 
   if (m.messageStubType === 27) {
-    const msgWelc = textWel.text
+    const msgWelc = textWel
       .replace(/@user/g, usuario)
       .replace(/@grupo/g, subject)
       .replace(/@desc/g, descs);
@@ -369,7 +369,7 @@ export async function before(m, { conn, groupMetadata }) {
     });*/
 
   } else if (m.messageStubType === 32) {
-    const msgBye = textBye.text
+    const msgBye = textBye
       .replace(/@usuario/g, usuario)
       .replace(/@grupo/g, subject);
 
@@ -397,7 +397,7 @@ export async function before(m, { conn, groupMetadata }) {
     });*/
 
   } else if (m.messageStubType === 28) {
-    const msgBan = textBan.text
+    const msgBan = textBan
       .replace(/@usuario/g, usuario)
       .replace(/@grupo/g, subject);
 
