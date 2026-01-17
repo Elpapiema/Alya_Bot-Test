@@ -86,7 +86,7 @@ global.copy = '©' // No modificar
 
 // ---------------[ APIs V2 ]---------------
 
-global.masha = 'https://salya.alyabot.xyz'
+global.masha = 'https://smasha.alyabot.xyz'
 global.alya = 'https://salya.alyabot.xyz'
 global.masachika = 'https://smasachika.alyabot.xyz'
 
