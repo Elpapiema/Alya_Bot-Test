@@ -5,8 +5,8 @@ let handler = async (m, { conn, text, args, usedPrefix }) => {
  // if (!m.isGroup) throw `❌ *Este comando solo funciona en grupos.*`
 
   // Validar admin o owner
-  const isAdmin = m.isAdmin || m.isGroupAdmin || m.sender && global.owner && global.owner.includes(m.sender)
-  if (!isAdmin) throw `🚫 Solo los *administradores* (o owners) pueden usar este comando.`
+  //const isAdmin = m.isAdmin || m.isGroupAdmin || m.sender && global.owner && global.owner.includes(m.sender)
+//  if (!isAdmin) throw `🚫 Solo los *administradores* (o owners) pueden usar este comando.`
 
   // Validar texto
   if (!text) throw `📩 *Escribe el mensaje de welcome*\n\nEjemplo:\n${usedPrefix}setwelcome 🌸 Hola @usuario bienvenido a @grupo\n> @desc`
