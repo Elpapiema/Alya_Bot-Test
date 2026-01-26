@@ -76,7 +76,7 @@ export async function before(m, { conn, groupMetadata }) {
   const profileUrl = await conn.profilePictureUrl(userJid, 'image')
   .catch(() => 'https://files.catbox.moe/l723pi.jpg');
   //const pp = await conn.profilePictureUrl(userJid, 'image').catch(() => 'https://files.catbox.moe/xegxay.jpg');
-  const img = await (await fetch(profileUrl)).buffer();
+  //const img = await (await fetch(profileUrl)).buffer();
 
   const subject = groupMetadata.subject;
   const descs = groupMetadata.desc || "Ups parece que este grupo no tiene descripción";

@@ -18,7 +18,7 @@ let handler = async (m, { conn, command, usedPrefix }) => {
       contentType: mime
     })
 
-    let res = await fetch("http://smasha.alyabot.xyz:3269/upscale", {
+    let res = await fetch("http://smasha.alyabot.xyz/upscale", {
       method: "POST",
       body: form
     })
