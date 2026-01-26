@@ -1,4 +1,4 @@
-import fetch from "node-fetch"
+import axios from "axios"
 import FormData from "form-data"
 
 let handler = async (m, { conn, command, usedPrefix }) => {
@@ -22,24 +22,29 @@ let handler = async (m, { conn, command, usedPrefix }) => {
       contentType: mime
     })
 
-    let res = await fetch("http://smasha.alyabot.xyz/upscale", {
-      method: "POST",
-      body: form,
-      headers: form.getHeaders()
-    })
-
-    if (!res.ok) throw await res.text()
-
-    let buffer = Buffer.from(await res.arrayBuffer())
+    let res = await axios.post(
+      "http://smasha.alyabot.xyz/upscale",
+      form,
+      {
+        headers: {
+          ...form.getHeaders()
+        },
+        responseType: "arraybuffer", // 🔑 CLAVE
+        timeout: 60000
+      }
+    )
 
     await conn.sendMessage(
       m.chat,
-      { image: buffer, caption: "✨ Imagen mejorada en HD" },
+      {
+        image: res.data,
+        caption: "✨ Imagen mejorada en HD"
+      },
       { quoted: m }
     )
 
   } catch (e) {
-    console.error("Upscale error:", e)
+    console.error("Upscale error:", e?.response?.data || e)
     m.reply("⚠️ Error al mejorar la imagen, inténtalo más tarde.")
   }
 }
