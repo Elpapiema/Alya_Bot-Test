@@ -23,7 +23,7 @@ let handler = async (m, { conn, command, usedPrefix }) => {
     })
 
     let res = await axios.post(
-      "https://smasha.alyabot.xyz/upscale",
+      "https://salya.alyabot.xyz/upscale",
       form,
       {
         headers: {
