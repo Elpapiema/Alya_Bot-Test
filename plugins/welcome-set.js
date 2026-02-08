@@ -9,7 +9,22 @@ let handler = async (m, { conn, text, args, usedPrefix }) => {
 //  if (!isAdmin) throw `🚫 Solo los *administradores* (o owners) pueden usar este comando.`
 
   // Validar texto
-  if (!text) throw `📩 *Escribe el mensaje de welcome*\n\nEjemplo:\n${usedPrefix}setwelcome 🌸 Hola @usuario bienvenido a @grupo\n> @desc`
+  if (!text) throw `
+🌸 Bienvenida personalizada
+
+Escribe tu mensaje como quieras.
+Puedes usar estas palabras si quieres datos automáticos:
+
+- @user → menciona al usuario
+
+- @group → nombre del grupo
+
+- @desc → descripción del grupo
+
+⚠️ No es obligatorio usarlas, solo si quieres que aparezcan esos datos.
+
+Ejemplo:
+Hola @user 👋 bienvenido a @group ✨`
 
   // Ruta settings
   const PATH = './database/settings.json'
