@@ -4,21 +4,21 @@ let handler = async (m, { conn, text, args, usedPrefix }) => {
 
   // Validar texto
   if (!text) throw `
-🌸 Bienvenida personalizada
+👋 Despedida personalizada
 
-Escribe tu mensaje como quieras.
+Escribe tu mensaje como quieras cuando alguien salga del grupo.
 Puedes usar estas palabras si quieres datos automáticos:
 
-- @user → menciona al usuario
+- @user → usuario que salió
 
 - @group → nombre del grupo
 
 - @desc → descripción del grupo
 
-⚠️ No es obligatorio usarlas, solo si quieres que aparezcan esos datos.
+⚠️ No es obligatorio usarlas.
 
 Ejemplo:
-#setwelcome Hola @user 👋 bienvenido a @group ✨`
+#setbye Adiós @user 👋 fue un gusto tenerte en: @group 😢`
 
   // Ruta settings
   const PATH = './database/settings.json'
@@ -32,17 +32,17 @@ Ejemplo:
   // Crear grupo si no existe
   if (!settings.groups[id]) settings.groups[id] = {}
 
-  // Guardar msgWelcome SOLO en groups
-  settings.groups[id].msgWelcome = text
+  // Guardar msgBye SOLO en groups
+  settings.groups[id].msgBye = text
 
   fs.writeFileSync(PATH, JSON.stringify(settings, null, 2))
 
-  m.reply(`✨ *Mensaje de bienvenida actualizado*\n\n📌 Ahora usaré este mensaje cuando alguien entre al grupo:\n\n${text}`)
+  m.reply(`✨ *Mensaje de despedida actualizado*\n\n📌 Ahora usaré este mensaje cuando alguien salga del grupo:\n\n${text}`)
 }
 
-handler.help = ['setwelcome <texto>']
+handler.help = ['setbye <texto>']
 handler.tags = ['group']
-handler.command = ['setwelcome']
+handler.command = ['setbye']
 handler.group = true // Solo grupos
 handler.admin = true // Solo admins
 
