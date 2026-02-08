@@ -86,7 +86,7 @@ export async function before(m, { conn, groupMetadata }) {
   if (m.messageStubType === 27) {
   const msgWelc = textWel
     .replace(/@user/g, usuario)
-    .replace(/@grupo/g, subject)
+    .replace(/@group/g, subject)
     .replace(/@desc/g, descs);
 
   const canvasUrl = buildCanvasUrl({
@@ -100,24 +100,13 @@ export async function before(m, { conn, groupMetadata }) {
     caption: msgWelc,
     mentions: [userJid]
   });
-  /*if (m.messageStubType === 27) {
-    const msgWelc = textWel
-      .replace(/@user/g, usuario)
-      .replace(/@grupo/g, subject)
-      .replace(/@desc/g, descs);
-
-      await conn.sendMessage(chatId, {
-      image: img,
-      caption: msgWelc,
-      mentions: [userJid]
-      });*/
 
   // Despedida
   
 } else if (m.messageStubType === 32) {
   const msgBye = textBye
-    .replace(/@usuario/g, usuario)
-    .replace(/@grupo/g, subject);
+    .replace(/@user/g, usuario)
+    .replace(/@group/g, subject);
 
   const canvasUrl = buildCanvasUrl({
     profile: profileUrl,
@@ -130,22 +119,13 @@ export async function before(m, { conn, groupMetadata }) {
     caption: msgBye,
     mentions: [userJid]
   });
-}/*} else if (m.messageStubType === 32) {
-    const msgBye = textBye
-      .replace(/@usuario/g, usuario)
-      .replace(/@grupo/g, subject);
-
-      await conn.sendMessage(chatId, {
-        image: img,
-        caption: msgBye,
-        mentions: [userJid]
-      });*/
+}
 
   // Ban/Expulsion
   else if (m.messageStubType === 28) {
   const msgBan = textBan
-    .replace(/@usuario/g, usuario)
-    .replace(/@grupo/g, subject);
+    .replace(/@user/g, usuario)
+    .replace(/@group/g, subject);
 
   const canvasUrl = buildCanvasUrl({
     profile: profileUrl,
@@ -159,15 +139,4 @@ export async function before(m, { conn, groupMetadata }) {
     mentions: [userJid]
   });
 }
-  /*} else if (m.messageStubType === 28) {
-    const msgBan = textBan
-      .replace(/@usuario/g, usuario)
-      .replace(/@grupo/g, subject);
-
-      await conn.sendMessage(chatId, {
-        image: img,
-        caption: msgBan,
-        mentions: [userJid]
-      });
-  }*/
 }

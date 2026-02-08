@@ -13,8 +13,6 @@ Puedes usar estas palabras si quieres datos automáticos:
 
 @group → nombre del grupo
 
-@desc → descripción del grupo
-
 ⚠️ No es obligatorio usarlas.
 
 Ejemplo:
