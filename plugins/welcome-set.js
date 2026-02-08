@@ -24,7 +24,7 @@ Puedes usar estas palabras si quieres datos automáticos:
 ⚠️ No es obligatorio usarlas, solo si quieres que aparezcan esos datos.
 
 Ejemplo:
-Hola @user 👋 bienvenido a @group ✨`
+#setwelcome Hola @user 👋 bienvenido a @group ✨`
 
   // Ruta settings
   const PATH = './database/settings.json'
